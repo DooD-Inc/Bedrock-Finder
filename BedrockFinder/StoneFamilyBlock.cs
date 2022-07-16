@@ -28,6 +28,38 @@ public static class StoneFamilyBlock
     public static Bitmap DrawStoneBlock() => DrawBlock(stoneColor);
     public static Bitmap DrawBedrockPen() => DrawPen(bedrockColor);
     public static Bitmap DrawStonePen() => DrawPen(stoneColor);
+    public static void DrawVectorBlock(ref Bitmap input, Point start, BlockType block, VectorAngle angle)
+    {
+        FastBitmap bitmap = new FastBitmap(input);
+        Color[] colors = block == BlockType.Bedrock ? bedrockColor : stoneColor;
+
+        if (angle.GetVector() == (true, false))
+        {
+            for (int x = 0; x < 16; x++)
+                for (int y = 0; y < 16; y++)
+                    bitmap.SetPixel(start.X + x, start.Y + y, colors[signatureBlock[y, x]]);
+        }
+        else if (angle.GetVector() == (true, true))
+        {
+            for (int x = 0; x < 16; x++)
+                for (int y = 0; y < 16; y++)
+                    bitmap.SetPixel(start.X + x, start.Y + y, colors[signatureBlock[x, y]]);
+        }
+        else if (angle.GetVector() == (false, true))
+        {
+            for (int x = 0; x < 16; x++)
+                for (int y = 0; y < 16; y++)
+                    bitmap.SetPixel(start.X + x, start.Y + y, colors[signatureBlock[15 - y, 15 - x]]);
+        }
+        else if (angle.GetVector() == (false, false))
+        {
+            for (int x = 0; x < 16; x++)
+                for (int y = 0; y < 16; y++)
+                    bitmap.SetPixel(start.X + x, start.Y + y, colors[signatureBlock[15 - x, 15 - y]]);
+        }
+
+        input = bitmap.GetResult();
+    }
     public static void DrawBlockOnBitmap(ref Bitmap input, Point start, BlockType block)
     {
         FastBitmap bitmap = new FastBitmap(input);

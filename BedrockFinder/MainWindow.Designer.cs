@@ -35,6 +35,10 @@ public partial class MainWindow : DHForm
             this.SmallApp = new System.Windows.Forms.NotifyIcon(this.components);
             this.MakeAsSmallAppB = new System.Windows.Forms.Button();
             this.MainDisplayP = new System.Windows.Forms.Panel();
+            this.PatternCoordL = new System.Windows.Forms.Label();
+            this.MainSettingsP = new System.Windows.Forms.Panel();
+            this.DeviceSelectDHCB = new BedrockFinder.Libraries.DHComboBox();
+            this.SearchB = new System.Windows.Forms.Button();
             this.PenP = new System.Windows.Forms.PictureBox();
             this.AutoSavePB = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,18 +47,16 @@ public partial class MainWindow : DHForm
             this.ClearPatternPB = new System.Windows.Forms.PictureBox();
             this.ExportPatternPB = new System.Windows.Forms.PictureBox();
             this.ImportPatternPB = new System.Windows.Forms.PictureBox();
-            this.MainSettingsP = new System.Windows.Forms.Panel();
-            this.DeviceSelectDHCB = new BedrockFinder.Libraries.DHComboBox();
             this.ToolTips = new System.Windows.Forms.ToolTip(this.components);
-            this.SearchB = new System.Windows.Forms.Button();
+            this.PatternCurChecker = new System.Windows.Forms.Timer(this.components);
             this.MainDisplayP.SuspendLayout();
+            this.MainSettingsP.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PenP)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AutoSavePB)).BeginInit();
             this.CanvasSettingsP.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ClearPatternPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExportPatternPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImportPatternPB)).BeginInit();
-            this.MainSettingsP.SuspendLayout();
             this.SuspendLayout();
             // 
             // CloseB
@@ -97,17 +99,67 @@ public partial class MainWindow : DHForm
             // MainDisplayP
             // 
             this.MainDisplayP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.MainDisplayP.Controls.Add(this.PatternCoordL);
+            this.MainDisplayP.Controls.Add(this.MainSettingsP);
             this.MainDisplayP.Controls.Add(this.SearchB);
             this.MainDisplayP.Controls.Add(this.PenP);
             this.MainDisplayP.Controls.Add(this.AutoSavePB);
             this.MainDisplayP.Controls.Add(this.label1);
             this.MainDisplayP.Controls.Add(this.CanvasP);
             this.MainDisplayP.Controls.Add(this.CanvasSettingsP);
-            this.MainDisplayP.Controls.Add(this.MainSettingsP);
             this.MainDisplayP.Location = new System.Drawing.Point(0, 24);
             this.MainDisplayP.Name = "MainDisplayP";
             this.MainDisplayP.Size = new System.Drawing.Size(914, 452);
             this.MainDisplayP.TabIndex = 2;
+            // 
+            // PatternCoordL
+            // 
+            this.PatternCoordL.AutoSize = true;
+            this.PatternCoordL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.PatternCoordL.ForeColor = System.Drawing.Color.Silver;
+            this.PatternCoordL.Location = new System.Drawing.Point(517, 436);
+            this.PatternCoordL.Name = "PatternCoordL";
+            this.PatternCoordL.Size = new System.Drawing.Size(18, 15);
+            this.PatternCoordL.TabIndex = 14;
+            this.PatternCoordL.Text = "C:";
+            // 
+            // MainSettingsP
+            // 
+            this.MainSettingsP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.MainSettingsP.Controls.Add(this.DeviceSelectDHCB);
+            this.MainSettingsP.Location = new System.Drawing.Point(12, 10);
+            this.MainSettingsP.Name = "MainSettingsP";
+            this.MainSettingsP.Size = new System.Drawing.Size(236, 426);
+            this.MainSettingsP.TabIndex = 6;
+            // 
+            // DeviceSelectDHCB
+            // 
+            this.DeviceSelectDHCB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.DeviceSelectDHCB.BorderColor = System.Drawing.Color.Empty;
+            this.DeviceSelectDHCB.ContentAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DeviceSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.DeviceSelectDHCB.ForeColor = System.Drawing.Color.Silver;
+            this.DeviceSelectDHCB.GeneralSize = new System.Drawing.Size(230, 39);
+            this.DeviceSelectDHCB.ItemSize = new System.Drawing.Size(230, 30);
+            this.DeviceSelectDHCB.Location = new System.Drawing.Point(0, 13);
+            this.DeviceSelectDHCB.Margin = new System.Windows.Forms.Padding(0);
+            this.DeviceSelectDHCB.Name = "DeviceSelectDHCB";
+            this.DeviceSelectDHCB.Size = new System.Drawing.Size(236, 37);
+            this.DeviceSelectDHCB.TabIndex = 9;
+            // 
+            // SearchB
+            // 
+            this.SearchB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.SearchB.FlatAppearance.BorderSize = 0;
+            this.SearchB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SearchB.ForeColor = System.Drawing.Color.Silver;
+            this.SearchB.Location = new System.Drawing.Point(251, 412);
+            this.SearchB.Margin = new System.Windows.Forms.Padding(0);
+            this.SearchB.Name = "SearchB";
+            this.SearchB.Size = new System.Drawing.Size(127, 24);
+            this.SearchB.TabIndex = 13;
+            this.SearchB.Text = "Start Search";
+            this.SearchB.UseVisualStyleBackColor = false;
             // 
             // PenP
             // 
@@ -193,48 +245,16 @@ public partial class MainWindow : DHForm
             this.ImportPatternPB.TabStop = false;
             this.ImportPatternPB.Click += new System.EventHandler(this.ImportPatternPB_Click);
             // 
-            // MainSettingsP
-            // 
-            this.MainSettingsP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
-            this.MainSettingsP.Controls.Add(this.DeviceSelectDHCB);
-            this.MainSettingsP.Location = new System.Drawing.Point(11, 10);
-            this.MainSettingsP.Name = "MainSettingsP";
-            this.MainSettingsP.Size = new System.Drawing.Size(236, 426);
-            this.MainSettingsP.TabIndex = 6;
-            // 
-            // DeviceSelectDHCB
-            // 
-            this.DeviceSelectDHCB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
-            this.DeviceSelectDHCB.BorderColor = System.Drawing.Color.Empty;
-            this.DeviceSelectDHCB.ContentAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DeviceSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.DeviceSelectDHCB.ForeColor = System.Drawing.Color.Silver;
-            this.DeviceSelectDHCB.GeneralSize = new System.Drawing.Size(230, 39);
-            this.DeviceSelectDHCB.ItemSize = new System.Drawing.Size(230, 30);
-            this.DeviceSelectDHCB.Location = new System.Drawing.Point(0, 13);
-            this.DeviceSelectDHCB.Margin = new System.Windows.Forms.Padding(0);
-            this.DeviceSelectDHCB.Name = "DeviceSelectDHCB";
-            this.DeviceSelectDHCB.Size = new System.Drawing.Size(236, 37);
-            this.DeviceSelectDHCB.TabIndex = 9;
-            // 
             // ToolTips
             // 
             this.ToolTips.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(57)))), ((int)(((byte)(57)))));
             this.ToolTips.ForeColor = System.Drawing.Color.Silver;
             // 
-            // SearchB
+            // PatternCurChecker
             // 
-            this.SearchB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.SearchB.FlatAppearance.BorderSize = 0;
-            this.SearchB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SearchB.ForeColor = System.Drawing.Color.Silver;
-            this.SearchB.Location = new System.Drawing.Point(250, 412);
-            this.SearchB.Margin = new System.Windows.Forms.Padding(0);
-            this.SearchB.Name = "SearchB";
-            this.SearchB.Size = new System.Drawing.Size(127, 24);
-            this.SearchB.TabIndex = 13;
-            this.SearchB.Text = "Start Search";
-            this.SearchB.UseVisualStyleBackColor = false;
+            this.PatternCurChecker.Enabled = true;
+            this.PatternCurChecker.Interval = 20;
+            this.PatternCurChecker.Tick += new System.EventHandler(this.PatternCurChecker_Tick);
             // 
             // MainWindow
             // 
@@ -250,13 +270,13 @@ public partial class MainWindow : DHForm
             this.Text = "BedrockFinder";
             this.MainDisplayP.ResumeLayout(false);
             this.MainDisplayP.PerformLayout();
+            this.MainSettingsP.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PenP)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AutoSavePB)).EndInit();
             this.CanvasSettingsP.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ClearPatternPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExportPatternPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImportPatternPB)).EndInit();
-            this.MainSettingsP.ResumeLayout(false);
             this.ResumeLayout(false);
 
     }
@@ -279,4 +299,6 @@ public partial class MainWindow : DHForm
     private PictureBox PenP;
     private PictureBox ClearPatternPB;
     private Button SearchB;
+    private System.Windows.Forms.Timer PatternCurChecker;
+    private Label PatternCoordL;
 }

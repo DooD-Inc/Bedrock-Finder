@@ -33,7 +33,7 @@ public partial class MainWindow : DHForm
         InitializeComponent();
         CanvasP.Controls.Add(canvas);
         canvas.Show();
-        canvas.Location = new Point(30, -160);
+        canvas.Location = new Point(-30, -160);
         ControlsInit();
         ShowInit();
 
@@ -52,6 +52,9 @@ public partial class MainWindow : DHForm
         MakeAsSmallAppB.Round(15, false, true, false, false);
 
         PenP.BackgroundImage = StoneFamilyBlock.DrawBedrockPen();
+
+
+        
     }
     public bool AutoSave = true;
     private void Save()
@@ -127,5 +130,29 @@ public partial class MainWindow : DHForm
             canvas.DrawBlock(z.x, 31 - z.z, BlockType.None);
             Program.Pattern[canvas.YLevel][z.x, z.z] = BlockType.None;
         });
+    }
+    private void PatternCurChecker_Tick(object sender, EventArgs e)
+    {
+        Point panel = new Point(
+            Location.X + MainDisplayP.Location.X + CanvasP.Location.X,
+            Location.Y + MainDisplayP.Location.Y + CanvasP.Location.Y
+        );
+        Point curDiff = new Point(
+            Cursor.Position.X - panel.X,
+            Cursor.Position.Y - panel.Y
+        );
+        if (curDiff.X > 0 && curDiff.X < 384 && curDiff.Y > 0 && curDiff.Y < 384)
+        {
+            Point pos = new Point(curDiff.X - canvas.Location.X - 30, (543 - (curDiff.Y - canvas.Location.Y)));
+            if(pos.X > 0 && pos.Y > 0 && pos.X < 543 && pos.Y < 543)
+            {
+                Point index = new Point(pos.X / 17, pos.Y / 17);
+                PatternCoordL.ForeColor = Color.Silver;
+                PatternCoordL.Text = "C: " + index.X + ", " + index.Y;
+                return;
+            }
+        }
+        PatternCoordL.ForeColor = Color.Gray;
+        PatternCoordL.Text = "C: NaN";
     }
 }
