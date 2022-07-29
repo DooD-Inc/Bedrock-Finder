@@ -21,7 +21,7 @@ namespace FastBitmapUtils
         public void SetPixel(int x, int y, Color color) => SetPixel((ushort)x, (ushort)y, color);
         public void SetPixel(ushort x, ushort y, Color color)
         {
-            byte* p = (byte*)(pointer + ((y * bmp.Height + x) * 4));
+            byte* p = pointer + ((y * bmp.Width + x) * 4);
             *p = color.B;
             *(p + 1) = color.G;
             *(p + 2) = color.R;
@@ -30,7 +30,7 @@ namespace FastBitmapUtils
         public Color GetPixel(int x, int y) => GetPixel((ushort)x, (ushort)y);
         public Color GetPixel(ushort x, ushort y)
         {
-            byte* p = (byte*)(pointer + ((y * bmp.Height + x) * 4));
+            byte* p = pointer + ((y * bmp.Width + x) * 4);
             return Color.FromArgb(*(p + 3), *(p + 2), *(p + 1), *p);
         }
         public Bitmap GetResult()

@@ -1,12 +1,14 @@
 ﻿public class SearchProgress
 {
-    public SearchProgress(int startX, int endX)
+    public SearchProgress(int startX, int endX, TimeSpan elapsedTime = default)
     {
         X = startX;
         StartX = startX;
         EndX = endX;
+        ElapsedTime = elapsedTime;
     }
     public int X, StartX, EndX;
+    public TimeSpan ElapsedTime;
     public double GetPercent()
     {
         long lStart = (long)StartX + int.MaxValue;
@@ -15,6 +17,6 @@
         lEnd = lEnd - lStart;
         lX = lX - lStart;
         lStart = 0;
-        return Math.Round((double)lX / (lEnd - lStart), 2, MidpointRounding.AwayFromZero);
+        return (double)lX / (lEnd - lStart) * 100;
     }
 }

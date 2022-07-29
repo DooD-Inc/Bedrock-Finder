@@ -5,5 +5,6 @@
         X = x;
         Z = z;
     }
-    public int X, Z;
+    public int X { get; set; }
+    public int Z { get; set; }
 }

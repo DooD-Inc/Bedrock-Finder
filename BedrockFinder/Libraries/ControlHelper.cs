@@ -4,7 +4,7 @@ namespace BedrockFinder.Libraries;
 public static class ControlHelper
 {    
     public static Point FindMiddle(Control ownControl, Control memControl, bool x, bool y) => new Point(x ? ownControl.Width / 2 - memControl.Width / 2 : memControl.Location.X, y ? ownControl.Height / 2 - memControl.Height / 2 : memControl.Location.Y);
-    public static void Round(this Control control, int radius, bool topRight, bool topLeft, bool bottomLeft, bool bottomRight)
+    public static void Round(this Control control, int radius, bool topRight = true, bool topLeft = true, bool bottomLeft = true, bool bottomRight = true)
     {
         try
         {

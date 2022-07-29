@@ -1,6 +1,6 @@
-﻿public enum BlockType
+﻿public enum BlockType : byte
 {
-    None,//aka 0, Air, NaN, Undefinedz
+    None,
     Bedrock,
     Stone,     
 }

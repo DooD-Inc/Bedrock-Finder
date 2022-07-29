@@ -43,7 +43,7 @@ public partial class CanvasForm : Form
         }
         for (int i = 0; i < 544; i++)
         {
-            bitmap.SetPixel(573, i, Color.Black);
+            bitmap.SetPixel(574, i, Color.Black);
             bitmap.SetPixel(0, i, Color.FromArgb(30, 30, 30));
             bitmap.SetPixel(i + 30, 544, Color.Black);
             bitmap.SetPixel(i + 30, 573, Color.FromArgb(30, 30, 30));
@@ -52,7 +52,6 @@ public partial class CanvasForm : Form
         {
             bitmap.SetPixel(i, 0, Color.FromArgb(30, 30, 30));
             bitmap.SetPixel(0, 573 - i, Color.FromArgb(30, 30, 30));
-            bitmap.SetPixel(573, 573 - i, Color.FromArgb(30, 30, 30));
             bitmap.SetPixel(i, 573, Color.FromArgb(30, 30, 30));
         }
 
@@ -73,13 +72,15 @@ public partial class CanvasForm : Form
     public void DrawPointers()
     {
         FastBitmap bitmap = new FastBitmap((Bitmap)BackgroundImage);
-        (bool x, bool y) points = Vector.GetVector();
+        (bool x, bool y) points = Vector.CurrentPoint;
 
-        if(points.x) DrawPlus(bitmap, 43, 550, Color.Wheat);
-        else DrawMinus(bitmap, 43, 550, Color.Wheat);
+        DrawPlus(bitmap, 43, 550, Color.FromArgb(43, 43, 43));
+        if (points.x) DrawPlus(bitmap, 43, 550, Color.Silver);
+        else DrawMinus(bitmap, 43, 550, Color.Silver);
 
-        if (points.y) DrawPlus(bitmap, 14, 523, Color.Wheat);
-        else DrawMinus(bitmap, 14, 523, Color.Wheat);
+        DrawPlus(bitmap, 14, 523, Color.FromArgb(43, 43, 43));
+        if (points.y) DrawPlus(bitmap, 14, 523, Color.Silver);
+        else DrawMinus(bitmap, 14, 523, Color.Silver);
 
         BackgroundImage = bitmap.GetResult();
     }
@@ -102,7 +103,7 @@ public partial class CanvasForm : Form
     }
     public VectorAngle Vector = new VectorAngle();
     public BlockType PenType = BlockType.Bedrock;
-    public sbyte YLevel = 4;
+    public byte YLevel = 4;
     public void DrawBlock(int xc, int yc, BlockType block)
     {
         if(block == BlockType.None)
@@ -116,8 +117,6 @@ public partial class CanvasForm : Form
         else
         {
             Bitmap bitmap = (Bitmap)BackgroundImage;
-            //StoneFamilyBlock.DrawBlockOnBitmap(ref bitmap, new Point(30 + xc * 17 + 1, yc * 17 + 1), block);
-            Vector.Turn(1);
             StoneFamilyBlock.DrawVectorBlock(ref bitmap, new Point(30 + xc * 17 + 1, yc * 17 + 1), block, Vector);
             BackgroundImage = bitmap;
         }
@@ -130,16 +129,19 @@ public partial class CanvasForm : Form
         if (!(e.Location.X > 30 && e.Location.Y < 543)) return;
         Point panelIndex = new Point((e.Location.X - 30) / 17, (e.Location.Y) / 17);
         Point patternIndex = new Point((e.Location.X - 30) / 17, 31 - (e.Location.Y) / 17);
-        BlockType block = Program.Pattern[YLevel].Get(patternIndex.X, patternIndex.Y);
+        BlockType block = Program.Pattern[YLevel][patternIndex.X, patternIndex.Y];
         if (block != PenType)
         {
-            Program.Pattern[YLevel].Set(patternIndex.X, patternIndex.Y, PenType);
+            Program.Pattern[YLevel][patternIndex.X, patternIndex.Y] = PenType;
             DrawBlock(panelIndex.X, panelIndex.Y, PenType);
         }
         else
         {
-            Program.Pattern[YLevel].Set(patternIndex.X, patternIndex.Y, BlockType.None);
+            Program.Pattern[YLevel][patternIndex.X, patternIndex.Y] = BlockType.None;
             DrawBlock(panelIndex.X, panelIndex.Y, BlockType.None);
         }
+        Program.MainWindow.Invoke(() => Program.MainWindow.UpdatePatternScore());
     }
+    public void UnDraw() => Program.Pattern[YLevel].blockList.ForEach(z => DrawBlock(z.x, 31 - z.z, BlockType.None));
+    public void OverDraw() => Program.Pattern[YLevel].blockList.ForEach(z => DrawBlock(z.x, 31 - z.z, z.block));
 }

@@ -5,6 +5,7 @@ namespace BedrockFinder;
 
 public partial class MainWindow : DHForm
 {
+    #region Window
     private void ShowInit()
     {
         Program.FormHandle = Handle;
@@ -20,12 +21,76 @@ public partial class MainWindow : DHForm
         ExportPatternPB.Image = Program.Resources.Get("ExportImage")?.GetContent<Image>();
         ToolTips.SetToolTip(ExportPatternPB, "Export Pattern");
 
+        ImportWorldPatternPB.Image = Program.Resources.Get("ImportWorldImage")?.GetContent<Image>();
+        ToolTips.SetToolTip(ImportWorldPatternPB, "Import Pattern As World");
+
+        ExportWorldPatternPB.Image = Program.Resources.Get("ExportWorldImage")?.GetContent<Image>();
+        ToolTips.SetToolTip(ExportWorldPatternPB, "Export Pattern As World");
+
         ClearPatternPB.Image = Program.Resources.Get("ClearImage")?.GetContent<Image>();
         ToolTips.SetToolTip(ClearPatternPB, "Clear This Pattern Layer");
 
-        AutoSavePB.Image = Program.Resources.Get("AutoSaveImage")?.GetContent<Image>();
-        ToolTips.SetToolTip(AutoSavePB, "Disable AutoSave");
-        ReplacePixels(AutoSavePB, AutoSave ? Color.FromArgb(51, 102, 51) : Color.FromArgb(102, 51, 51));
+        RightTurnPB.Image = Program.Resources.Get("RightTurnImage")?.GetContent<Image>();
+        ToolTips.SetToolTip(RightTurnPB, "Turn on Right");
+
+        LeftTurnPB.Image = Program.Resources.Get("LeftTurnImage")?.GetContent<Image>();
+        ToolTips.SetToolTip(LeftTurnPB, "Turn on Left");
+
+        BackToStartPatternPB.Image = Program.Resources.Get("ZoomOutImage")?.GetContent<Image>();
+        ToolTips.SetToolTip(BackToStartPatternPB, "Back to Start of Pattern");
+
+        CopyFoundP.Image = Program.Resources.Get("CopyImage")?.GetContent<Image>();
+        ToolTips.SetToolTip(CopyFoundP, "Copy All Found In Clipboard");
+
+        ToolTips.SetToolTip(YLevelSelectorTrB, "Change Y Level For Pattern");
+
+        DeviceSelectDHCB.Collection = new List<string>()
+        {
+            "CPU"
+        };
+        DeviceSelectDHCB.Collection.AddRange(Program.Devices.Select(z => "Kernel " + z));
+        DeviceSelectDHCB.Text = "Device: ";
+        DeviceSelectDHCB.ItemIndex = 0;
+
+        VersionSelectDHCB.Collection = new List<string>()
+        {
+            "1.12",
+            "1.13",
+            "1.14",
+            "1.15",
+            "1.16",
+            "1.17",
+            "1.18",
+        };
+        VersionSelectDHCB.Text = "Version: ";
+        VersionSelectDHCB.ItemIndex = 0;
+
+        ContextSelectDHCB.Collection = new List<string>()
+        {
+            "Overworld",
+            "Lower Nether",
+            "Higher Nether",
+        };
+        ContextSelectDHCB.Text = "Context: ";
+        ContextSelectDHCB.ItemIndex = 0;
+
+        MainDisplayP.Round(25, false, true, true, true);
+        CanvasSettingsP.Round(25, true, true, false, false);
+        CanvasP.Round(25, true, true, false, true);
+        CloseB.Round(15, true, true, false, false);
+        MakeAsSmallAppB.Round(15, false, true, false, false);
+        MainSettingsP.Round(25);
+        SearchInfoP.Round(25);
+        SearchManageP.Round(25);
+        FoundP.Round(25);
+        FoundListRTB.Round(20);
+        SearchExportProgress.Round(20, false, true, false, false);
+        SearchImportProgress.Round(20, true, false, false, false);
+        SearchB.Round(20, false, false, true, false);
+        SearchResetProgress.Round(20, false, false, false, true);
+        DeviceSelectDHCB.Round(20);
+        VersionSelectDHCB.Round(20);
+        ContextSelectDHCB.Round(20);
     }
     private CanvasForm canvas = new CanvasForm() { TopLevel = false };
     public MainWindow()
@@ -35,41 +100,9 @@ public partial class MainWindow : DHForm
         canvas.Show();
         canvas.Location = new Point(-30, -160);
         ControlsInit();
-        ShowInit();
+        ShowInit();       
 
-        DeviceSelectDHCB.Collection = new List<string>()
-        {
-            "CPU", "GPU"
-        };
-        DeviceSelectDHCB.Text = "Device: ";
-        DeviceSelectDHCB.ItemIndex = 0;
-
-        MainDisplayP.Round(25, false, true, true, true);
-        MainSettingsP.Round(25, true, true, true, true);
-        CanvasSettingsP.Round(25, true, true, false, false);
-        CanvasP.Round(25, true, true, false, true);
-        CloseB.Round(15, true, true, false, false);
-        MakeAsSmallAppB.Round(15, false, true, false, false);
-
-        PenP.BackgroundImage = StoneFamilyBlock.DrawBedrockPen();
-
-
-        
-    }
-    public bool AutoSave = true;
-    private void Save()
-    {
-
-    }
-    private void ReplacePixels(PictureBox control, Color toPixel)
-    {
-        Bitmap b = (Bitmap)control.Image;
-        FastBitmap fb = new FastBitmap(b);
-        for(int x = 0; x < b.Width; x++)
-            for(int y = 0; y < b.Height; y++)
-                if(fb.GetPixel(x, y).A != 0)
-                    fb.SetPixel(x, y, toPixel);
-        control.Image = fb.GetResult();
+        PenP.BackgroundImage = StoneFamilyBlock.DrawVectorPen(BlockType.Bedrock, canvas.Vector);
     }
     private void CloseB_Click(object sender, EventArgs e)
     {
@@ -82,7 +115,6 @@ public partial class MainWindow : DHForm
         WindowState = FormWindowState.Minimized;
         ShowInTaskbar = false;
     }
-
     private void SmallApp_Click(object sender, EventArgs e)
     {
         SmallApp.Visible = false;
@@ -91,45 +123,91 @@ public partial class MainWindow : DHForm
         Activate();
         ShowInit();
     }
-
+    #endregion
+    #region Canvas
+    public void UpdatePatternScore()
+    {
+        PatternScoreL.Text = "Score: " + Program.Pattern.CalculateScore();
+        SearchPredictedCountL.Text = "Predicted Count: " + Math.Round(Program.SearchRange.BlockRange * Program.Pattern.CalculateFindPercent(), 0, MidpointRounding.AwayFromZero);//+ Program.SearchRange.BlockRange + " * " + Program.Pattern.CalculateFindPercent(); //
+    }
     private void ImportPatternPB_Click(object sender, EventArgs e)
     {
+        using (OpenFileDialog openFileDialog = new OpenFileDialog())
+        {
+            openFileDialog.InitialDirectory = "c:\\";
+            openFileDialog.Filter = "Pattern File|*.bfp;";
+            openFileDialog.FilterIndex = 2;
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.Multiselect = false;
 
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                canvas.UnDraw();
+                Program.Pattern = ConfigManager.ImportPatternAsBFP(openFileDialog.FileName);
+                canvas.OverDraw();
+                UpdatePatternScore();
+            }
+        }        
     }
-
     private void ExportPatternPB_Click(object sender, EventArgs e)
     {
-
-    }
-
-    private void AutoSavePB_Click(object sender, EventArgs e)
-    {
-        AutoSave = !AutoSave;
-        ToolTips.SetToolTip(AutoSavePB, (AutoSave ? "Disable" : "Enable") + " AutoSave");
-        ReplacePixels(AutoSavePB, AutoSave ? Color.FromArgb(51, 102, 51) : Color.FromArgb(102, 51, 51));
-    }
-
-    private void PenP_Click(object sender, EventArgs e)
-    {
-        if(canvas.PenType == BlockType.Bedrock)
+        using (OpenFileDialog openFileDialog = new OpenFileDialog())
         {
-            PenP.BackgroundImage = StoneFamilyBlock.DrawStonePen();
-            canvas.PenType = BlockType.Stone;
-        }
-        else
-        {
-            PenP.BackgroundImage = StoneFamilyBlock.DrawBedrockPen();
-            canvas.PenType = BlockType.Bedrock;
+            openFileDialog.InitialDirectory = "c:\\";
+            openFileDialog.Filter = "Pattern File|*.bfp;";
+            openFileDialog.FilterIndex = 2;
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.CheckFileExists = false; 
+            openFileDialog.Multiselect = false;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (!File.Exists(openFileDialog.FileName))
+                    File.Create(openFileDialog.FileName).Dispose();
+                ConfigManager.ExportPatternAsBFP(Program.Pattern, openFileDialog.FileName);
+            }
         }
     }
+    private void ExportWorldPatternPB_Click(object sender, EventArgs e)
+    {
+        using (FolderBrowserDialog openFileDialog = new FolderBrowserDialog())
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (!Directory.Exists(openFileDialog.SelectedPath))
+                    Directory.CreateDirectory(openFileDialog.SelectedPath);
+                ConfigManager.ExportPatternAsWorld(Program.Pattern, openFileDialog.SelectedPath);
+            }
+        }
+    }
+    private void ImportWorldPatternPB_Click(object sender, EventArgs e)
+    {
+        using (FolderBrowserDialog openFileDialog = new FolderBrowserDialog())
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (!Directory.Exists(openFileDialog.SelectedPath))
+                    Directory.CreateDirectory(openFileDialog.SelectedPath);
 
+                BedrockPattern? pattern = ConfigManager.ImportPatternAsWorld(openFileDialog.SelectedPath);
+                if (pattern != null)
+                {
+                    canvas.UnDraw();
+                    Program.Pattern = pattern;
+                    canvas.OverDraw();
+                    UpdatePatternScore();
+                }
+            }
+        }
+    }
     private void ClearPatternPB_Click(object sender, EventArgs e)
     {
-        Program.Pattern[canvas.YLevel].blockList.ForEach(z =>
+        Program.Pattern[canvas.YLevel].blockList.ToList().ForEach(z =>
         {
             canvas.DrawBlock(z.x, 31 - z.z, BlockType.None);
             Program.Pattern[canvas.YLevel][z.x, z.z] = BlockType.None;
         });
+        UpdatePatternScore();
     }
     private void PatternCurChecker_Tick(object sender, EventArgs e)
     {
@@ -137,22 +215,183 @@ public partial class MainWindow : DHForm
             Location.X + MainDisplayP.Location.X + CanvasP.Location.X,
             Location.Y + MainDisplayP.Location.Y + CanvasP.Location.Y
         );
-        Point curDiff = new Point(
-            Cursor.Position.X - panel.X,
-            Cursor.Position.Y - panel.Y
-        );
+        Point curDiff = new Point(Cursor.Position.X - panel.X, Cursor.Position.Y - panel.Y);
         if (curDiff.X > 0 && curDiff.X < 384 && curDiff.Y > 0 && curDiff.Y < 384)
         {
-            Point pos = new Point(curDiff.X - canvas.Location.X - 30, (543 - (curDiff.Y - canvas.Location.Y)));
-            if(pos.X > 0 && pos.Y > 0 && pos.X < 543 && pos.Y < 543)
+            Point pos = new Point(curDiff.X - canvas.Location.X - 30, 543 - (curDiff.Y - canvas.Location.Y));
+            if (pos.X > 0 && pos.Y > 0 && pos.X < 543 && pos.Y < 543)
             {
                 Point index = new Point(pos.X / 17, pos.Y / 17);
+                (bool x, bool z) points = canvas.Vector.CurrentPoint;
                 PatternCoordL.ForeColor = Color.Silver;
-                PatternCoordL.Text = "C: " + index.X + ", " + index.Y;
+                PatternCoordL.Text = "C: " + (points.x ? "" : "-") + index.X + ", " + (points.z ? "" : "-") + index.Y;
                 return;
             }
         }
         PatternCoordL.ForeColor = Color.Gray;
         PatternCoordL.Text = "C: NaN";
+    }
+    private void RightTurnPB_Click(object sender, EventArgs e)
+    {
+        canvas.Vector.Turn(-1);
+        canvas.DrawPointers();
+        canvas.OverDraw();
+        canvas.Invalidate();
+        PenP.Image = StoneFamilyBlock.DrawVectorPen(canvas.PenType, canvas.Vector);
+    }
+    private void LeftTurnPB_Click(object sender, EventArgs e)
+    {
+        canvas.Vector.Turn(1);
+        canvas.DrawPointers();
+        canvas.OverDraw();
+        canvas.Invalidate();
+        PenP.Image = StoneFamilyBlock.DrawVectorPen(canvas.PenType, canvas.Vector);
+    }
+    private void YLevelSelectorTrB_Scroll(object sender, EventArgs e)
+    {
+        YLevelL.Text = $"({YLevelSelectorTrB.Value})";
+        canvas.UnDraw();
+        canvas.YLevel = (byte)YLevelSelectorTrB.Value;
+        canvas.OverDraw();
+    }
+    private void BackToStartPatternPB_Click(object sender, EventArgs e) => canvas.Location = new Point(-30, -160);
+    private void PenP_Click(object sender, EventArgs e)
+    {
+        if (canvas.PenType == BlockType.Bedrock)
+        {
+            PenP.Image = StoneFamilyBlock.DrawVectorPen(BlockType.Stone, canvas.Vector);
+            canvas.PenType = BlockType.Stone;
+        }
+        else
+        {
+            PenP.Image = StoneFamilyBlock.DrawVectorPen(BlockType.Bedrock, canvas.Vector);
+            canvas.PenType = BlockType.Bedrock;
+        }
+    }
+    #endregion
+    #region Search
+    private SearchStatus status = SearchStatus.PatternEdit;
+    private object controlLock = new object();
+    private void SearchB_Click(object sender, EventArgs e)
+    {
+        if (status == SearchStatus.PatternEdit || status == SearchStatus.Finish)
+        {
+            FoundedCountL.Text = $"Found: 0";
+            FoundListRTB.Text = "";
+            if (Program.Search != null)
+            {
+                Program.Search.UpdateProgress -= UpdateProgress;
+                Program.Search.Found -= FoundEvent;
+            }
+            Program.Search = new BedrockSearch(Program.Pattern, canvas.Vector, Program.SearchRange, "") { AutoSave = false };
+            Program.Search.UpdateProgress += UpdateProgress;
+            Program.Search.Found += FoundEvent;
+            status = SearchStatus.Search;
+            SearchB.Text = "Stop Search";
+            Program.Search.FoundCount = 0;
+            Program.Search.Start();            
+        }
+        else if (status == SearchStatus.Search)
+        {
+            Program.Search.Stop();
+            status = SearchStatus.Pause;
+            SearchB.Text = "Resume Search";
+        }
+        else if (status == SearchStatus.Pause)
+        {
+            if (Program.Search.CanStart)
+            {
+                if (Program.Search.Resume())
+                {
+                    status = SearchStatus.Search;
+                    SearchB.Text = "Stop Search";
+                }
+            }
+        }
+        SearchStatusL.Text = $"Status: {statusStrings[status]}";
+    }
+    private void UpdateProgress(double progress)
+    {
+        lock (controlLock)
+        {
+            Invoke(() =>
+            {
+                if(progress == 100)
+                {
+                    status = SearchStatus.Finish;
+                    SearchStatusL.Text = $"Status: {statusStrings[status]}";
+                    SearchB.Text = "Start Search";
+                    if (SearchElapsedTimeL.Text == "Elapsed Time:")
+                        SearchElapsedTimeL.Text = $"Elapsed Time: 0s";
+                }
+                SearchProgressL.Text = $"Progress: {Math.Round(progress, 2, MidpointRounding.AwayFromZero)}%";
+                SearchElapsedTimeL.Text = $"Elapsed Time: " + TimeSpanToString(Program.Search.Progress.ElapsedTime);
+            });
+        }
+    }
+    private void FoundEvent(Vec2i found)
+    {
+        lock (controlLock)
+        {
+            Invoke(() =>
+            {
+                FoundedCountL.Text = $"Found: " + Program.Search.FoundCount;
+                FoundListRTB.Text += $"{Program.Search.FoundCount}. {found.X} {found.Z}\n";
+            });            
+        }
+    }
+    Dictionary<SearchStatus, string> statusStrings = new Dictionary<SearchStatus, string>()
+    {
+        { SearchStatus.PatternEdit, "Pattern Editing" },
+        { SearchStatus.Search, "Searching" },
+        { SearchStatus.Finish, "Finished" },
+        { SearchStatus.Pause, "Paused" },
+    };
+    enum SearchStatus
+    {
+        PatternEdit,
+        Search,
+        Finish,
+        Pause,
+    }
+    private void SearchResetProgress_Click(object sender, EventArgs e)
+    {
+        if (status != SearchStatus.PatternEdit)
+        {
+            if (status == SearchStatus.Search)
+                Program.Search.Stop();
+            status = SearchStatus.PatternEdit;
+            Program.Search.UpdateProgress -= UpdateProgress;
+            Program.Search.Found -= FoundEvent;
+            FoundedCountL.Text = $"Found: NaN";
+            SearchB.Text = "Start Search";
+            SearchProgressL.Text = $"Progress: NaN%";
+            SearchElapsedTimeL.Text = $"Elapsed Time: NaN";
+            FoundListRTB.Text = "";
+        }
+    }
+    public static string TimeSpanToString(TimeSpan span) =>
+    (span.Days > 365 ? span.Days / 365 + "y " : "")
+    + (span.Days > 0 ? span.Days % 365 + "d " : "")
+    + (span.Hours > 0 ? span.Hours + "h " : "")
+    + (span.Minutes > 0 ? span.Minutes + "m " : "")
+    + (span.Seconds > 0 ? span.Seconds + "s " : "");
+    private void SearchExportProgress_Click(object sender, EventArgs e)
+    {
+
+    }
+    private void SearchImportProgress_Click(object sender, EventArgs e)
+    {
+
+    }
+    private void CopyFoundP_Click(object sender, EventArgs e)
+    {
+        if (FoundListRTB.Text != "")
+            Clipboard.SetText(FoundListRTB.Text);
+    }
+    #endregion
+    private void Save()
+    {
+
     }
 }

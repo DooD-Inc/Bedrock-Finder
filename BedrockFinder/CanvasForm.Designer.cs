@@ -34,7 +34,7 @@ partial class CanvasForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.ClientSize = new System.Drawing.Size(574, 574);
+            this.ClientSize = new System.Drawing.Size(575, 574);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CanvasForm";
             this.Text = "CanvasForm";

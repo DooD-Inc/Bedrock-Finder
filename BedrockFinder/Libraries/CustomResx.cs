@@ -21,17 +21,31 @@ public class Resource
     public string FullName => $"{AssemblyName ?? ""}.{Name}";
     private string Path => @$"C:\Users\{Environment.UserName}\AppData\Local\Temp\{FullName}";
     public bool IsExists => File.Exists(Path);
-    public void Download() => new WebClient().DownloadFile(Link, Path);
+    public void Download()
+    {
+        try
+        {
+            new WebClient().DownloadFile(Link, Path);
+        }
+        catch
+        {
+            if (File.Exists(Path))
+                File.Delete(Path);
+        }        
+    }
     public T? GetContent<T>()
     {
         switch (typeof(T).Name)
         {
             case "Icon":
-                return (T)(object)new Icon(Path);
+                try { return (T)(object)new Icon(Path); }
+                catch { return (T)(object)null; }
             case "Image":
-                return (T)(object)Image.FromFile(Path);
+                try { return (T)(object)Image.FromFile(Path); }
+                catch { return (T)(object)(Image)new Bitmap(100, 100); }
             case "Bitmap":
-                return (T)(object)Image.FromFile(Path);
+                try { return (T)(object)Image.FromFile(Path); } 
+                catch { return (T)(object)(Image)new Bitmap(100, 100); }        
             default: return default;
         }
     }

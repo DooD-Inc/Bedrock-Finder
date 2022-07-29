@@ -33,25 +33,25 @@ public static class StoneFamilyBlock
         FastBitmap bitmap = new FastBitmap(input);
         Color[] colors = block == BlockType.Bedrock ? bedrockColor : stoneColor;
 
-        if (angle.GetVector() == (true, false))
+        if (angle.CurrentPoint == (true, false))
         {
             for (int x = 0; x < 16; x++)
                 for (int y = 0; y < 16; y++)
                     bitmap.SetPixel(start.X + x, start.Y + y, colors[signatureBlock[y, x]]);
         }
-        else if (angle.GetVector() == (true, true))
+        else if (angle.CurrentPoint == (true, true))
         {
             for (int x = 0; x < 16; x++)
                 for (int y = 0; y < 16; y++)
                     bitmap.SetPixel(start.X + x, start.Y + y, colors[signatureBlock[x, y]]);
         }
-        else if (angle.GetVector() == (false, true))
+        else if (angle.CurrentPoint == (false, true))
         {
             for (int x = 0; x < 16; x++)
                 for (int y = 0; y < 16; y++)
                     bitmap.SetPixel(start.X + x, start.Y + y, colors[signatureBlock[15 - y, 15 - x]]);
         }
-        else if (angle.GetVector() == (false, false))
+        else if (angle.CurrentPoint == (false, false))
         {
             for (int x = 0; x < 16; x++)
                 for (int y = 0; y < 16; y++)
@@ -90,6 +90,36 @@ public static class StoneFamilyBlock
                 bitmap.SetPixel(x, y + 1, color);
                 bitmap.SetPixel(x, y, color);
             }
+        return bitmap.GetResult();
+    }
+    public static Bitmap DrawVectorPen(BlockType block, VectorAngle angle)
+    {
+        FastBitmap bitmap = new FastBitmap(new Bitmap(32, 32));
+        Color[] colors = block == BlockType.Bedrock ? bedrockColor : stoneColor;
+
+        if (angle.CurrentPoint == (true, false))
+            for (int x = 0; x < 32; x += 2)
+                for (int y = 0; y < 32; y += 2)
+                    DrawPixel(x, y, colors[signatureBlock[y / 2, x / 2]]);
+        else if (angle.CurrentPoint == (true, true))
+            for (int x = 0; x < 32; x += 2)
+                for (int y = 0; y < 32; y += 2)
+                    DrawPixel(x, y, colors[signatureBlock[x / 2, y / 2]]);
+        else if (angle.CurrentPoint == (false, true))
+            for (int x = 0; x < 32; x += 2)
+                for (int y = 0; y < 32; y += 2)
+                    DrawPixel(x, y, colors[signatureBlock[15 - y / 2, 15 - x / 2]]);
+        else if (angle.CurrentPoint == (false, false))
+            for (int x = 0; x < 32; x += 2)
+                for (int y = 0; y < 32; y += 2)
+                    DrawPixel(x, y, colors[signatureBlock[15 - x / 2, 15 - y / 2]]);
+        void DrawPixel(int x, int y, Color color) 
+        {
+            bitmap.SetPixel(x + 1, y, color);
+            bitmap.SetPixel(x + 1, y + 1, color);
+            bitmap.SetPixel(x, y + 1, color);
+            bitmap.SetPixel(x, y, color);
+        }
         return bitmap.GetResult();
     }
 }

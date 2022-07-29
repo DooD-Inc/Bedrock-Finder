@@ -8,12 +8,14 @@ public class ProgressSave
         Result = searcher.Result;
         Pattern = searcher.Pattern;
         Path = searcher.PathToSave;
+        Vector = searcher.Vector;
     }
     public string Path;
     public SearchRange Range;
     public SearchProgress Progress;
     public List<Vec2i> Result;
     public BedrockPattern Pattern;
+    public VectorAngle Vector;
     public void Save() => Save(Path);
     public void Save(string path) => File.WriteAllBytes(path, System.Text.Encoding.UTF8.GetBytes(SerializeObject(this)));
     public static ProgressSave Load(string path) => (ProgressSave)DeserializeObject(System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(path)));

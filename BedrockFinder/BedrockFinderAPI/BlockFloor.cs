@@ -5,31 +5,39 @@
         SizeX = sizeX;
         SizeZ = sizeZ;
         blocks = new BlockType[sizeX, sizeZ];
-        blockList = new List<(ushort x, ushort z, BlockType block)>();
+        blockList = new List<(int x, int z, BlockType block)>();
         Fill(BlockType.None);
     }
     private BlockType[,] blocks;
-    public List<(ushort x, ushort z, BlockType block)> blockList;
+    public List<(int x, int z, BlockType block)> blockList;
     public ushort SizeX, SizeZ;
-    public void Set(int x, int z, BlockType block) => Set((ushort)x, (ushort)z, block);
-    public void Set(ushort x, ushort z, BlockType block)
-    {
-        blocks[x, z] = block;        ;
-        if (block == BlockType.None)
-            blockList.Remove((x, z, block));
-        else blockList.Add((x, z, block));
-    }
-    public BlockType Get(ushort x, ushort z) => blocks[x, z];
-    public BlockType Get(int x, int z) => blocks[x, z];
     public void Fill(BlockType block)
     {
+        blockList = new List<(int x, int z, BlockType block)>();
         for (int x = 0; x < SizeX; x++)
             for (int z = 0; z < SizeZ; z++)
                 blocks[x, z] = block;
     }
-    public BlockType this[ushort x, ushort z]
+    public BlockType this[int x, int z]
     {
         get => blocks[x, z];
-        set => blocks[x, z] = value;
+        set
+        {
+            blocks[x, z] = value;
+            if (value == BlockType.None)
+            {
+                int index = blockList.FindIndex(c => c.x == x && c.z == z);
+                if (index != -1)
+                    blockList.RemoveAt(index);
+            }
+            else
+            {
+                int index = blockList.FindIndex(c => c.x == x && c.z == z);
+                if (index == -1)
+                    blockList.Add((x, z, value));
+                else
+                    blockList[index] = (x, z, value);
+            }
+        }
     }
 }
