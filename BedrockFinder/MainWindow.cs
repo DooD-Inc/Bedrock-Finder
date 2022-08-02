@@ -1,5 +1,6 @@
 ﻿using BedrockFinder.Libraries;
 using FastBitmapUtils;
+using static BedrockSearch;
 
 namespace BedrockFinder;
 
@@ -48,9 +49,10 @@ public partial class MainWindow : DHForm
         {
             "CPU"
         };
-        DeviceSelectDHCB.Collection.AddRange(Program.Devices.Select(z => "Kernel " + z));
+        DeviceSelectDHCB.Collection.AddRange(Program.Devices.Select(z => "K -> " + z.Name));
         DeviceSelectDHCB.Text = "Device: ";
         DeviceSelectDHCB.ItemIndex = 0;
+        DeviceSelectDHCB.IndexChange += DeviceChanged;
 
         VersionSelectDHCB.Collection = new List<string>()
         {
@@ -64,6 +66,7 @@ public partial class MainWindow : DHForm
         };
         VersionSelectDHCB.Text = "Version: ";
         VersionSelectDHCB.ItemIndex = 0;
+        VersionSelectDHCB.IndexChange += VersionChanged;
 
         ContextSelectDHCB.Collection = new List<string>()
         {
@@ -73,6 +76,7 @@ public partial class MainWindow : DHForm
         };
         ContextSelectDHCB.Text = "Context: ";
         ContextSelectDHCB.ItemIndex = 0;
+        ContextSelectDHCB.IndexChange += ContextChanged;
 
         MainDisplayP.Round(25, false, true, true, true);
         CanvasSettingsP.Round(25, true, true, false, false);
@@ -91,6 +95,7 @@ public partial class MainWindow : DHForm
         DeviceSelectDHCB.Round(20);
         VersionSelectDHCB.Round(20);
         ContextSelectDHCB.Round(20);
+        RangeP.Round(25);
     }
     private CanvasForm canvas = new CanvasForm() { TopLevel = false };
     public MainWindow()
@@ -106,7 +111,7 @@ public partial class MainWindow : DHForm
     }
     private void CloseB_Click(object sender, EventArgs e)
     {
-        Save();
+        SafeSave();
         Environment.Exit(0);
     }
     private void MakeAsSmallAppB_Click(object sender, EventArgs e)
@@ -128,7 +133,8 @@ public partial class MainWindow : DHForm
     public void UpdatePatternScore()
     {
         PatternScoreL.Text = "Score: " + Program.Pattern.CalculateScore();
-        SearchPredictedCountL.Text = "Predicted Count: " + Math.Round(Program.SearchRange.BlockRange * Program.Pattern.CalculateFindPercent(), 0, MidpointRounding.AwayFromZero);//+ Program.SearchRange.BlockRange + " * " + Program.Pattern.CalculateFindPercent(); //
+        decimal predicted = Math.Round(Program.SearchRange.BlockRange * Program.Pattern.CalculateFindPercent(), 0, MidpointRounding.AwayFromZero);
+        SearchPredictedCountL.Text = "Predicted Count: " + (predicted < 10000 ? predicted : "Much");
     }
     private void ImportPatternPB_Click(object sender, EventArgs e)
     {
@@ -276,6 +282,11 @@ public partial class MainWindow : DHForm
     {
         if (status == SearchStatus.PatternEdit || status == SearchStatus.Finish)
         {
+            if(Program.Pattern.CalculateScore() < 30)
+            {
+                MessageBox.Show("not enough pattern score, minimum is 30");
+                return;
+            }
             FoundedCountL.Text = $"Found: 0";
             FoundListRTB.Text = "";
             if (Program.Search != null)
@@ -283,13 +294,13 @@ public partial class MainWindow : DHForm
                 Program.Search.UpdateProgress -= UpdateProgress;
                 Program.Search.Found -= FoundEvent;
             }
-            Program.Search = new BedrockSearch(Program.Pattern, canvas.Vector, Program.SearchRange, "") { AutoSave = false };
+            Program.Search = new BedrockSearch(Program.Pattern, canvas.Vector, Program.SearchRange);
             Program.Search.UpdateProgress += UpdateProgress;
             Program.Search.Found += FoundEvent;
             status = SearchStatus.Search;
+            Program.Search.Result = new List<Vec2i>();
+            Program.Search.Start();
             SearchB.Text = "Stop Search";
-            Program.Search.FoundCount = 0;
-            Program.Search.Start();            
         }
         else if (status == SearchStatus.Search)
         {
@@ -299,13 +310,10 @@ public partial class MainWindow : DHForm
         }
         else if (status == SearchStatus.Pause)
         {
-            if (Program.Search.CanStart)
+            if (Program.Search.CanStart && Program.Search.Resume())
             {
-                if (Program.Search.Resume())
-                {
-                    status = SearchStatus.Search;
-                    SearchB.Text = "Stop Search";
-                }
+                status = SearchStatus.Search;
+                SearchB.Text = "Stop Search";
             }
         }
         SearchStatusL.Text = $"Status: {statusStrings[status]}";
@@ -335,9 +343,9 @@ public partial class MainWindow : DHForm
         {
             Invoke(() =>
             {
-                FoundedCountL.Text = $"Found: " + Program.Search.FoundCount;
-                FoundListRTB.Text += $"{Program.Search.FoundCount}. {found.X} {found.Z}\n";
-            });            
+                FoundedCountL.Text = $"Found: " + Program.Search.Result.Count;
+                FoundListRTB.Text += $"{Program.Search.Result.Count}. {found.X} {found.Z}\n";
+            });
         }
     }
     Dictionary<SearchStatus, string> statusStrings = new Dictionary<SearchStatus, string>()
@@ -347,13 +355,7 @@ public partial class MainWindow : DHForm
         { SearchStatus.Finish, "Finished" },
         { SearchStatus.Pause, "Paused" },
     };
-    enum SearchStatus
-    {
-        PatternEdit,
-        Search,
-        Finish,
-        Pause,
-    }
+
     private void SearchResetProgress_Click(object sender, EventArgs e)
     {
         if (status != SearchStatus.PatternEdit)
@@ -378,11 +380,57 @@ public partial class MainWindow : DHForm
     + (span.Seconds > 0 ? span.Seconds + "s " : "");
     private void SearchExportProgress_Click(object sender, EventArgs e)
     {
+        using (OpenFileDialog openFileDialog = new OpenFileDialog())
+        {
+            openFileDialog.InitialDirectory = "c:\\";
+            openFileDialog.Filter = "Pattern File|*.bfr;";
+            openFileDialog.FilterIndex = 2;
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.CheckFileExists = false;
+            openFileDialog.Multiselect = false;
 
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (!File.Exists(openFileDialog.FileName))
+                    File.Create(openFileDialog.FileName).Dispose();
+                if(Program.Search == null)
+                    Program.Search = new BedrockSearch(Program.Pattern, canvas.Vector, Program.SearchRange);
+                ConfigManager.ExportSearchAsBFR(Program.Search, openFileDialog.FileName);
+            }
+        }
     }
     private void SearchImportProgress_Click(object sender, EventArgs e)
     {
+        using (OpenFileDialog openFileDialog = new OpenFileDialog())
+        {
+            openFileDialog.InitialDirectory = "c:\\";
+            openFileDialog.Filter = "Pattern File|*.bfr;";
+            openFileDialog.FilterIndex = 2;
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.CheckFileExists = false;
+            openFileDialog.Multiselect = false;
 
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (!File.Exists(openFileDialog.FileName))
+                    File.Create(openFileDialog.FileName).Dispose();
+                canvas.UnDraw();
+                Program.Search = ConfigManager.ImportSearchAsBFR(openFileDialog.FileName);
+                Program.SearchRange = Program.Search.Range;
+                Program.Pattern = Program.Search.Pattern;
+                canvas.Vector = Program.Search.Vector;
+                canvas.OverDraw();
+                FoundListRTB.Text = string.Join('\n', Program.Search.Result.Select((z, i) => $"{i+1}. {z.X} {z.X}"));
+                FoundedCountL.Text = $"Found: {Program.Search.Result.Count}";
+                XAtTB.Text = Program.SearchRange.Start.X.ToString();
+                ZAtTB.Text = Program.SearchRange.Start.Z.ToString();
+                XToTB.Text = Program.SearchRange.End.X.ToString();
+                ZToTB.Text = Program.SearchRange.End.Z.ToString();
+                SearchElapsedTimeL.Text = $"Elapsed Time: {TimeSpanToString(Program.Search.Progress.ElapsedTime)}";
+                SearchProgressL.Text = $"Progress: {Math.Round(Program.Search.Progress.GetPercent(), 2, MidpointRounding.AwayFromZero)}%";
+                RangeSizeL.Text = $"Size {Program.SearchRange.XSize}x{Program.SearchRange.ZSize}";
+            }
+        }
     }
     private void CopyFoundP_Click(object sender, EventArgs e)
     {
@@ -390,7 +438,40 @@ public partial class MainWindow : DHForm
             Clipboard.SetText(FoundListRTB.Text);
     }
     #endregion
-    private void Save()
+    #region Settings
+    private void VersionChanged(int index)
+    {
+
+    }
+    private void ContextChanged(int index)
+    {
+
+    }
+    private void DeviceChanged(int index)
+    {
+
+    }
+    #endregion
+    #region Range
+    private void UpdateRange(object sender, EventArgs e)
+    {
+        TextBox dSender = (TextBox)sender;
+        if (ValidateTextCoord(dSender.Text))
+        {
+            dSender.ForeColor = Color.Silver;
+            if (ValidateTextCoord(XAtTB.Text) && ValidateTextCoord(ZAtTB.Text) && ValidateTextCoord(XToTB.Text) && ValidateTextCoord(ZToTB.Text))
+            {
+                Program.SearchRange = new SearchRange(new Vec2l(int.Parse(XAtTB.Text), int.Parse(ZAtTB.Text)), new Vec2l(int.Parse(XToTB.Text), int.Parse(ZToTB.Text)));
+                RangeSizeL.Text = $"Size {Program.SearchRange.XSize}x{Program.SearchRange.ZSize}";
+                UpdatePatternScore();
+            }
+            return;
+        }
+        dSender.ForeColor = Color.Red;
+    }
+    private bool ValidateTextCoord(string text) => int.TryParse(text, out int num) && num >= -30000000 && num <= 30000000; 
+    #endregion
+    private void SafeSave()
     {
 
     }

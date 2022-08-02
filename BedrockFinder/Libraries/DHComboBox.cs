@@ -3,6 +3,8 @@
 namespace BedrockFinder.Libraries;
 public partial class DHComboBox : UserControl
 {
+    public delegate void IndexChangeHandler(int index);
+    public event IndexChangeHandler? IndexChange;
     public List<string> Collection = new List<string>();
     private bool open;
     public DHComboBox()
@@ -45,6 +47,7 @@ public partial class DHComboBox : UserControl
                 if (e.Y > ItemSize.Height)
                 {
                     ItemIndex = (e.Y - ItemSize.Height) / TextRenderer.MeasureText("l", Font).Height;
+                    IndexChange?.Invoke(ItemIndex);
                     Invalidate();
                 }
                 Size = ItemSize;

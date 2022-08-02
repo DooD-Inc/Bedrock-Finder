@@ -19,11 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    <Reference Include="Amplifier">
+      <HintPath>..\..\Bedrock-Counter-v2\Amplifier.Net\bin\Debug\netstandard2.0\Amplifier.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Libraries\Amplifier\" />
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 </Project>

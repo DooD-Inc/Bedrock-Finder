@@ -4,6 +4,7 @@ using System.Collections;
 namespace BedrockFinder;
 public class ConfigManager
 {
+    #region Pattern
     public static BedrockPattern ImportPatternAsBFP(string path) => ConvertBFPToPattern(File.ReadAllBytes(path));
     public static void ExportPatternAsBFP(BedrockPattern pattern, string path) => File.WriteAllBytes(path, ConvertPatternToBFP(pattern));  
     public static BedrockPattern? ImportPatternAsWorld(string path)
@@ -125,4 +126,11 @@ public class ConfigManager
                     }
         return pattern;
     }
+    #endregion
+    #region Progress
+    public static void ExportProgressAsBFR(ProgressSave progress, string path) => progress.Save(path);
+    public static ProgressSave ImportProgressAsBFR(string path) => ProgressSave.Load(path);
+    public static void ExportSearchAsBFR(BedrockSearch search, string path) => ExportProgressAsBFR(new ProgressSave(search), path);
+    public static BedrockSearch ImportSearchAsBFR(string path) => new BedrockSearch(ProgressSave.Load(path));
+    #endregion
 }

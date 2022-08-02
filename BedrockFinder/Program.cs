@@ -1,4 +1,5 @@
 using Amplifier;
+using BedrockFinder.BedrockFinderAPI;
 using BedrockFinder.Libraries;
 using FastBitmapUtils;
 using Substrate;
@@ -37,7 +38,14 @@ public static class Program
         new Resource("ZoomOutImage", "https://cdn-102.anonfiles.com/X997X30fy3/b68ecc82-1658971156/zoom-out.png")
     );
     public static BedrockPattern Pattern = new BedrockPattern(32, 32, 1, 2, 3, 4);
-    public static SearchRange SearchRange = new SearchRange(new Vec2i(-100, -100), new Vec2i(100, 100));
+    public static SearchRange SearchRange = new SearchRange(new Vec2l(-32000, -32000), new Vec2l(32000, 32000));
     public static BedrockSearch Search;
-    public static List<Device> Devices = new OpenCLCompiler().Devices;
+    public static List<Device> Devices;
+    public static BaseBedrockGen Gen = new OW_1_12();
+    static Program()
+    {
+        Devices = new OpenCLCompiler().Devices;
+        for(int i = 0; i < Devices.Count; i++)
+            Devices[i].Name = Devices[i].Name.Replace("(TM)", "").Replace("(tm)", "").Replace("(R)", "").Replace("(r)", "").Replace("(C)", "").Replace("(c)", "").Replace(" ", " ").Replace(" ", " ");
+    }
 }

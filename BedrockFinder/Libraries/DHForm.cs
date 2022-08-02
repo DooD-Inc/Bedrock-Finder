@@ -1,4 +1,6 @@
-﻿namespace BedrockFinder.Libraries;
+﻿using System.Reflection;
+
+namespace BedrockFinder.Libraries;
 public class DHForm : Form
 {
     public void MouseDownRelocate(object sender, MouseEventArgs e)
@@ -7,7 +9,7 @@ public class DHForm : Form
         {
             ((Control)sender).Capture = false;
             var m = Message.Create(Program.FormHandle, 0xa1, new IntPtr(0x2), IntPtr.Zero);
-            WndProc(ref m);
+            WndProc(ref m);            
         }
     }
     public void Instance()

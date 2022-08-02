@@ -35,17 +35,28 @@ public partial class MainWindow : DHForm
             this.SmallApp = new System.Windows.Forms.NotifyIcon(this.components);
             this.MakeAsSmallAppB = new System.Windows.Forms.Button();
             this.MainDisplayP = new System.Windows.Forms.Panel();
-            this.PatternScoreL = new System.Windows.Forms.Label();
+            this.RangeSizeL = new System.Windows.Forms.Label();
+            this.RangeP = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ZToTB = new System.Windows.Forms.TextBox();
+            this.ZAtTB = new System.Windows.Forms.TextBox();
+            this.ZAtToL = new System.Windows.Forms.Label();
+            this.XToTB = new System.Windows.Forms.TextBox();
+            this.XAtTB = new System.Windows.Forms.TextBox();
+            this.XToL = new System.Windows.Forms.Label();
+            this.XAtToL = new System.Windows.Forms.Label();
             this.FoundP = new System.Windows.Forms.Panel();
             this.CopyFoundP = new System.Windows.Forms.PictureBox();
             this.FoundListRTB = new System.Windows.Forms.RichTextBox();
             this.FoundedCountL = new System.Windows.Forms.Label();
+            this.PatternScoreL = new System.Windows.Forms.Label();
             this.SearchManageP = new System.Windows.Forms.Panel();
             this.SearchResetProgress = new System.Windows.Forms.Button();
             this.SearchImportProgress = new System.Windows.Forms.Button();
             this.SearchExportProgress = new System.Windows.Forms.Button();
             this.SearchB = new System.Windows.Forms.Button();
             this.SearchInfoP = new System.Windows.Forms.Panel();
+            this.SearchPredictedCountL = new System.Windows.Forms.Label();
             this.SearchElapsedTimeL = new System.Windows.Forms.Label();
             this.SearchStatusL = new System.Windows.Forms.Label();
             this.SearchProgressL = new System.Windows.Forms.Label();
@@ -57,7 +68,6 @@ public partial class MainWindow : DHForm
             this.ContextSelectDHCB = new BedrockFinder.Libraries.DHComboBox();
             this.VersionSelectDHCB = new BedrockFinder.Libraries.DHComboBox();
             this.DeviceSelectDHCB = new BedrockFinder.Libraries.DHComboBox();
-            this.PenP = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.CanvasP = new System.Windows.Forms.Panel();
             this.CanvasSettingsP = new System.Windows.Forms.Panel();
@@ -69,17 +79,17 @@ public partial class MainWindow : DHForm
             this.ClearPatternPB = new System.Windows.Forms.PictureBox();
             this.ExportPatternPB = new System.Windows.Forms.PictureBox();
             this.ImportPatternPB = new System.Windows.Forms.PictureBox();
+            this.PenP = new System.Windows.Forms.PictureBox();
             this.ToolTips = new System.Windows.Forms.ToolTip(this.components);
             this.PatternCurChecker = new System.Windows.Forms.Timer(this.components);
-            this.SearchPredictedCountL = new System.Windows.Forms.Label();
             this.MainDisplayP.SuspendLayout();
+            this.RangeP.SuspendLayout();
             this.FoundP.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CopyFoundP)).BeginInit();
             this.SearchManageP.SuspendLayout();
             this.SearchInfoP.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.YLevelSelectorTrB)).BeginInit();
             this.MainSettingsP.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PenP)).BeginInit();
             this.CanvasSettingsP.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BackToStartPatternPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExportWorldPatternPB)).BeginInit();
@@ -89,6 +99,7 @@ public partial class MainWindow : DHForm
             ((System.ComponentModel.ISupportInitialize)(this.ClearPatternPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExportPatternPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImportPatternPB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PenP)).BeginInit();
             this.SuspendLayout();
             // 
             // CloseB
@@ -131,8 +142,10 @@ public partial class MainWindow : DHForm
             // MainDisplayP
             // 
             this.MainDisplayP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.MainDisplayP.Controls.Add(this.PatternScoreL);
+            this.MainDisplayP.Controls.Add(this.RangeSizeL);
+            this.MainDisplayP.Controls.Add(this.RangeP);
             this.MainDisplayP.Controls.Add(this.FoundP);
+            this.MainDisplayP.Controls.Add(this.PatternScoreL);
             this.MainDisplayP.Controls.Add(this.SearchManageP);
             this.MainDisplayP.Controls.Add(this.SearchInfoP);
             this.MainDisplayP.Controls.Add(this.YLevelDataL);
@@ -140,26 +153,145 @@ public partial class MainWindow : DHForm
             this.MainDisplayP.Controls.Add(this.YLevelSelectorTrB);
             this.MainDisplayP.Controls.Add(this.PatternCoordL);
             this.MainDisplayP.Controls.Add(this.MainSettingsP);
-            this.MainDisplayP.Controls.Add(this.PenP);
             this.MainDisplayP.Controls.Add(this.label1);
             this.MainDisplayP.Controls.Add(this.CanvasP);
             this.MainDisplayP.Controls.Add(this.CanvasSettingsP);
+            this.MainDisplayP.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MainDisplayP.Location = new System.Drawing.Point(0, 24);
             this.MainDisplayP.Name = "MainDisplayP";
             this.MainDisplayP.Size = new System.Drawing.Size(914, 452);
             this.MainDisplayP.TabIndex = 2;
             // 
-            // PatternScoreL
+            // RangeSizeL
             // 
-            this.PatternScoreL.AutoSize = true;
-            this.PatternScoreL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PatternScoreL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.PatternScoreL.ForeColor = System.Drawing.Color.Silver;
-            this.PatternScoreL.Location = new System.Drawing.Point(581, 436);
-            this.PatternScoreL.Name = "PatternScoreL";
-            this.PatternScoreL.Size = new System.Drawing.Size(45, 15);
-            this.PatternScoreL.TabIndex = 25;
-            this.PatternScoreL.Text = "Score: ";
+            this.RangeSizeL.AutoSize = true;
+            this.RangeSizeL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.RangeSizeL.ForeColor = System.Drawing.Color.Silver;
+            this.RangeSizeL.Location = new System.Drawing.Point(262, 436);
+            this.RangeSizeL.Name = "RangeSizeL";
+            this.RangeSizeL.Size = new System.Drawing.Size(113, 15);
+            this.RangeSizeL.TabIndex = 27;
+            this.RangeSizeL.Text = "Size: 64000x64000";
+            // 
+            // RangeP
+            // 
+            this.RangeP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.RangeP.Controls.Add(this.label2);
+            this.RangeP.Controls.Add(this.ZToTB);
+            this.RangeP.Controls.Add(this.ZAtTB);
+            this.RangeP.Controls.Add(this.ZAtToL);
+            this.RangeP.Controls.Add(this.XToTB);
+            this.RangeP.Controls.Add(this.XAtTB);
+            this.RangeP.Controls.Add(this.XToL);
+            this.RangeP.Controls.Add(this.XAtToL);
+            this.RangeP.Location = new System.Drawing.Point(254, 361);
+            this.RangeP.Name = "RangeP";
+            this.RangeP.Size = new System.Drawing.Size(253, 75);
+            this.RangeP.TabIndex = 12;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.ForeColor = System.Drawing.Color.Silver;
+            this.label2.Location = new System.Drawing.Point(26, 4);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(25, 20);
+            this.label2.TabIndex = 40;
+            this.label2.Text = "At";
+            // 
+            // ZToTB
+            // 
+            this.ZToTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.ZToTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ZToTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ZToTB.ForeColor = System.Drawing.Color.Silver;
+            this.ZToTB.Location = new System.Drawing.Point(118, 47);
+            this.ZToTB.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.ZToTB.Name = "ZToTB";
+            this.ZToTB.Size = new System.Drawing.Size(88, 19);
+            this.ZToTB.TabIndex = 39;
+            this.ZToTB.Text = "32000";
+            this.ZToTB.TextChanged += new System.EventHandler(this.UpdateRange);
+            // 
+            // ZAtTB
+            // 
+            this.ZAtTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.ZAtTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ZAtTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ZAtTB.ForeColor = System.Drawing.Color.Silver;
+            this.ZAtTB.Location = new System.Drawing.Point(26, 47);
+            this.ZAtTB.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.ZAtTB.Name = "ZAtTB";
+            this.ZAtTB.Size = new System.Drawing.Size(90, 19);
+            this.ZAtTB.TabIndex = 38;
+            this.ZAtTB.Text = "-32000";
+            this.ZAtTB.TextChanged += new System.EventHandler(this.UpdateRange);
+            // 
+            // ZAtToL
+            // 
+            this.ZAtToL.AutoSize = true;
+            this.ZAtToL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ZAtToL.ForeColor = System.Drawing.Color.Silver;
+            this.ZAtToL.Location = new System.Drawing.Point(4, 48);
+            this.ZAtToL.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.ZAtToL.Name = "ZAtToL";
+            this.ZAtToL.Size = new System.Drawing.Size(21, 18);
+            this.ZAtToL.TabIndex = 36;
+            this.ZAtToL.Text = "Z:";
+            // 
+            // XToTB
+            // 
+            this.XToTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.XToTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.XToTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.XToTB.ForeColor = System.Drawing.Color.Silver;
+            this.XToTB.Location = new System.Drawing.Point(118, 24);
+            this.XToTB.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.XToTB.Name = "XToTB";
+            this.XToTB.Size = new System.Drawing.Size(88, 19);
+            this.XToTB.TabIndex = 32;
+            this.XToTB.Text = "32000";
+            this.XToTB.TextChanged += new System.EventHandler(this.UpdateRange);
+            // 
+            // XAtTB
+            // 
+            this.XAtTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.XAtTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.XAtTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.XAtTB.ForeColor = System.Drawing.Color.Silver;
+            this.XAtTB.Location = new System.Drawing.Point(26, 25);
+            this.XAtTB.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.XAtTB.Name = "XAtTB";
+            this.XAtTB.Size = new System.Drawing.Size(90, 19);
+            this.XAtTB.TabIndex = 31;
+            this.XAtTB.Text = "-32000";
+            this.XAtTB.TextChanged += new System.EventHandler(this.UpdateRange);
+            // 
+            // XToL
+            // 
+            this.XToL.AutoSize = true;
+            this.XToL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.XToL.ForeColor = System.Drawing.Color.Silver;
+            this.XToL.Location = new System.Drawing.Point(119, 5);
+            this.XToL.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.XToL.Name = "XToL";
+            this.XToL.Size = new System.Drawing.Size(26, 18);
+            this.XToL.TabIndex = 30;
+            this.XToL.Text = "To";
+            // 
+            // XAtToL
+            // 
+            this.XAtToL.AutoSize = true;
+            this.XAtToL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.XAtToL.ForeColor = System.Drawing.Color.Silver;
+            this.XAtToL.Location = new System.Drawing.Point(3, 25);
+            this.XAtToL.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.XAtToL.Name = "XAtToL";
+            this.XAtToL.Size = new System.Drawing.Size(24, 20);
+            this.XAtToL.TabIndex = 29;
+            this.XAtToL.Text = "X:";
             // 
             // FoundP
             // 
@@ -167,9 +299,9 @@ public partial class MainWindow : DHForm
             this.FoundP.Controls.Add(this.CopyFoundP);
             this.FoundP.Controls.Add(this.FoundListRTB);
             this.FoundP.Controls.Add(this.FoundedCountL);
-            this.FoundP.Location = new System.Drawing.Point(3, 12);
+            this.FoundP.Location = new System.Drawing.Point(3, 3);
             this.FoundP.Name = "FoundP";
-            this.FoundP.Size = new System.Drawing.Size(248, 437);
+            this.FoundP.Size = new System.Drawing.Size(248, 433);
             this.FoundP.TabIndex = 24;
             // 
             // CopyFoundP
@@ -191,7 +323,7 @@ public partial class MainWindow : DHForm
             this.FoundListRTB.Location = new System.Drawing.Point(7, 27);
             this.FoundListRTB.Name = "FoundListRTB";
             this.FoundListRTB.ReadOnly = true;
-            this.FoundListRTB.Size = new System.Drawing.Size(234, 401);
+            this.FoundListRTB.Size = new System.Drawing.Size(234, 399);
             this.FoundListRTB.TabIndex = 24;
             this.FoundListRTB.Text = "";
             // 
@@ -199,13 +331,25 @@ public partial class MainWindow : DHForm
             // 
             this.FoundedCountL.AutoSize = true;
             this.FoundedCountL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FoundedCountL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.FoundedCountL.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FoundedCountL.ForeColor = System.Drawing.Color.Silver;
             this.FoundedCountL.Location = new System.Drawing.Point(3, 4);
             this.FoundedCountL.Name = "FoundedCountL";
-            this.FoundedCountL.Size = new System.Drawing.Size(104, 20);
+            this.FoundedCountL.Size = new System.Drawing.Size(88, 18);
             this.FoundedCountL.TabIndex = 23;
             this.FoundedCountL.Text = "Found: NaN";
+            // 
+            // PatternScoreL
+            // 
+            this.PatternScoreL.AutoSize = true;
+            this.PatternScoreL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PatternScoreL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.PatternScoreL.ForeColor = System.Drawing.Color.Silver;
+            this.PatternScoreL.Location = new System.Drawing.Point(581, 436);
+            this.PatternScoreL.Name = "PatternScoreL";
+            this.PatternScoreL.Size = new System.Drawing.Size(45, 15);
+            this.PatternScoreL.TabIndex = 25;
+            this.PatternScoreL.Text = "Score: ";
             // 
             // SearchManageP
             // 
@@ -223,7 +367,10 @@ public partial class MainWindow : DHForm
             // 
             this.SearchResetProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.SearchResetProgress.FlatAppearance.BorderSize = 0;
+            this.SearchResetProgress.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.SearchResetProgress.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.SearchResetProgress.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SearchResetProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.SearchResetProgress.ForeColor = System.Drawing.Color.Silver;
             this.SearchResetProgress.Location = new System.Drawing.Point(127, 32);
             this.SearchResetProgress.Margin = new System.Windows.Forms.Padding(0);
@@ -238,7 +385,10 @@ public partial class MainWindow : DHForm
             // 
             this.SearchImportProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.SearchImportProgress.FlatAppearance.BorderSize = 0;
+            this.SearchImportProgress.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.SearchImportProgress.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.SearchImportProgress.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SearchImportProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.SearchImportProgress.ForeColor = System.Drawing.Color.Silver;
             this.SearchImportProgress.Location = new System.Drawing.Point(127, 8);
             this.SearchImportProgress.Margin = new System.Windows.Forms.Padding(0);
@@ -253,7 +403,10 @@ public partial class MainWindow : DHForm
             // 
             this.SearchExportProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.SearchExportProgress.FlatAppearance.BorderSize = 0;
+            this.SearchExportProgress.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.SearchExportProgress.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.SearchExportProgress.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SearchExportProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.SearchExportProgress.ForeColor = System.Drawing.Color.Silver;
             this.SearchExportProgress.Location = new System.Drawing.Point(5, 8);
             this.SearchExportProgress.Margin = new System.Windows.Forms.Padding(0);
@@ -268,7 +421,10 @@ public partial class MainWindow : DHForm
             // 
             this.SearchB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.SearchB.FlatAppearance.BorderSize = 0;
+            this.SearchB.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.SearchB.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.SearchB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SearchB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.SearchB.ForeColor = System.Drawing.Color.Silver;
             this.SearchB.Location = new System.Drawing.Point(5, 32);
             this.SearchB.Margin = new System.Windows.Forms.Padding(0);
@@ -291,15 +447,27 @@ public partial class MainWindow : DHForm
             this.SearchInfoP.Size = new System.Drawing.Size(257, 91);
             this.SearchInfoP.TabIndex = 19;
             // 
+            // SearchPredictedCountL
+            // 
+            this.SearchPredictedCountL.AutoSize = true;
+            this.SearchPredictedCountL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SearchPredictedCountL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.SearchPredictedCountL.ForeColor = System.Drawing.Color.Silver;
+            this.SearchPredictedCountL.Location = new System.Drawing.Point(3, 66);
+            this.SearchPredictedCountL.Name = "SearchPredictedCountL";
+            this.SearchPredictedCountL.Size = new System.Drawing.Size(170, 20);
+            this.SearchPredictedCountL.TabIndex = 22;
+            this.SearchPredictedCountL.Text = "Predicted Count: Much";
+            // 
             // SearchElapsedTimeL
             // 
             this.SearchElapsedTimeL.AutoSize = true;
             this.SearchElapsedTimeL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SearchElapsedTimeL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.SearchElapsedTimeL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.SearchElapsedTimeL.ForeColor = System.Drawing.Color.Silver;
             this.SearchElapsedTimeL.Location = new System.Drawing.Point(3, 46);
             this.SearchElapsedTimeL.Name = "SearchElapsedTimeL";
-            this.SearchElapsedTimeL.Size = new System.Drawing.Size(161, 20);
+            this.SearchElapsedTimeL.Size = new System.Drawing.Size(144, 20);
             this.SearchElapsedTimeL.TabIndex = 21;
             this.SearchElapsedTimeL.Text = "Elapsed Time: NaN";
             // 
@@ -307,11 +475,11 @@ public partial class MainWindow : DHForm
             // 
             this.SearchStatusL.AutoSize = true;
             this.SearchStatusL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SearchStatusL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.SearchStatusL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.SearchStatusL.ForeColor = System.Drawing.Color.Silver;
             this.SearchStatusL.Location = new System.Drawing.Point(3, 26);
             this.SearchStatusL.Name = "SearchStatusL";
-            this.SearchStatusL.Size = new System.Drawing.Size(192, 20);
+            this.SearchStatusL.Size = new System.Drawing.Size(169, 20);
             this.SearchStatusL.TabIndex = 20;
             this.SearchStatusL.Text = "Status: Pattern Editing";
             // 
@@ -319,11 +487,11 @@ public partial class MainWindow : DHForm
             // 
             this.SearchProgressL.AutoSize = true;
             this.SearchProgressL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SearchProgressL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.SearchProgressL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.SearchProgressL.ForeColor = System.Drawing.Color.Silver;
             this.SearchProgressL.Location = new System.Drawing.Point(3, 5);
             this.SearchProgressL.Name = "SearchProgressL";
-            this.SearchProgressL.Size = new System.Drawing.Size(139, 20);
+            this.SearchProgressL.Size = new System.Drawing.Size(125, 20);
             this.SearchProgressL.TabIndex = 19;
             this.SearchProgressL.Text = "Progress: NaN%";
             // 
@@ -382,7 +550,7 @@ public partial class MainWindow : DHForm
             this.MainSettingsP.Controls.Add(this.DeviceSelectDHCB);
             this.MainSettingsP.Location = new System.Drawing.Point(254, 176);
             this.MainSettingsP.Name = "MainSettingsP";
-            this.MainSettingsP.Size = new System.Drawing.Size(257, 212);
+            this.MainSettingsP.Size = new System.Drawing.Size(253, 180);
             this.MainSettingsP.TabIndex = 6;
             // 
             // ContextSelectDHCB
@@ -390,13 +558,13 @@ public partial class MainWindow : DHForm
             this.ContextSelectDHCB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.ContextSelectDHCB.BorderColor = System.Drawing.Color.Empty;
             this.ContextSelectDHCB.ContentAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ContextSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ContextSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.ContextSelectDHCB.ForeColor = System.Drawing.Color.Silver;
-            this.ContextSelectDHCB.ItemSize = new System.Drawing.Size(249, 28);
-            this.ContextSelectDHCB.Location = new System.Drawing.Point(4, 72);
+            this.ContextSelectDHCB.ItemSize = new System.Drawing.Size(245, 28);
+            this.ContextSelectDHCB.Location = new System.Drawing.Point(4, 38);
             this.ContextSelectDHCB.Margin = new System.Windows.Forms.Padding(0);
             this.ContextSelectDHCB.Name = "ContextSelectDHCB";
-            this.ContextSelectDHCB.Size = new System.Drawing.Size(249, 28);
+            this.ContextSelectDHCB.Size = new System.Drawing.Size(245, 28);
             this.ContextSelectDHCB.TabIndex = 11;
             // 
             // VersionSelectDHCB
@@ -404,13 +572,13 @@ public partial class MainWindow : DHForm
             this.VersionSelectDHCB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.VersionSelectDHCB.BorderColor = System.Drawing.Color.Empty;
             this.VersionSelectDHCB.ContentAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.VersionSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.VersionSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VersionSelectDHCB.ForeColor = System.Drawing.Color.Silver;
-            this.VersionSelectDHCB.ItemSize = new System.Drawing.Size(249, 28);
-            this.VersionSelectDHCB.Location = new System.Drawing.Point(4, 39);
+            this.VersionSelectDHCB.ItemSize = new System.Drawing.Size(245, 28);
+            this.VersionSelectDHCB.Location = new System.Drawing.Point(4, 6);
             this.VersionSelectDHCB.Margin = new System.Windows.Forms.Padding(0);
             this.VersionSelectDHCB.Name = "VersionSelectDHCB";
-            this.VersionSelectDHCB.Size = new System.Drawing.Size(249, 28);
+            this.VersionSelectDHCB.Size = new System.Drawing.Size(245, 28);
             this.VersionSelectDHCB.TabIndex = 10;
             // 
             // DeviceSelectDHCB
@@ -418,23 +586,14 @@ public partial class MainWindow : DHForm
             this.DeviceSelectDHCB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.DeviceSelectDHCB.BorderColor = System.Drawing.Color.Empty;
             this.DeviceSelectDHCB.ContentAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.DeviceSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.DeviceSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.DeviceSelectDHCB.ForeColor = System.Drawing.Color.Silver;
-            this.DeviceSelectDHCB.ItemSize = new System.Drawing.Size(249, 28);
-            this.DeviceSelectDHCB.Location = new System.Drawing.Point(4, 6);
+            this.DeviceSelectDHCB.ItemSize = new System.Drawing.Size(245, 28);
+            this.DeviceSelectDHCB.Location = new System.Drawing.Point(4, 70);
             this.DeviceSelectDHCB.Margin = new System.Windows.Forms.Padding(0);
             this.DeviceSelectDHCB.Name = "DeviceSelectDHCB";
-            this.DeviceSelectDHCB.Size = new System.Drawing.Size(249, 28);
+            this.DeviceSelectDHCB.Size = new System.Drawing.Size(245, 28);
             this.DeviceSelectDHCB.TabIndex = 9;
-            // 
-            // PenP
-            // 
-            this.PenP.Location = new System.Drawing.Point(482, 404);
-            this.PenP.Name = "PenP";
-            this.PenP.Size = new System.Drawing.Size(32, 32);
-            this.PenP.TabIndex = 12;
-            this.PenP.TabStop = false;
-            this.PenP.Click += new System.EventHandler(this.PenP_Click);
             // 
             // label1
             // 
@@ -442,7 +601,7 @@ public partial class MainWindow : DHForm
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
             this.label1.Location = new System.Drawing.Point(3, 436);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 15);
+            this.label1.Size = new System.Drawing.Size(83, 15);
             this.label1.TabIndex = 8;
             this.label1.Text = "Made by Yotic";
             // 
@@ -466,6 +625,7 @@ public partial class MainWindow : DHForm
             this.CanvasSettingsP.Controls.Add(this.ClearPatternPB);
             this.CanvasSettingsP.Controls.Add(this.ExportPatternPB);
             this.CanvasSettingsP.Controls.Add(this.ImportPatternPB);
+            this.CanvasSettingsP.Controls.Add(this.PenP);
             this.CanvasSettingsP.Location = new System.Drawing.Point(517, 10);
             this.CanvasSettingsP.Margin = new System.Windows.Forms.Padding(0);
             this.CanvasSettingsP.Name = "CanvasSettingsP";
@@ -560,6 +720,15 @@ public partial class MainWindow : DHForm
             this.ImportPatternPB.TabStop = false;
             this.ImportPatternPB.Click += new System.EventHandler(this.ImportPatternPB_Click);
             // 
+            // PenP
+            // 
+            this.PenP.Location = new System.Drawing.Point(3, 4);
+            this.PenP.Name = "PenP";
+            this.PenP.Size = new System.Drawing.Size(32, 32);
+            this.PenP.TabIndex = 12;
+            this.PenP.TabStop = false;
+            this.PenP.Click += new System.EventHandler(this.PenP_Click);
+            // 
             // ToolTips
             // 
             this.ToolTips.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(57)))), ((int)(((byte)(57)))));
@@ -570,18 +739,6 @@ public partial class MainWindow : DHForm
             this.PatternCurChecker.Enabled = true;
             this.PatternCurChecker.Interval = 20;
             this.PatternCurChecker.Tick += new System.EventHandler(this.PatternCurChecker_Tick);
-            // 
-            // SearchPredictedCountL
-            // 
-            this.SearchPredictedCountL.AutoSize = true;
-            this.SearchPredictedCountL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SearchPredictedCountL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SearchPredictedCountL.ForeColor = System.Drawing.Color.Silver;
-            this.SearchPredictedCountL.Location = new System.Drawing.Point(3, 66);
-            this.SearchPredictedCountL.Name = "SearchPredictedCountL";
-            this.SearchPredictedCountL.Size = new System.Drawing.Size(182, 20);
-            this.SearchPredictedCountL.TabIndex = 22;
-            this.SearchPredictedCountL.Text = "Predicted Count: NaN";
             // 
             // MainWindow
             // 
@@ -597,6 +754,8 @@ public partial class MainWindow : DHForm
             this.Text = "BedrockFinder";
             this.MainDisplayP.ResumeLayout(false);
             this.MainDisplayP.PerformLayout();
+            this.RangeP.ResumeLayout(false);
+            this.RangeP.PerformLayout();
             this.FoundP.ResumeLayout(false);
             this.FoundP.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CopyFoundP)).EndInit();
@@ -605,7 +764,6 @@ public partial class MainWindow : DHForm
             this.SearchInfoP.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.YLevelSelectorTrB)).EndInit();
             this.MainSettingsP.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PenP)).EndInit();
             this.CanvasSettingsP.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BackToStartPatternPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExportWorldPatternPB)).EndInit();
@@ -615,6 +773,7 @@ public partial class MainWindow : DHForm
             ((System.ComponentModel.ISupportInitialize)(this.ClearPatternPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExportPatternPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImportPatternPB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PenP)).EndInit();
             this.ResumeLayout(false);
 
     }
@@ -662,4 +821,14 @@ public partial class MainWindow : DHForm
     private Label PatternScoreL;
     private PictureBox BackToStartPatternPB;
     private Label SearchPredictedCountL;
+    private Panel RangeP;
+    private TextBox ZToTB;
+    private TextBox ZAtTB;
+    private Label ZAtToL;
+    private TextBox XToTB;
+    private TextBox XAtTB;
+    private Label XToL;
+    private Label XAtToL;
+    private Label label2;
+    private Label RangeSizeL;
 }

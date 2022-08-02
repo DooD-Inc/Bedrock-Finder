@@ -1,4 +1,6 @@
-﻿public class BedrockSearch
+﻿using BedrockFinder;
+
+public class BedrockSearch
 {
     public BedrockSearch(ProgressSave save)
     {
@@ -6,18 +8,16 @@
         Pattern = save.Pattern;
         Progress = save.Progress;
         Result = save.Result;
-        PathToSave = save.Path;
         Vector = save.Vector;
         TurnPattern();
         InitTimer();
     }
-    public BedrockSearch(BedrockPattern pattern, VectorAngle vector, SearchRange range, string pathToSave)
+    public BedrockSearch(BedrockPattern pattern, VectorAngle vector, SearchRange range)
     {
         Range = range;
         Pattern = pattern;        
-        Progress = new SearchProgress(range.Start.X, range.End.X);
+        Progress = new SearchProgress((int)range.CStart.X, (int)range.CEnd.X);
         Result = new List<Vec2i>();
-        PathToSave = pathToSave;
         Vector = vector;
         TurnPattern();
         InitTimer();
@@ -50,15 +50,12 @@
             TurnedPattern[y] = floor;
         }
     }
-    public string PathToSave;
-    public bool AutoSave = true;
     public MultiThreading MultiThreading = new MultiThreading(Environment.ProcessorCount);
     public SearchRange Range;
     public BedrockPattern Pattern;
     public VectorAngle Vector;
     public SearchProgress Progress;
     public List<Vec2i> Result;
-    public int FoundCount = 0;
     public bool Working;
     public bool CanStart = true;
     public BedrockPattern TurnedPattern;
@@ -71,21 +68,21 @@
             Working = true;
             CanStart = false;
             List<(byte, BlockType)> yQueue = GetQueue();
-            for (int x = Progress.X; x < Range.End.X; x++)
+            for (int x = Progress.X; x < Range.CEnd.X; x++)
             {
-                List<Vec2i> founded = new List<Vec2i>();
-                Parallel.For(Range.Start.Z, Range.End.Z, MultiThreading.ParallelOptions, z =>
+                List<Vec2i> founds = new List<Vec2i>();
+                Parallel.For((int)Range.CStart.Z, (int)Range.CEnd.Z, MultiThreading.ParallelOptions, z =>
                 {
                     List<Vec2i> found = CalculateChunk(yQueue, x, z);
                     if (found.Count > 0)
                     {
                         lock (@lock)
                         {
-                            founded.AddRange(found);
+                            founds.AddRange(found);
                         }
                     }
                 });
-                Result.AddRange(founded);
+                Result.AddRange(founds);
                 Progress.X++;
                 UpdateProgress?.Invoke(Progress.GetPercent());
                 if (!Working)
@@ -120,7 +117,7 @@
     public event UpdateProgressHandler? UpdateProgress;
     private List<Vec2i> CalculateChunk(List<(byte, BlockType)> queue, in int x, in int z)
     {
-        List<Vec2i> founded = new List<Vec2i>();
+        List<Vec2i> founds = new List<Vec2i>();
         for (int incX = 0; incX < 16; incX++)
             for (int incZ = 0; incZ < 16; incZ++)
             {
@@ -128,19 +125,18 @@
                     foreach ((int bx, int bz, BlockType block) in TurnedPattern[y].blockList.Where(z => z.block == type))
                     {
                         int sx = (x << 4) + bx + incX, sz = (z << 4) + bz + incZ;
-                        if (!Equals(type, BedrockGen_1_12_2.GetBlock(sx, y, sz, BedrockGen_1_12_2.GetChunk(sx >> 4, sz >> 4))))
+                        if (!Equals(type, Program.Gen.GetBlock(sx, y, sz, Program.Gen.GetChunk(sx >> 4, sz >> 4))))
                             goto NextBlock;
                     }
                 Vec2i found = new Vec2i(Vector.CurrentPoint.x ? ((x << 4) + incX) : ((x << 4) + incX + TurnedPattern.SizeX - 1), Vector.CurrentPoint.y ? ((z << 4) + incZ) : ((z << 4) + incZ + TurnedPattern.SizeZ - 1));
                 lock (foundCounterLock)
                 {
-                    founded.Add(found);
-                    FoundCount++;
+                    founds.Add(found);
                     Found?.Invoke(found);
                 }
                 NextBlock: { }
             }
-        return founded;
+        return founds;
     }
     private bool Equals(BlockType block, bool isBedrock) => block == BlockType.Bedrock && isBedrock || block == BlockType.Stone && !isBedrock;
     private List<(byte, BlockType)> GetQueue()
@@ -157,4 +153,11 @@
         return queue;
     }
     public void Stop() => Working = false;
+    public enum SearchStatus
+    {
+        PatternEdit,
+        Search,
+        Finish,
+        Pause,
+    }
 }
