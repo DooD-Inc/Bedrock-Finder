@@ -1,5 +1,5 @@
-﻿using BedrockFinder.Libraries;
-using FastBitmapUtils;
+﻿using BedrockFinder.BedrockFinderAPI;
+using BedrockFinder.Libraries;
 using static BedrockSearch;
 
 namespace BedrockFinder;
@@ -54,16 +54,7 @@ public partial class MainWindow : DHForm
         DeviceSelectDHCB.ItemIndex = 0;
         DeviceSelectDHCB.IndexChange += DeviceChanged;
 
-        VersionSelectDHCB.Collection = new List<string>()
-        {
-            "1.12",
-            "1.13",
-            "1.14",
-            "1.15",
-            "1.16",
-            "1.17",
-            "1.18",
-        };
+        VersionSelectDHCB.Collection = Program.BedrockGens.Select(z => z.Version).Distinct().ToList();
         VersionSelectDHCB.Text = "Version: ";
         VersionSelectDHCB.ItemIndex = 0;
         VersionSelectDHCB.IndexChange += VersionChanged;
@@ -109,11 +100,7 @@ public partial class MainWindow : DHForm
 
         PenP.BackgroundImage = StoneFamilyBlock.DrawVectorPen(BlockType.Bedrock, canvas.Vector);
     }
-    private void CloseB_Click(object sender, EventArgs e)
-    {
-        SafeSave();
-        Environment.Exit(0);
-    }
+    private void CloseB_Click(object sender, EventArgs e) => Environment.Exit(0);
     private void MakeAsSmallAppB_Click(object sender, EventArgs e)
     {
         SmallApp.Visible = true;
@@ -438,18 +425,38 @@ public partial class MainWindow : DHForm
             Clipboard.SetText(FoundListRTB.Text);
     }
     #endregion
-    #region Settings
+    #region Indexes
     private void VersionChanged(int index)
     {
-
+        string preVersion = BedrockGen.Versions[Program.VersionIndex];
+        string pastVersion = BedrockGen.Versions[index];
+        string[] preContexts = Program.BedrockGens.Where(z => z.Version == preVersion).Select(z => z.Context).ToArray();
+        string[] pastContexts = Program.BedrockGens.Where(z => z.Version== pastVersion).Select(z => z.Context).ToArray();
+        if (pastContexts.Contains(preContexts[Program.ContextIndex]))
+        {
+            Program.ContextIndex = pastContexts.ToList().FindIndex(z => z == preContexts[Program.ContextIndex]);
+        }
+        else
+        {
+            Program.ContextIndex = 0;
+        }
+        Program.VersionIndex = index;
+        string pastContext = pastContexts[Program.ContextIndex];
+        Program.Gen = Program.BedrockGens.Find(z => z.Version == pastVersion && z.Context == pastContext && (Program.DeviceIndex == 0 ? z.ForCPU : z.ForKernel));
     }
     private void ContextChanged(int index)
     {
-
+        Program.ContextIndex = index;
+        string version = BedrockGen.Versions[Program.VersionIndex];
+        string context = Program.BedrockGens.Where(z => z.Version == version).Select(z => z.Context).ToList()[Program.ContextIndex];
+        Program.Gen = Program.BedrockGens.Find(z => z.Version == version && z.Context == context && (Program.DeviceIndex == 0 ? z.ForCPU : z.ForKernel));
     }
     private void DeviceChanged(int index)
     {
-
+        Program.DeviceIndex = index;
+        string version = BedrockGen.Versions[Program.VersionIndex];
+        string context = Program.BedrockGens.Where(z => z.Version == version).Select(z => z.Context).ToList()[Program.ContextIndex];
+        Program.Gen = Program.BedrockGens.Find(z => z.Version == version && z.Context == context && (Program.DeviceIndex == 0 ? z.ForCPU : z.ForKernel));   
     }
     #endregion
     #region Range
@@ -462,7 +469,7 @@ public partial class MainWindow : DHForm
             if (ValidateTextCoord(XAtTB.Text) && ValidateTextCoord(ZAtTB.Text) && ValidateTextCoord(XToTB.Text) && ValidateTextCoord(ZToTB.Text))
             {
                 Program.SearchRange = new SearchRange(new Vec2l(int.Parse(XAtTB.Text), int.Parse(ZAtTB.Text)), new Vec2l(int.Parse(XToTB.Text), int.Parse(ZToTB.Text)));
-                RangeSizeL.Text = $"Size {Program.SearchRange.XSize}x{Program.SearchRange.ZSize}";
+                RangeSizeL.Text = $"Size: {Program.SearchRange.XSize}x{Program.SearchRange.ZSize}";
                 UpdatePatternScore();
             }
             return;
@@ -471,8 +478,4 @@ public partial class MainWindow : DHForm
     }
     private bool ValidateTextCoord(string text) => int.TryParse(text, out int num) && num >= -30000000 && num <= 30000000; 
     #endregion
-    private void SafeSave()
-    {
-
-    }
 }

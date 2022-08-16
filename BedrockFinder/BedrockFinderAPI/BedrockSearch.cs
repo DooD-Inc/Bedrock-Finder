@@ -24,7 +24,7 @@ public class BedrockSearch
     }
     private void InitTimer()
     {
-        TimeManager = new Thread(() =>
+        timeManager = new Thread(() =>
         {
             TimeSpan once = TimeSpan.FromMilliseconds(100);
             while (true)
@@ -34,7 +34,7 @@ public class BedrockSearch
                 Thread.Sleep(100);
             }
         });
-        TimeManager.Start();
+        timeManager.Start();
     }
     private void TurnPattern()
     {
@@ -59,30 +59,19 @@ public class BedrockSearch
     public bool Working;
     public bool CanStart = true;
     public BedrockPattern TurnedPattern;
-    private Thread TimeManager;
-    private object @lock = new object(), foundCounterLock = new object();
+    private List<(int bx, byte y, int bz, BlockType block)> queue;
+    private Thread timeManager;
+    private object @lock = new object();
     public void Start()
     {
         new Thread(() =>
         {
             Working = true;
             CanStart = false;
-            List<(byte, BlockType)> yQueue = GetQueue();
+            queue = GetQueue().Select(z => TurnedPattern[z.y].blockList.Where(x => x.block == z.block).Select(x => (x.x, z.y, x.z, z.block))).Aggregate((a, b) => a.Concat(b)).ToList();
             for (int x = Progress.X; x < Range.CEnd.X; x++)
             {
-                List<Vec2i> founds = new List<Vec2i>();
-                Parallel.For((int)Range.CStart.Z, (int)Range.CEnd.Z, MultiThreading.ParallelOptions, z =>
-                {
-                    List<Vec2i> found = CalculateChunk(yQueue, x, z);
-                    if (found.Count > 0)
-                    {
-                        lock (@lock)
-                        {
-                            founds.AddRange(found);
-                        }
-                    }
-                });
-                Result.AddRange(founds);
+                Parallel.For((int)Range.CStart.Z, (int)Range.CEnd.Z, MultiThreading.ParallelOptions, z => CalculateChunk(x, z));                
                 Progress.X++;
                 UpdateProgress?.Invoke(Progress.GetPercent());
                 if (!Working)
@@ -115,33 +104,33 @@ public class BedrockSearch
     public event FoundHandler? Found;
     public delegate void UpdateProgressHandler(double percent);
     public event UpdateProgressHandler? UpdateProgress;
-    private List<Vec2i> CalculateChunk(List<(byte, BlockType)> queue, in int x, in int z)
+    private void CalculateChunk(in int x, in int z)
     {
-        List<Vec2i> founds = new List<Vec2i>();
+        int bX = x << 4, bZ = z << 4;
         for (int incX = 0; incX < 16; incX++)
             for (int incZ = 0; incZ < 16; incZ++)
             {
-                foreach ((byte y, BlockType type) in queue)
-                    foreach ((int bx, int bz, BlockType block) in TurnedPattern[y].blockList.Where(z => z.block == type))
-                    {
-                        int sx = (x << 4) + bx + incX, sz = (z << 4) + bz + incZ;
-                        if (!Equals(type, Program.Gen.GetBlock(sx, y, sz, Program.Gen.GetChunk(sx >> 4, sz >> 4))))
-                            goto NextBlock;
-                    }
-                Vec2i found = new Vec2i(Vector.CurrentPoint.x ? ((x << 4) + incX) : ((x << 4) + incX + TurnedPattern.SizeX - 1), Vector.CurrentPoint.y ? ((z << 4) + incZ) : ((z << 4) + incZ + TurnedPattern.SizeZ - 1));
-                lock (foundCounterLock)
+                int exX = bX + incX,
+                    exZ = bZ + incZ;
+                foreach ((int bx, byte y, int bz, BlockType block) in queue)
                 {
-                    founds.Add(found);
+                    int sx = exX + bx, sz = exZ + bz;
+                    if (!Equals(block, Program.Gen.GetBlock(sx, y, sz, Program.Gen.GetChunk(sx >> 4, sz >> 4))))
+                        goto NextBlock;
+                }
+                Vec2i found = new Vec2i(Vector.CurrentPoint.x ? exX : (exX + TurnedPattern.SizeX - 1), Vector.CurrentPoint.y ? exZ : (exZ + TurnedPattern.SizeZ - 1));
+                lock (@lock)
+                {
+                    Result.Add(found);
                     Found?.Invoke(found);
                 }
                 NextBlock: { }
             }
-        return founds;
     }
     private bool Equals(BlockType block, bool isBedrock) => block == BlockType.Bedrock && isBedrock || block == BlockType.Stone && !isBedrock;
-    private List<(byte, BlockType)> GetQueue()
+    private List<(byte y, BlockType block)> GetQueue()
     {
-        List<(byte, BlockType)> queue = new List<(byte, BlockType)>();
+        List<(byte y, BlockType block)> queue = new List<(byte y, BlockType block)>();
         if (TurnedPattern.ExistedFloors.Any(z => z == 1) && TurnedPattern[1].blockList.Any(z => z.block == BlockType.Stone)) queue.Add((1, BlockType.Stone));
         if (TurnedPattern.ExistedFloors.Any(z => z == 4) && TurnedPattern[4].blockList.Any(z => z.block == BlockType.Bedrock)) queue.Add((4, BlockType.Bedrock));
         if (TurnedPattern.ExistedFloors.Any(z => z == 2) && TurnedPattern[2].blockList.Any(z => z.block == BlockType.Stone)) queue.Add((2, BlockType.Stone));

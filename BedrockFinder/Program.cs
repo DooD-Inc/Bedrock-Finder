@@ -37,15 +37,22 @@ public static class Program
         new Resource("CopyImage", "https://cdn-145.anonfiles.com/L474P9z0y5/0d088984-1658409865/copy.png"),
         new Resource("ZoomOutImage", "https://cdn-102.anonfiles.com/X997X30fy3/b68ecc82-1658971156/zoom-out.png")
     );
+    public static int DeviceIndex = 0, ContextIndex = 0, VersionIndex = 0;
     public static BedrockPattern Pattern = new BedrockPattern(32, 32, 1, 2, 3, 4);
     public static SearchRange SearchRange = new SearchRange(new Vec2l(-32000, -32000), new Vec2l(32000, 32000));
     public static BedrockSearch Search;
     public static List<Device> Devices;
-    public static BaseBedrockGen Gen = new OW_1_12();
+    public static List<BedrockGen> BedrockGens = new List<BedrockGen>()
+    {
+        new OW_112(),
+        new P_OW_112(),
+        new OW_113(),
+    };
+    public static BedrockGen Gen = BedrockGens[0];
     static Program()
     {
         Devices = new OpenCLCompiler().Devices;
         for(int i = 0; i < Devices.Count; i++)
-            Devices[i].Name = Devices[i].Name.Replace("(TM)", "").Replace("(tm)", "").Replace("(R)", "").Replace("(r)", "").Replace("(C)", "").Replace("(c)", "").Replace(" ", " ").Replace(" ", " ");
+            Devices[i].Name = Devices[i].Name.Replace("Core", "").Replace("(TM)", "").Replace("(tm)", "").Replace("(R)", "").Replace("(r)", "").Replace("(C)", "").Replace("(c)", "").Replace(" ", " ").Replace("  ", " ").Split('@')[0];
     }
 }
