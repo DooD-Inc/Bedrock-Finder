@@ -80,7 +80,6 @@ public partial class MainWindow : DHForm
             this.ExportPatternPB = new System.Windows.Forms.PictureBox();
             this.ImportPatternPB = new System.Windows.Forms.PictureBox();
             this.PenP = new System.Windows.Forms.PictureBox();
-            this.ToolTips = new System.Windows.Forms.ToolTip(this.components);
             this.PatternCurChecker = new System.Windows.Forms.Timer(this.components);
             this.MainDisplayP.SuspendLayout();
             this.RangeP.SuspendLayout();
@@ -306,7 +305,7 @@ public partial class MainWindow : DHForm
             // 
             // CopyFoundP
             // 
-            this.CopyFoundP.Location = new System.Drawing.Point(226, 2);
+            this.CopyFoundP.Location = new System.Drawing.Point(219, 3);
             this.CopyFoundP.Margin = new System.Windows.Forms.Padding(0);
             this.CopyFoundP.Name = "CopyFoundP";
             this.CopyFoundP.Size = new System.Drawing.Size(22, 22);
@@ -560,6 +559,7 @@ public partial class MainWindow : DHForm
             this.ContextSelectDHCB.ContentAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.ContextSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.ContextSelectDHCB.ForeColor = System.Drawing.Color.Silver;
+            this.ContextSelectDHCB.ItemIndex = -1;
             this.ContextSelectDHCB.ItemSize = new System.Drawing.Size(245, 28);
             this.ContextSelectDHCB.Location = new System.Drawing.Point(4, 38);
             this.ContextSelectDHCB.Margin = new System.Windows.Forms.Padding(0);
@@ -574,6 +574,7 @@ public partial class MainWindow : DHForm
             this.VersionSelectDHCB.ContentAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.VersionSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VersionSelectDHCB.ForeColor = System.Drawing.Color.Silver;
+            this.VersionSelectDHCB.ItemIndex = -1;
             this.VersionSelectDHCB.ItemSize = new System.Drawing.Size(245, 28);
             this.VersionSelectDHCB.Location = new System.Drawing.Point(4, 6);
             this.VersionSelectDHCB.Margin = new System.Windows.Forms.Padding(0);
@@ -588,6 +589,7 @@ public partial class MainWindow : DHForm
             this.DeviceSelectDHCB.ContentAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.DeviceSelectDHCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.DeviceSelectDHCB.ForeColor = System.Drawing.Color.Silver;
+            this.DeviceSelectDHCB.ItemIndex = -1;
             this.DeviceSelectDHCB.ItemSize = new System.Drawing.Size(245, 28);
             this.DeviceSelectDHCB.Location = new System.Drawing.Point(4, 70);
             this.DeviceSelectDHCB.Margin = new System.Windows.Forms.Padding(0);
@@ -729,11 +731,6 @@ public partial class MainWindow : DHForm
             this.PenP.TabStop = false;
             this.PenP.Click += new System.EventHandler(this.PenP_Click);
             // 
-            // ToolTips
-            // 
-            this.ToolTips.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(57)))), ((int)(((byte)(57)))));
-            this.ToolTips.ForeColor = System.Drawing.Color.Silver;
-            // 
             // PatternCurChecker
             // 
             this.PatternCurChecker.Enabled = true;
@@ -791,7 +788,6 @@ public partial class MainWindow : DHForm
     private DHComboBox DeviceSelectDHCB;
     private PictureBox ImportPatternPB;
     private PictureBox ExportPatternPB;
-    private ToolTip ToolTips;
     private PictureBox PenP;
     private PictureBox ClearPatternPB;
     private Button SearchB;

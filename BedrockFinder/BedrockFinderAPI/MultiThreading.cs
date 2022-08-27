@@ -3,13 +3,13 @@
     public MultiThreading(int countCore, int addition = 0)
     {
         CountCore = countCore;
-        AdditionCore = addition;
+        AdditionThreads = addition;
         ParallelOptions = new ParallelOptions()
         {
-            MaxDegreeOfParallelism = CountCore * 2 + AdditionCore
+            MaxDegreeOfParallelism = CountCore * 2 + AdditionThreads
         };
     }
-    public int AdditionCore;
+    public int AdditionThreads;
     public int CountCore;
     public ParallelOptions ParallelOptions { get; set; }
 }

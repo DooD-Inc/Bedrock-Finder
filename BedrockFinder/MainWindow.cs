@@ -12,59 +12,50 @@ public partial class MainWindow : DHForm
         Program.FormHandle = Handle;
         Instance();
     }
+    private DHToolTips ToolTips;
     private void ControlsInit()
     {
-        Icon = SmallApp.Icon = Program.Resources.Get("Icon")?.GetContent<Icon>();
+        Icon = SmallApp.Icon = Icon.ExtractAssociatedIcon(@".\Resources\AppIcon.ico");
 
-        ImportPatternPB.Image = Program.Resources.Get("ImportImage")?.GetContent<Image>();
-        ToolTips.SetToolTip(ImportPatternPB, "Import Pattern");
+        ImportPatternPB.Image = Image.FromFile(@".\Resources\Import.png");
+        ToolTips.SetDHToolTip(ImportPatternPB, "Import Pattern");
 
-        ExportPatternPB.Image = Program.Resources.Get("ExportImage")?.GetContent<Image>();
-        ToolTips.SetToolTip(ExportPatternPB, "Export Pattern");
+        ExportPatternPB.Image = Image.FromFile(@".\Resources\Export.png");
+        ToolTips.SetDHToolTip(ExportPatternPB, "Export Pattern");
 
-        ImportWorldPatternPB.Image = Program.Resources.Get("ImportWorldImage")?.GetContent<Image>();
-        ToolTips.SetToolTip(ImportWorldPatternPB, "Import Pattern As World");
+        ImportWorldPatternPB.Image = Image.FromFile(@".\Resources\ImportWorld.png");
+        ToolTips.SetDHToolTip(ImportWorldPatternPB, "Import Pattern As World");
 
-        ExportWorldPatternPB.Image = Program.Resources.Get("ExportWorldImage")?.GetContent<Image>();
-        ToolTips.SetToolTip(ExportWorldPatternPB, "Export Pattern As World");
+        ExportWorldPatternPB.Image = Image.FromFile(@".\Resources\ExportWorld.png");
+        ToolTips.SetDHToolTip(ExportWorldPatternPB, "Export Pattern As World");
 
-        ClearPatternPB.Image = Program.Resources.Get("ClearImage")?.GetContent<Image>();
-        ToolTips.SetToolTip(ClearPatternPB, "Clear This Pattern Layer");
+        ClearPatternPB.Image = Image.FromFile(@".\Resources\Trash.png");
+        ToolTips.SetDHToolTip(ClearPatternPB, "Clear This Pattern Layer");
 
-        RightTurnPB.Image = Program.Resources.Get("RightTurnImage")?.GetContent<Image>();
-        ToolTips.SetToolTip(RightTurnPB, "Turn on Right");
+        RightTurnPB.Image = Image.FromFile(@".\Resources\RightTurn.png");
+        ToolTips.SetDHToolTip(RightTurnPB, "Turn on Right");
 
-        LeftTurnPB.Image = Program.Resources.Get("LeftTurnImage")?.GetContent<Image>();
-        ToolTips.SetToolTip(LeftTurnPB, "Turn on Left");
+        LeftTurnPB.Image = Image.FromFile(@".\Resources\LeftTurn.png");
+        ToolTips.SetDHToolTip(LeftTurnPB, "Turn on Left");
 
-        BackToStartPatternPB.Image = Program.Resources.Get("ZoomOutImage")?.GetContent<Image>();
-        ToolTips.SetToolTip(BackToStartPatternPB, "Back to Start of Pattern");
+        BackToStartPatternPB.Image = Image.FromFile(@".\Resources\ZoomOut.png");
+        ToolTips.SetDHToolTip(BackToStartPatternPB, "Back to Start of Pattern");
 
-        CopyFoundP.Image = Program.Resources.Get("CopyImage")?.GetContent<Image>();
-        ToolTips.SetToolTip(CopyFoundP, "Copy All Found In Clipboard");
+        CopyFoundP.Image = Image.FromFile(@".\Resources\Copy.png");
+        ToolTips.SetDHToolTip(CopyFoundP, "Copy All Founds In Clipboard");
 
-        ToolTips.SetToolTip(YLevelSelectorTrB, "Change Y Level For Pattern");
+        ToolTips.SetDHToolTip(YLevelSelectorTrB, "Change Y Level For Pattern");
 
-        DeviceSelectDHCB.Collection = new List<string>()
-        {
-            "CPU"
-        };
-        DeviceSelectDHCB.Collection.AddRange(Program.Devices.Select(z => "K -> " + z.Name));
+        UpdateSelectorCollections();
+
         DeviceSelectDHCB.Text = "Device: ";
         DeviceSelectDHCB.ItemIndex = 0;
         DeviceSelectDHCB.IndexChange += DeviceChanged;
 
-        VersionSelectDHCB.Collection = Program.BedrockGens.Select(z => z.Version).Distinct().ToList();
         VersionSelectDHCB.Text = "Version: ";
         VersionSelectDHCB.ItemIndex = 0;
         VersionSelectDHCB.IndexChange += VersionChanged;
 
-        ContextSelectDHCB.Collection = new List<string>()
-        {
-            "Overworld",
-            "Lower Nether",
-            "Higher Nether",
-        };
         ContextSelectDHCB.Text = "Context: ";
         ContextSelectDHCB.ItemIndex = 0;
         ContextSelectDHCB.IndexChange += ContextChanged;
@@ -95,9 +86,10 @@ public partial class MainWindow : DHForm
         CanvasP.Controls.Add(canvas);
         canvas.Show();
         canvas.Location = new Point(-30, -160);
+        ToolTips = new DHToolTips(new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point));
         ControlsInit();
-        ShowInit();       
-
+        ShowInit();
+        
         PenP.BackgroundImage = StoneFamilyBlock.DrawVectorPen(BlockType.Bedrock, canvas.Vector);
     }
     private void CloseB_Click(object sender, EventArgs e) => Environment.Exit(0);
@@ -242,7 +234,7 @@ public partial class MainWindow : DHForm
     }
     private void YLevelSelectorTrB_Scroll(object sender, EventArgs e)
     {
-        YLevelL.Text = $"({YLevelSelectorTrB.Value})";
+        YLevelL.Text = $"({(ContextSelectDHCB.ItemIndex != (int)BedrockGen.WorldContext.Higher_Nether ? YLevelSelectorTrB.Value : (YLevelSelectorTrB.Value + 122))})";
         canvas.UnDraw();
         canvas.YLevel = (byte)YLevelSelectorTrB.Value;
         canvas.OverDraw();
@@ -426,37 +418,46 @@ public partial class MainWindow : DHForm
     }
     #endregion
     #region Indexes
+    public void UpdateSelectorCollections()
+    {
+        DeviceSelectDHCB.Collection = new List<string>()
+        {
+            "CPU"
+        };
+        DeviceSelectDHCB.Collection.AddRange(Program.Devices.Select(z => "K -> " + z.Name));
+        VersionSelectDHCB.Collection = BedrockGen.MinecraftVersions.ToList().Select(z => z.Value).ToList();
+        ContextSelectDHCB.Collection = Program.BedrockGens.Where(z => z.Version == BedrockGen.MinecraftVersions.Keys.ToList()[Program.VersionIndex]).Select(z => BedrockGen.WorldContexts[z.Context]).Distinct().ToList();
+    }
+    public void ChangedContext()
+    {
+        bool newContextIsNormal = Program.ContextIndex != (int)BedrockGen.WorldContext.Higher_Nether;
+        bool nowContextIsNormal = YLevelL.Text.Length == 3;
+        if(newContextIsNormal != nowContextIsNormal)
+        {
+            YLevelL.Text = $"({(newContextIsNormal ? (canvas.YLevel) : (canvas.YLevel + 122))})";
+        }
+    }
     private void VersionChanged(int index)
     {
-        string preVersion = BedrockGen.Versions[Program.VersionIndex];
-        string pastVersion = BedrockGen.Versions[index];
-        string[] preContexts = Program.BedrockGens.Where(z => z.Version == preVersion).Select(z => z.Context).ToArray();
-        string[] pastContexts = Program.BedrockGens.Where(z => z.Version== pastVersion).Select(z => z.Context).ToArray();
-        if (pastContexts.Contains(preContexts[Program.ContextIndex]))
-        {
-            Program.ContextIndex = pastContexts.ToList().FindIndex(z => z == preContexts[Program.ContextIndex]);
-        }
-        else
-        {
-            Program.ContextIndex = 0;
-        }
+        if (Program.VersionIndex == index)
+            return;
         Program.VersionIndex = index;
-        string pastContext = pastContexts[Program.ContextIndex];
-        Program.Gen = Program.BedrockGens.Find(z => z.Version == pastVersion && z.Context == pastContext && (Program.DeviceIndex == 0 ? z.ForCPU : z.ForKernel));
+        ContextSelectDHCB.Collection = Program.BedrockGens.Where(z => z.Version == BedrockGen.MinecraftVersions.Keys.ToList()[index]).Select(z => BedrockGen.WorldContexts[z.Context]).Distinct().ToList();
+        Program.ContextIndex = ContextSelectDHCB.ItemIndex = 0;
+        ChangedContext();
     }
     private void ContextChanged(int index)
     {
+        if (Program.ContextIndex == index)
+            return;
         Program.ContextIndex = index;
-        string version = BedrockGen.Versions[Program.VersionIndex];
-        string context = Program.BedrockGens.Where(z => z.Version == version).Select(z => z.Context).ToList()[Program.ContextIndex];
-        Program.Gen = Program.BedrockGens.Find(z => z.Version == version && z.Context == context && (Program.DeviceIndex == 0 ? z.ForCPU : z.ForKernel));
+        ChangedContext();
     }
     private void DeviceChanged(int index)
     {
+        if (Program.DeviceIndex == index)
+            return;
         Program.DeviceIndex = index;
-        string version = BedrockGen.Versions[Program.VersionIndex];
-        string context = Program.BedrockGens.Where(z => z.Version == version).Select(z => z.Context).ToList()[Program.ContextIndex];
-        Program.Gen = Program.BedrockGens.Find(z => z.Version == version && z.Context == context && (Program.DeviceIndex == 0 ? z.ForCPU : z.ForKernel));   
     }
     #endregion
     #region Range
@@ -476,6 +477,6 @@ public partial class MainWindow : DHForm
         }
         dSender.ForeColor = Color.Red;
     }
-    private bool ValidateTextCoord(string text) => int.TryParse(text, out int num) && num >= -30000000 && num <= 30000000; 
+    private bool ValidateTextCoord(string text) => int.TryParse(text, out int num) && num >= -30000000 && num <= 30000000;
     #endregion
 }

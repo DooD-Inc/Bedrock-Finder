@@ -1,19 +1,23 @@
 ﻿using System.ComponentModel;
-
+using System.Drawing;
+using System.Windows.Forms;
 namespace BedrockFinder.Libraries;
 public partial class DHComboBox : UserControl
 {
     public delegate void IndexChangeHandler(int index);
     public event IndexChangeHandler? IndexChange;
     public List<string> Collection = new List<string>();
+    private int hoveringIndex = -1;
     private bool open;
+    private int itemIndex = -1;
+    private Graphics g;
     public DHComboBox()
     {
         SuspendLayout();
+        g = CreateGraphics();
 
         Paint += (s, e) =>
         {
-            Graphics g = e.Graphics;
             g.DrawRectangle(new Pen(BorderColor), e.ClipRectangle);
             int nextLoc = 0;
             if (ItemIndex != -1)
@@ -35,26 +39,71 @@ public partial class DHComboBox : UserControl
 
         MouseClick += (s, e) =>
         {
-            open = !open;
             if (open)
-            {
-                ((Control)s).BringToFront();
-                Size = new Size(ItemSize.Width, ItemSize.Height + Collection.Count * TextRenderer.MeasureText("l", Font).Height);
-                this.Round(20);
-            }
-            else
             {
                 if (e.Y > ItemSize.Height)
                 {
                     ItemIndex = (e.Y - ItemSize.Height) / TextRenderer.MeasureText("l", Font).Height;
                     IndexChange?.Invoke(ItemIndex);
+                    Size = ItemSize;
                     Invalidate();
                 }
-                Size = ItemSize;
-                this.Round(20);
+                else Size = ItemSize;
+            }
+            else
+            {
+                ((Control)s).BringToFront();
+                Size = new Size(ItemSize.Width, ItemSize.Height + Collection.Count * TextRenderer.MeasureText("l", Font).Height);
+                Invalidate();
+            }
+            this.Round(10);
+            open = !open;
+            g = CreateGraphics();
+        };
+        
+        MouseMove += (s, e) =>
+        {
+            if (open)
+            {
+                int index = (e.Y - ItemSize.Height) / TextRenderer.MeasureText("l", Font).Height;
+                if (index != -1 && e.Y - ItemSize.Height >= 0 && index < Collection.Count)
+                {
+                    if (index != hoveringIndex)
+                    {
+                        if(hoveringIndex != -1)
+                        {
+                            g.FillRectangle(new SolidBrush(BackColor), new Rectangle(new Point(0, ItemSize.Height + hoveringIndex * TextRenderer.MeasureText("l", Font).Height), new Size(ItemSize.Width, TextRenderer.MeasureText("l", Font).Height)));
+                            g.DrawString(Collection[hoveringIndex], Font, new SolidBrush(ForeColor), new Point(0, ItemSize.Height + TextRenderer.MeasureText("l", Font).Height * hoveringIndex));
+                        }
+                        hoveringIndex = index;
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(BackColor.R + 3, BackColor.G + 3, BackColor.B + 3)), new Rectangle(new Point(0, ItemSize.Height + index * TextRenderer.MeasureText("l", Font).Height), new Size(ItemSize.Width, TextRenderer.MeasureText("l", Font).Height)));
+                        g.DrawString(Collection[index], Font, new SolidBrush(ForeColor), new Point(0, ItemSize.Height + TextRenderer.MeasureText("l", Font).Height * index));
+                    }
+                }
+                else
+                {
+                    if(hoveringIndex != -1)
+                    {
+                        g.FillRectangle(new SolidBrush(BackColor), new Rectangle(new Point(0, ItemSize.Height + hoveringIndex * TextRenderer.MeasureText("l", Font).Height), new Size(ItemSize.Width, TextRenderer.MeasureText("l", Font).Height)));
+                        if (Collection.Count > hoveringIndex)
+                            g.DrawString(Collection[hoveringIndex], Font, new SolidBrush(ForeColor), new Point(0, ItemSize.Height + TextRenderer.MeasureText("l", Font).Height * hoveringIndex));
+                        hoveringIndex = -1;
+                    }
+                }
             }
         };
 
+        MouseLeave += (s, e) =>
+        {
+            if(hoveringIndex != -1)
+            {
+                g.FillRectangle(new SolidBrush(BackColor), new Rectangle(new Point(0, ItemSize.Height + hoveringIndex * TextRenderer.MeasureText("l", Font).Height), new Size(ItemSize.Width, TextRenderer.MeasureText("l", Font).Height)));
+                if(Collection.Count > hoveringIndex)
+                    g.DrawString(Collection[hoveringIndex], Font, new SolidBrush(ForeColor), new Point(0, ItemSize.Height + TextRenderer.MeasureText("l", Font).Height * hoveringIndex));
+                hoveringIndex = -1;
+            }
+        };
+        
         ResumeLayout();
     }
     private Point GetLocation(string text)
@@ -81,7 +130,11 @@ public partial class DHComboBox : UserControl
     [Category("Appearance")]
     public override string? Text { get; set; }
     [Category("Appearance")]
-    public Size ItemSize { get; set; } = new Size(100, 30);
+    public Size ItemSize { get; set; } = new Size(245, 28);
     [Category("Appearance")]
-    public int ItemIndex = -1;
+    public int ItemIndex { get => itemIndex; set {
+            itemIndex = value;
+            Invalidate();
+        }
+    }
 }
