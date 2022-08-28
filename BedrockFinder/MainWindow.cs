@@ -234,7 +234,7 @@ public partial class MainWindow : DHForm
     }
     private void YLevelSelectorTrB_Scroll(object sender, EventArgs e)
     {
-        YLevelL.Text = $"({(ContextSelectDHCB.ItemIndex != (int)BedrockGen.WorldContext.Higher_Nether ? YLevelSelectorTrB.Value : (YLevelSelectorTrB.Value + 122))})";
+        YLevelL.Text = $"({(ContextSelectDHCB.ItemIndex != (int)WorldContext.Higher_Nether ? YLevelSelectorTrB.Value : (YLevelSelectorTrB.Value + 122))})";
         canvas.UnDraw();
         canvas.YLevel = (byte)YLevelSelectorTrB.Value;
         canvas.OverDraw();
@@ -278,7 +278,7 @@ public partial class MainWindow : DHForm
             Program.Search.Found += FoundEvent;
             status = SearchStatus.Search;
             Program.Search.Result = new List<Vec2i>();
-            Program.Search.Start();
+            Program.Search.Searcher.Start();
             SearchB.Text = "Stop Search";
         }
         else if (status == SearchStatus.Search)
@@ -289,7 +289,7 @@ public partial class MainWindow : DHForm
         }
         else if (status == SearchStatus.Pause)
         {
-            if (Program.Search.CanStart && Program.Search.Resume())
+            if (Program.Search.Searcher.CanStart && Program.Search.Resume())
             {
                 status = SearchStatus.Search;
                 SearchB.Text = "Stop Search";
@@ -425,12 +425,12 @@ public partial class MainWindow : DHForm
             "CPU"
         };
         DeviceSelectDHCB.Collection.AddRange(Program.Devices.Select(z => "K -> " + z.Name));
-        VersionSelectDHCB.Collection = BedrockGen.MinecraftVersions.ToList().Select(z => z.Value).ToList();
-        ContextSelectDHCB.Collection = Program.BedrockGens.Where(z => z.Version == BedrockGen.MinecraftVersions.Keys.ToList()[Program.VersionIndex]).Select(z => BedrockGen.WorldContexts[z.Context]).Distinct().ToList();
+        VersionSelectDHCB.Collection = MinecraftVersions.ToList().Select(z => z.Value).ToList();
+        ContextSelectDHCB.Collection = Program.BedrockGens.Where(z => z.Version == MinecraftVersions.Keys.ToList()[Program.VersionIndex]).Select(z => WorldContexts[z.Context]).Distinct().ToList();
     }
     public void ChangedContext()
     {
-        bool newContextIsNormal = Program.ContextIndex != (int)BedrockGen.WorldContext.Higher_Nether;
+        bool newContextIsNormal = Program.ContextIndex != (int)WorldContext.Higher_Nether;
         bool nowContextIsNormal = YLevelL.Text.Length == 3;
         if(newContextIsNormal != nowContextIsNormal)
         {
@@ -442,7 +442,7 @@ public partial class MainWindow : DHForm
         if (Program.VersionIndex == index)
             return;
         Program.VersionIndex = index;
-        ContextSelectDHCB.Collection = Program.BedrockGens.Where(z => z.Version == BedrockGen.MinecraftVersions.Keys.ToList()[index]).Select(z => BedrockGen.WorldContexts[z.Context]).Distinct().ToList();
+        ContextSelectDHCB.Collection = Program.BedrockGens.Where(z => z.Version == MinecraftVersions.Keys.ToList()[index]).Select(z => WorldContexts[z.Context]).Distinct().ToList();
         Program.ContextIndex = ContextSelectDHCB.ItemIndex = 0;
         ChangedContext();
     }

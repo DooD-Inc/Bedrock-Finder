@@ -1,5 +1,5 @@
 ﻿using static ChunkСache;
-using static BedrockFinder.BedrockFinderAPI.BedrockGen.WorldContext;
+using static BedrockFinder.BedrockFinderAPI.Enums.WorldContext;
 
 namespace BedrockFinder.BedrockFinderAPI;
 public unsafe class CPUBedrockGens
