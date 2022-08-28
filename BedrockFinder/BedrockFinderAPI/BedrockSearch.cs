@@ -3,18 +3,26 @@ using BedrockFinder.BedrockFinderAPI;
 
 public class BedrockSearch
 {
-    public BedrockSearch(SearchRange range, BedrockPattern pattern, SearchProgress progress, List<Vec2i> result, VectorAngle vector)
+    public BedrockSearch(SearchRange range, BedrockPattern pattern, SearchProgress progress, List<Vec2i> result, VectorAngle vector, SearchDeviceType type)
     {
         Range = range;
         Pattern = pattern;
         Progress = progress;
         Result = result;
         Vector = vector;
+        if (type == SearchDeviceType.CPU)
+        {
+            Searcher = new CPUBedrockSearcher(this);
+        }
+        else
+        {
+
+        }
         TurnPattern();
         InitTimer();
     }
-    public BedrockSearch(ProgressSave save) : this(save.Range, save.Pattern, save.Progress, save.Result, save.Vector) { }
-    public BedrockSearch(BedrockPattern pattern, VectorAngle vector, SearchRange range) : this(range, pattern, new SearchProgress((int)range.CStart.X, (int)range.CEnd.X), new List<Vec2i>(), vector) { }
+    public BedrockSearch(ProgressSave save) : this(save.Range, save.Pattern, save.Progress, save.Result, save.Vector, save.DeviceIndex == 0 ? SearchDeviceType.CPU : SearchDeviceType.Kernel) { }
+    public BedrockSearch(BedrockPattern pattern, VectorAngle vector, SearchRange range, SearchDeviceType type) : this(range, pattern, new SearchProgress((int)range.CStart.X, (int)range.CEnd.X), new List<Vec2i>(), vector, type) { }
     private void InitTimer()
     {
         timeManager = new Thread(() =>

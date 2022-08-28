@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 namespace BedrockFinder.BedrockFinderAPI;
 public static class Enums
 {
+    public enum SearchDeviceType : byte
+    {
+        CPU,
+        Kernel
+    }
     public enum SearchStatus
     {
         PatternEdit,
@@ -22,7 +27,7 @@ public static class Enums
         { MinecraftVersion.v14, "1.14" },
         { MinecraftVersion.v15, "1.15" },
     };
-    public enum MinecraftVersion
+    public enum MinecraftVersion : byte
     {
         v12,
         v13,
@@ -35,7 +40,7 @@ public static class Enums
         { WorldContext.Lower_Nether, "Lower Nether" },
         { WorldContext.Higher_Nether, "Higher Nether" },
     };  
-    public enum WorldContext
+    public enum WorldContext : byte
     {
         Overworld,
         Lower_Nether,

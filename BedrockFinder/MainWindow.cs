@@ -273,7 +273,7 @@ public partial class MainWindow : DHForm
                 Program.Search.UpdateProgress -= UpdateProgress;
                 Program.Search.Found -= FoundEvent;
             }
-            Program.Search = new BedrockSearch(Program.Pattern, canvas.Vector, Program.SearchRange);
+            Program.Search = new BedrockSearch(Program.Pattern, canvas.Vector, Program.SearchRange, Program.DeviceIndex == 0 ? SearchDeviceType.CPU : SearchDeviceType.Kernel);
             Program.Search.UpdateProgress += UpdateProgress;
             Program.Search.Found += FoundEvent;
             status = SearchStatus.Search;
@@ -373,7 +373,7 @@ public partial class MainWindow : DHForm
                 if (!File.Exists(openFileDialog.FileName))
                     File.Create(openFileDialog.FileName).Dispose();
                 if(Program.Search == null)
-                    Program.Search = new BedrockSearch(Program.Pattern, canvas.Vector, Program.SearchRange);
+                    Program.Search = new BedrockSearch(Program.Pattern, canvas.Vector, Program.SearchRange, Program.DeviceIndex == 0 ? SearchDeviceType.CPU : SearchDeviceType.Kernel);
                 ConfigManager.ExportSearchAsBFR(Program.Search, openFileDialog.FileName);
             }
         }

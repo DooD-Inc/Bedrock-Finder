@@ -112,6 +112,7 @@ public partial class MainWindow : DHForm
             this.CloseB.Name = "CloseB";
             this.CloseB.Size = new System.Drawing.Size(24, 24);
             this.CloseB.TabIndex = 0;
+            this.CloseB.TabStop = false;
             this.CloseB.Text = "X";
             this.CloseB.UseVisualStyleBackColor = false;
             this.CloseB.Click += new System.EventHandler(this.CloseB_Click);
@@ -134,6 +135,7 @@ public partial class MainWindow : DHForm
             this.MakeAsSmallAppB.Name = "MakeAsSmallAppB";
             this.MakeAsSmallAppB.Size = new System.Drawing.Size(24, 15);
             this.MakeAsSmallAppB.TabIndex = 1;
+            this.MakeAsSmallAppB.TabStop = false;
             this.MakeAsSmallAppB.Text = " Try to find me";
             this.MakeAsSmallAppB.UseVisualStyleBackColor = false;
             this.MakeAsSmallAppB.Click += new System.EventHandler(this.MakeAsSmallAppB_Click);
@@ -211,6 +213,7 @@ public partial class MainWindow : DHForm
             this.ZToTB.Name = "ZToTB";
             this.ZToTB.Size = new System.Drawing.Size(88, 19);
             this.ZToTB.TabIndex = 39;
+            this.ZToTB.TabStop = false;
             this.ZToTB.Text = "32000";
             this.ZToTB.TextChanged += new System.EventHandler(this.UpdateRange);
             // 
@@ -225,6 +228,7 @@ public partial class MainWindow : DHForm
             this.ZAtTB.Name = "ZAtTB";
             this.ZAtTB.Size = new System.Drawing.Size(90, 19);
             this.ZAtTB.TabIndex = 38;
+            this.ZAtTB.TabStop = false;
             this.ZAtTB.Text = "-32000";
             this.ZAtTB.TextChanged += new System.EventHandler(this.UpdateRange);
             // 
@@ -251,6 +255,7 @@ public partial class MainWindow : DHForm
             this.XToTB.Name = "XToTB";
             this.XToTB.Size = new System.Drawing.Size(88, 19);
             this.XToTB.TabIndex = 32;
+            this.XToTB.TabStop = false;
             this.XToTB.Text = "32000";
             this.XToTB.TextChanged += new System.EventHandler(this.UpdateRange);
             // 
@@ -265,6 +270,7 @@ public partial class MainWindow : DHForm
             this.XAtTB.Name = "XAtTB";
             this.XAtTB.Size = new System.Drawing.Size(90, 19);
             this.XAtTB.TabIndex = 31;
+            this.XAtTB.TabStop = false;
             this.XAtTB.Text = "-32000";
             this.XAtTB.TextChanged += new System.EventHandler(this.UpdateRange);
             // 
@@ -324,6 +330,7 @@ public partial class MainWindow : DHForm
             this.FoundListRTB.ReadOnly = true;
             this.FoundListRTB.Size = new System.Drawing.Size(234, 399);
             this.FoundListRTB.TabIndex = 24;
+            this.FoundListRTB.TabStop = false;
             this.FoundListRTB.Text = "";
             // 
             // FoundedCountL
@@ -376,6 +383,7 @@ public partial class MainWindow : DHForm
             this.SearchResetProgress.Name = "SearchResetProgress";
             this.SearchResetProgress.Size = new System.Drawing.Size(122, 24);
             this.SearchResetProgress.TabIndex = 16;
+            this.SearchResetProgress.TabStop = false;
             this.SearchResetProgress.Text = "Reset Progress";
             this.SearchResetProgress.UseVisualStyleBackColor = false;
             this.SearchResetProgress.Click += new System.EventHandler(this.SearchResetProgress_Click);
@@ -394,6 +402,7 @@ public partial class MainWindow : DHForm
             this.SearchImportProgress.Name = "SearchImportProgress";
             this.SearchImportProgress.Size = new System.Drawing.Size(122, 24);
             this.SearchImportProgress.TabIndex = 15;
+            this.SearchImportProgress.TabStop = false;
             this.SearchImportProgress.Text = "Import Progress";
             this.SearchImportProgress.UseVisualStyleBackColor = false;
             this.SearchImportProgress.Click += new System.EventHandler(this.SearchImportProgress_Click);
@@ -412,6 +421,7 @@ public partial class MainWindow : DHForm
             this.SearchExportProgress.Name = "SearchExportProgress";
             this.SearchExportProgress.Size = new System.Drawing.Size(122, 24);
             this.SearchExportProgress.TabIndex = 14;
+            this.SearchExportProgress.TabStop = false;
             this.SearchExportProgress.Text = "Export Progress";
             this.SearchExportProgress.UseVisualStyleBackColor = false;
             this.SearchExportProgress.Click += new System.EventHandler(this.SearchExportProgress_Click);
@@ -430,6 +440,7 @@ public partial class MainWindow : DHForm
             this.SearchB.Name = "SearchB";
             this.SearchB.Size = new System.Drawing.Size(122, 24);
             this.SearchB.TabIndex = 13;
+            this.SearchB.TabStop = false;
             this.SearchB.Text = "Start Search";
             this.SearchB.UseVisualStyleBackColor = false;
             this.SearchB.Click += new System.EventHandler(this.SearchB_Click);
@@ -526,6 +537,7 @@ public partial class MainWindow : DHForm
             this.YLevelSelectorTrB.Name = "YLevelSelectorTrB";
             this.YLevelSelectorTrB.Size = new System.Drawing.Size(140, 45);
             this.YLevelSelectorTrB.TabIndex = 16;
+            this.YLevelSelectorTrB.TabStop = false;
             this.YLevelSelectorTrB.TickStyle = System.Windows.Forms.TickStyle.None;
             this.YLevelSelectorTrB.Value = 4;
             this.YLevelSelectorTrB.Scroll += new System.EventHandler(this.YLevelSelectorTrB_Scroll);
