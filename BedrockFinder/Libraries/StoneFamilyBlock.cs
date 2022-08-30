@@ -1,6 +1,6 @@
 ﻿using FastBitmapUtils;
 
-namespace BedrockFinder;
+namespace BedrockFinder.Libraries;
 public static class StoneFamilyBlock
 {
     private static Color[] bedrockColor = new Color[4] { Color.FromArgb(151, 151, 151), Color.FromArgb(87, 87, 87), Color.FromArgb(51, 51, 51), Color.FromArgb(7, 7, 7) };
@@ -113,7 +113,7 @@ public static class StoneFamilyBlock
             for (int x = 0; x < 32; x += 2)
                 for (int y = 0; y < 32; y += 2)
                     DrawPixel(x, y, colors[signatureBlock[15 - x / 2, 15 - y / 2]]);
-        void DrawPixel(int x, int y, Color color) 
+        void DrawPixel(int x, int y, Color color)
         {
             bitmap.SetPixel(x + 1, y, color);
             bitmap.SetPixel(x + 1, y + 1, color);

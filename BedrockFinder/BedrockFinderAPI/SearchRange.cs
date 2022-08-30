@@ -21,6 +21,8 @@
         CEnd = new Vec2l(end.X % 16 == 0 ? (end.X >> 4) : ((end.X >> 4) - 1),
                          end.Z % 16 == 0 ? (end.Z >> 4) : ((end.Z >> 4) + 1));
     }
+    public SearchRange(long sx, long sz, long ex, long ez) : this(new Vec2l(sx, sz), new Vec2l(ex, ez)) { }
+    public SearchRange(long radius) : this(-radius, -radius, radius, radius) { }
     public Vec2l Start, End;
     public Vec2l CStart, CEnd;
     public long ChunkCount => ChunkRange * 4;

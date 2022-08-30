@@ -9,6 +9,7 @@
                 floors[y - 1] = new BlockFloor(sizeX, sizeZ);
         ExistedFloors = floorYs;
     }
+    public BedrockPattern(ushort sizeX, ushort sizeZ) : this(sizeX, sizeZ, 1, 2, 3, 4) { }
     private BlockFloor[] floors = new BlockFloor[4];
     public ushort SizeX, SizeZ;
     public sbyte[] ExistedFloors;

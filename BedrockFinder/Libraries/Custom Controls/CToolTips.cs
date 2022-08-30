@@ -2,7 +2,7 @@
 using System.Drawing.Drawing2D;
 
 //this class from other project (DH - DooDHack).
-public sealed partial class DHToolTips : ToolTip
+public sealed partial class CToolTips : ToolTip
 {
     private Dictionary<Control, (string caption, Size size)> AssociatedControls = new Dictionary<Control, (string caption, Size size)>();
     private Font font;
@@ -10,7 +10,7 @@ public sealed partial class DHToolTips : ToolTip
         font = value;
         AssociatedControls = AssociatedControls.ToList().Select(z => (z.Key, (z.Value.caption, Graphics.FromImage(new Bitmap(1, 1)).MeasureString(z.Value.caption, Font).ToSize()))).ToDictionary(z => z.Key, z => z.Item2);
     }}
-    public DHToolTips(Font font)
+    public CToolTips(Font font)
     {
         this.font = font;
         InitializeComponent();

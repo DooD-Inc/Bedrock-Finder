@@ -4,7 +4,7 @@ using static BedrockSearch;
 
 namespace BedrockFinder;
 
-public partial class MainWindow : DHForm
+public partial class MainWindow : CForm
 {
     #region Window
     private void ShowInit()
@@ -12,7 +12,7 @@ public partial class MainWindow : DHForm
         Program.FormHandle = Handle;
         Instance();
     }
-    private DHToolTips ToolTips;
+    private CToolTips ToolTips;
     private void ControlsInit()
     {
         Icon = SmallApp.Icon = Icon.ExtractAssociatedIcon(@".\Resources\AppIcon.ico");
@@ -60,23 +60,23 @@ public partial class MainWindow : DHForm
         ContextSelectDHCB.ItemIndex = 0;
         ContextSelectDHCB.IndexChange += ContextChanged;
 
-        MainDisplayP.Round(25, false, true, true, true);
-        CanvasSettingsP.Round(25, true, true, false, false);
-        CanvasP.Round(25, true, true, false, true);
-        CloseB.Round(15, true, true, false, false);
-        MakeAsSmallAppB.Round(15, false, true, false, false);
-        MainSettingsP.Round(25);
-        SearchInfoP.Round(25);
-        SearchManageP.Round(25);
-        FoundP.Round(25);
-        FoundListRTB.Round(20);
         SearchExportProgress.Round(20, false, true, false, false);
         SearchImportProgress.Round(20, true, false, false, false);
-        SearchB.Round(20, false, false, true, false);
         SearchResetProgress.Round(20, false, false, false, true);
-        DeviceSelectDHCB.Round(20);
+        MakeAsSmallAppB.Round(15, false, true, false, false);
+        CanvasSettingsP.Round(25, true, true, false, false);
+        MainDisplayP.Round(25, false, true, true, true);
+        SearchB.Round(20, false, false, true, false);
+        CloseB.Round(15, true, true, false, false);
         VersionSelectDHCB.Round(20);
         ContextSelectDHCB.Round(20);
+        DeviceSelectDHCB.Round(20);
+        MainSettingsP.Round(25);
+        SearchManageP.Round(25);
+        FoundListRTB.Round(20);
+        SearchInfoP.Round(25);
+        CanvasP.Round(20);
+        FoundP.Round(25);
         RangeP.Round(25);
     }
     private CanvasForm canvas = new CanvasForm() { TopLevel = false };
@@ -86,7 +86,7 @@ public partial class MainWindow : DHForm
         CanvasP.Controls.Add(canvas);
         canvas.Show();
         canvas.Location = new Point(-30, -160);
-        ToolTips = new DHToolTips(new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point));
+        ToolTips = new CToolTips(new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point));
         ControlsInit();
         ShowInit();
         
@@ -312,7 +312,7 @@ public partial class MainWindow : DHForm
                         SearchElapsedTimeL.Text = $"Elapsed Time: 0s";
                 }
                 SearchProgressL.Text = $"Progress: {Math.Round(progress, 2, MidpointRounding.AwayFromZero)}%";
-                SearchElapsedTimeL.Text = $"Elapsed Time: " + TimeSpanToString(Program.Search.Progress.ElapsedTime);
+                SearchElapsedTimeL.Text = $"Elapsed Time: " + Program.Search.Progress.ElapsedTime.ToDescriptiveString();
             });
         }
     }
@@ -351,12 +351,6 @@ public partial class MainWindow : DHForm
             FoundListRTB.Text = "";
         }
     }
-    public static string TimeSpanToString(TimeSpan span) =>
-    (span.Days > 365 ? span.Days / 365 + "y " : "")
-    + (span.Days > 0 ? span.Days % 365 + "d " : "")
-    + (span.Hours > 0 ? span.Hours + "h " : "")
-    + (span.Minutes > 0 ? span.Minutes + "m " : "")
-    + (span.Seconds > 0 ? span.Seconds + "s " : "");
     private void SearchExportProgress_Click(object sender, EventArgs e)
     {
         using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -401,12 +395,12 @@ public partial class MainWindow : DHForm
                 canvas.OverDraw();
                 FoundListRTB.Text = string.Join('\n', Program.Search.Result.Select((z, i) => $"{i+1}. {z.X} {z.X}"));
                 FoundedCountL.Text = $"Found: {Program.Search.Result.Count}";
-                XAtTB.Text = Program.SearchRange.Start.X.ToString();
-                ZAtTB.Text = Program.SearchRange.Start.Z.ToString();
-                XToTB.Text = Program.SearchRange.End.X.ToString();
-                ZToTB.Text = Program.SearchRange.End.Z.ToString();
-                SearchElapsedTimeL.Text = $"Elapsed Time: {TimeSpanToString(Program.Search.Progress.ElapsedTime)}";
-                SearchProgressL.Text = $"Progress: {Math.Round(Program.Search.Progress.GetPercent(), 2, MidpointRounding.AwayFromZero)}%";
+                XAtTB.Text = Program.Search.Range.Start.X.ToString();
+                ZAtTB.Text = Program.Search.Range.Start.Z.ToString();
+                XToTB.Text = Program.Search.Range.End.X.ToString();
+                ZToTB.Text = Program.Search.Range.End.Z.ToString();
+                SearchElapsedTimeL.Text = $"Elapsed Time: {Program.Search.Progress.ElapsedTime.ToDescriptiveString()}";
+                SearchProgressL.Text = $"Progress: {(Program.Search.Progress.X == Program.Search.Progress.StartX ? "NaN" : Math.Round(Program.Search.Progress.GetPercent(), 2, MidpointRounding.AwayFromZero))}%";
                 RangeSizeL.Text = $"Size {Program.SearchRange.XSize}x{Program.SearchRange.ZSize}";
             }
         }

@@ -2,7 +2,7 @@
 
 namespace BedrockFinder;
 
-public partial class MainWindow : DHForm
+public partial class MainWindow : CForm
 {
     /// <summary>
     ///  Required designer variable.
@@ -65,9 +65,9 @@ public partial class MainWindow : DHForm
             this.YLevelSelectorTrB = new System.Windows.Forms.TrackBar();
             this.PatternCoordL = new System.Windows.Forms.Label();
             this.MainSettingsP = new System.Windows.Forms.Panel();
-            this.ContextSelectDHCB = new BedrockFinder.Libraries.DHComboBox();
-            this.VersionSelectDHCB = new BedrockFinder.Libraries.DHComboBox();
-            this.DeviceSelectDHCB = new BedrockFinder.Libraries.DHComboBox();
+            this.ContextSelectDHCB = new BedrockFinder.Libraries.CComboBox();
+            this.VersionSelectDHCB = new BedrockFinder.Libraries.CComboBox();
+            this.DeviceSelectDHCB = new BedrockFinder.Libraries.CComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.CanvasP = new System.Windows.Forms.Panel();
             this.CanvasSettingsP = new System.Windows.Forms.Panel();
@@ -134,7 +134,7 @@ public partial class MainWindow : DHForm
             this.MakeAsSmallAppB.Margin = new System.Windows.Forms.Padding(0);
             this.MakeAsSmallAppB.Name = "MakeAsSmallAppB";
             this.MakeAsSmallAppB.Size = new System.Drawing.Size(24, 15);
-            this.MakeAsSmallAppB.TabIndex = 1;
+            this.MakeAsSmallAppB.TabIndex = 0;
             this.MakeAsSmallAppB.TabStop = false;
             this.MakeAsSmallAppB.Text = " Try to find me";
             this.MakeAsSmallAppB.UseVisualStyleBackColor = false;
@@ -797,7 +797,7 @@ public partial class MainWindow : DHForm
     private Panel MainSettingsP;
     private Panel CanvasP;
     private Label label1;
-    private DHComboBox DeviceSelectDHCB;
+    private CComboBox DeviceSelectDHCB;
     private PictureBox ImportPatternPB;
     private PictureBox ExportPatternPB;
     private PictureBox PenP;
@@ -824,8 +824,8 @@ public partial class MainWindow : DHForm
     private PictureBox CopyFoundP;
     private PictureBox ExportWorldPatternPB;
     private PictureBox ImportWorldPatternPB;
-    private DHComboBox VersionSelectDHCB;
-    private DHComboBox ContextSelectDHCB;
+    private CComboBox VersionSelectDHCB;
+    private CComboBox ContextSelectDHCB;
     private Label PatternScoreL;
     private PictureBox BackToStartPatternPB;
     private Label SearchPredictedCountL;

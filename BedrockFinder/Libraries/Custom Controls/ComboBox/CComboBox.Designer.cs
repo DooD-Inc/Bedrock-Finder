@@ -1,4 +1,6 @@
-﻿partial class DHToolTips
+﻿namespace BedrockFinder.Libraries;
+
+partial class CComboBox
 {
     /// <summary> 
     /// Required designer variable.
@@ -26,7 +28,12 @@
     /// </summary>
     private void InitializeComponent()
     {
-        components = new System.ComponentModel.Container();
+        this.SuspendLayout();
+        // 
+        // DHComboBox
+        // 
+        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+        this.ResumeLayout(false);
     }
 
     #endregion
