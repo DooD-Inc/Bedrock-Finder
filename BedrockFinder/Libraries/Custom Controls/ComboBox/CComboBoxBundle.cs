@@ -9,10 +9,18 @@ public class CComboBoxBundle
 {
     public CComboBoxBundle(params CComboBox[] comboBoxes)
     {
-        comboBoxes.ToList().ForEach(z => z.Opened += OnOpened);
+        this.comboBoxes = comboBoxes;
+        this.comboBoxes.ToList().ForEach(z => z.Open += OnOpened);
     }
+    private CComboBox[] comboBoxes;
     private void OnOpened()
     {
-        
+        foreach(CComboBox ccbox in comboBoxes)
+        {
+            if (ccbox.open)
+            {
+                ccbox.Size = ccbox.ItemSize;
+            }
+        }
     }
 }

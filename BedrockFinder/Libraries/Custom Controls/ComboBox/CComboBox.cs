@@ -6,11 +6,11 @@ public partial class CComboBox : UserControl
 {
     public delegate void IndexChangeHandler(int index);
     public event IndexChangeHandler? IndexChange;
-    public delegate void OpenedHandler();
-    public event OpenedHandler? Opened;
+    public delegate void OpenHandler();
+    public event OpenHandler? Open;
     public List<string> Collection = new List<string>();
     private int hoveringIndex = -1;
-    private bool open;
+    public bool open;
     private int itemIndex = -1;
     private Graphics g;
     public CComboBox()
@@ -54,7 +54,7 @@ public partial class CComboBox : UserControl
             }
             else
             {
-                Opened?.Invoke();
+                Open?.Invoke();
                 ((Control)s).BringToFront();
                 Size = new Size(ItemSize.Width, ItemSize.Height + Collection.Count * TextRenderer.MeasureText("l", Font).Height);
                 Invalidate();

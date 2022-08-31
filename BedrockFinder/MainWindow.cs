@@ -1,5 +1,6 @@
 ﻿using BedrockFinder.BedrockFinderAPI;
 using BedrockFinder.Libraries;
+using BedrockFinder.Libraries.Custom_Controls;
 using static BedrockSearch;
 
 namespace BedrockFinder;
@@ -13,6 +14,7 @@ public partial class MainWindow : CForm
         Instance();
     }
     private CToolTips ToolTips;
+    private CComboBoxBundle ComboBoxBundle;
     private void ControlsInit()
     {
         Icon = SmallApp.Icon = Icon.ExtractAssociatedIcon(@".\Resources\AppIcon.ico");
@@ -59,6 +61,8 @@ public partial class MainWindow : CForm
         ContextSelectDHCB.Text = "Context: ";
         ContextSelectDHCB.ItemIndex = 0;
         ContextSelectDHCB.IndexChange += ContextChanged;
+
+        ComboBoxBundle = new CComboBoxBundle(DeviceSelectDHCB, VersionSelectDHCB, ContextSelectDHCB);
 
         SearchExportProgress.Round(20, false, true, false, false);
         SearchImportProgress.Round(20, true, false, false, false);
