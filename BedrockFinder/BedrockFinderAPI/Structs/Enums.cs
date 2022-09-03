@@ -1,11 +1,11 @@
-﻿global using static BedrockFinder.BedrockFinderAPI.Enums;
+﻿global using static BedrockFinder.BedrockFinderAPI.Structs.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BedrockFinder.BedrockFinderAPI;
+namespace BedrockFinder.BedrockFinderAPI.Structs;
 public static class Enums
 {
     public enum SearchDeviceType : byte
@@ -39,7 +39,7 @@ public static class Enums
         { WorldContext.Overworld, "Overworld" },
         { WorldContext.Lower_Nether, "Lower Nether" },
         { WorldContext.Higher_Nether, "Higher Nether" },
-    };  
+    };
     public enum WorldContext : byte
     {
         Overworld,

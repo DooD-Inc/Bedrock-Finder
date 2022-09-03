@@ -29,7 +29,13 @@
     <None Remove="Resources\ZoomOut.png" />
   </ItemGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<DOTNET_TieredPGO>1</DOTNET_TieredPGO>
+		<DOTNET_TC_QuickJitForLoops>1</DOTNET_TC_QuickJitForLoops>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
     <Content Include="Resources\AppIcon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -68,9 +74,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Amplifier">
-      <HintPath>..\..\Bedrock-Counter-v2\Amplifier.Net\bin\Debug\netstandard2.0\Amplifier.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\Bedrock-Counter-v2\Amplifier.Net\Amplifier.csproj" />
   </ItemGroup>
 
   <ItemGroup>

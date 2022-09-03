@@ -1,4 +1,5 @@
 ﻿using BedrockFinder.BedrockFinderAPI;
+using BedrockFinder.BedrockFinderAPI.Structs;
 using BedrockFinder.Libraries;
 using BedrockFinder.Libraries.Custom_Controls;
 using static BedrockSearch;
@@ -265,6 +266,8 @@ public partial class MainWindow : CForm
     {
         if (status == SearchStatus.PatternEdit || status == SearchStatus.Finish)
         {
+            if (Program.Search != null && !Program.Search.Searcher.CanStart)
+                return;
             if(Program.Pattern.CalculateScore() < 30)
             {
                 MessageBox.Show("not enough pattern score, minimum is 30");

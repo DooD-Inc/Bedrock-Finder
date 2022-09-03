@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BedrockFinder.BedrockFinderAPI;
+namespace BedrockFinder.BedrockFinderAPI.Structs;
 public abstract class BedrockSearcher
 {
     public BedrockSearcher(BedrockSearch parent)

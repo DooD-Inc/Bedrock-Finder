@@ -1,12 +1,12 @@
 ﻿using Substrate;
 using System.Collections;
 
-namespace BedrockFinder;
+namespace BedrockFinder.BedrockFinderAPI.Structs;
 public class ConfigManager
 {
     #region Pattern
     public static BedrockPattern ImportPatternAsBFP(string path) => ConvertBFPToPattern(File.ReadAllBytes(path));
-    public static void ExportPatternAsBFP(BedrockPattern pattern, string path) => File.WriteAllBytes(path, ConvertPatternToBFP(pattern));  
+    public static void ExportPatternAsBFP(BedrockPattern pattern, string path) => File.WriteAllBytes(path, ConvertPatternToBFP(pattern));
     public static BedrockPattern? ImportPatternAsWorld(string path)
     {
         string levelPath = Path.Combine(path, "level.dat");
@@ -41,7 +41,7 @@ public class ConfigManager
     public static BedrockPattern ConvertBFPToPattern(byte[] bytes)
     {
         BitArray bits = new BitArray(bytes);
-        BedrockPattern pattern = new BedrockPattern(32, 32, 1, 2, 3, 4); 
+        BedrockPattern pattern = new BedrockPattern(32, 32, 1, 2, 3, 4);
         for (byte y = 0; y < 4; y++)
             for (int z = 0; z < 32; z++)
                 for (int x = 0; x < 32; x++)
@@ -83,12 +83,12 @@ public class ConfigManager
             for (int z = -32; z < 32; z++)
             {
                 rcm.CreateChunk(x, z);
-               //chunk.IsTerrainPopulated = true; // is shit 👹👹👹👹👹👹👹👹👹👹 | Memory leak enjoyers uncomment it!
+                //chunk.IsTerrainPopulated = true; // is shit 👹👹👹👹👹👹👹👹👹👹 | Memory leak enjoyers uncomment it!
             }
         for (byte y = 1; y < 5; y++)
             for (int z = 0; z < 32; z++)
                 for (int x = 0; x < 32; x++)
-                    switch ((byte)pattern[y][x, z]) 
+                    switch ((byte)pattern[y][x, z])
                     {
                         case 1:
                             bm.SetID(x, y, z, 7);
@@ -96,7 +96,7 @@ public class ConfigManager
                         case 2:
                             bm.SetID(x, y, z, 1);
                             break;
-                    }        
+                    }
         for (int z = 0; z < 32; z++)
             for (int x = 0; x < 32; x++)
                 bm.SetID(x, 0, z, 7);
@@ -112,7 +112,7 @@ public class ConfigManager
         for (byte y = 1; y < 5; y++)
             for (int z = 0; z < 32; z++)
                 for (int x = 0; x < 32; x++)
-                    switch ((byte)bm.GetID(x, y, z)) 
+                    switch ((byte)bm.GetID(x, y, z))
                     {
                         case 0:
                             pattern[y][z, x] = BlockType.None;

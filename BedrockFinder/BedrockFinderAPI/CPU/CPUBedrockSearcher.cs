@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BedrockFinder.BedrockFinderAPI.Structs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BedrockFinder.BedrockFinderAPI;
+namespace BedrockFinder.BedrockFinderAPI.CPU;
 public class CPUBedrockSearcher : BedrockSearcher
 {
     public CPUBedrockSearcher(BedrockSearch parent) : base(parent)
@@ -28,6 +29,8 @@ public class CPUBedrockSearcher : BedrockSearcher
                     return;
                 }
             }
+            CanStart = true;
+            Working = false;
         }).Start();
     }
     private void CalculateChunk(in int x, in int z)
@@ -38,13 +41,18 @@ public class CPUBedrockSearcher : BedrockSearcher
             {
                 int exX = bX + incX,
                     exZ = bZ + incZ;
+                if (exX == 256 && exZ == 256)
+                {
+
+                }
                 foreach ((int bx, byte y, int bz, BlockType block) in Queue)
                 {
                     int sx = exX + bx, sz = exZ + bz;
-                    if (!Equals(block, Program.Gen.GetBlock(sx, y, sz, Program.Gen.GetChunk(sx >> 4, sz >> 4))))
+                    bool bedrock = Program.Gen.GetBlock(sx, y, sz, Program.Gen.GetChunk(sx >> 4, sz >> 4));
+                    if (!Equals(block, bedrock))
                         goto NextBlock;
                 }
-                Vec2i found = new Vec2i(Parent.Vector.CurrentPoint.x ? exX : (exX + Parent.TurnedPattern.SizeX - 1), Parent.Vector.CurrentPoint.y ? exZ : (exZ + Parent.TurnedPattern.SizeZ - 1));
+                Vec2i found = new Vec2i(Parent.Vector.CurrentPoint.x ? exX : exX + Parent.TurnedPattern.SizeX - 1, Parent.Vector.CurrentPoint.y ? exZ : exZ + Parent.TurnedPattern.SizeZ - 1);
                 lock (@lock)
                 {
                     Parent.Result.Add(found);
@@ -54,8 +62,8 @@ public class CPUBedrockSearcher : BedrockSearcher
             }
     }
     public MultiThreading MultiThreading = new MultiThreading(Environment.ProcessorCount);
-    private List<(int bx, byte y, int bz, BlockType block)> Queue;
     private bool Equals(BlockType block, bool isBedrock) => block == BlockType.Bedrock && isBedrock || block == BlockType.Stone && !isBedrock;
+    private List<(int bx, byte y, int bz, BlockType block)> Queue;
     private List<(byte y, BlockType block)> GetQueue()
     {
         List<(byte y, BlockType block)> queue = new List<(byte y, BlockType block)>();

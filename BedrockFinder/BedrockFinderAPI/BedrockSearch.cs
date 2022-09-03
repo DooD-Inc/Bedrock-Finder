@@ -1,5 +1,8 @@
 ﻿using BedrockFinder;
 using BedrockFinder.BedrockFinderAPI;
+using BedrockFinder.BedrockFinderAPI.CPU;
+using BedrockFinder.BedrockFinderAPI.GPU;
+using BedrockFinder.BedrockFinderAPI.Structs;
 
 public class BedrockSearch
 {
@@ -16,7 +19,7 @@ public class BedrockSearch
         }
         else
         {
-
+            Searcher = new KernelBedrockSearcher(this);
         }
         TurnPattern();
         InitTimer();

@@ -1,11 +1,13 @@
-using Amplifier;
-using BedrockFinder.BedrockFinderAPI;
+﻿using Amplifier;
+using BedrockFinder.BedrockFinderAPI.CPU;
+using BedrockFinder.BedrockFinderAPI.GPU;
 using BedrockFinder.Libraries;
-using static BedrockFinder.BedrockFinderAPI.CPUBedrockGens;
+using System.Runtime.InteropServices;
+using static BedrockFinder.BedrockFinderAPI.CPU.CPUBedrockGens;
 
 namespace BedrockFinder;
 
-public static class Program
+public static unsafe class Program
 {
     [STAThread]
     static void Main()
