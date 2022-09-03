@@ -13,7 +13,7 @@ public class Kernels
         public class OW : OpenCLFunctions
         {
             [OpenCLKernel]
-            public void CalculateChunk([Global] byte[] founds, int x, int minZ, int patternSize, [Global] byte[] patternX, [Global] byte[] patternY, [Global] byte[] patternZ, [Global] bool[] patternBedrock, [Global] long[] a, [Global] long[] b)
+            public void CalculateChunk([Global] byte[] founds, int x, int minZ, int patternSize, [Global] byte[] patternX, [Global] byte[] patternY, [Global] byte[] patternZ, [Global] byte[] patternBedrock, [Global] long[] a, [Global] long[] b)
             {
                 int thread = get_global_id(0);
                 int z = minZ + thread;
@@ -29,9 +29,9 @@ public class Kernels
                             int sx = exX + patternX[i], sz = exZ + patternZ[i];
                             int cpos = (((sz & 0xF) << 0x4) + (sx & 0xF) << 0x2) + patternY[i];
                             bool block = ((((sx >> 4) * 0x4F9939F508 + (sz >> 4) * 0x1EF1565BD5 ^ 0x5DEECE66D) * a[cpos] + b[cpos] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= patternY[i];
-                            if (!((block && patternBedrock[i]) || (!block && !patternBedrock[i])))
+                            if (!((block && patternBedrock[i] == 1) || (!block && patternBedrock[i] == 0)))
                             {
-                                founds[thread] = 1;
+                                founds[thread] = 0;
                                 broken = true;
                             }
                         }

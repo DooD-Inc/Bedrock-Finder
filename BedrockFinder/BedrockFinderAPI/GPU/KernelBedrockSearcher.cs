@@ -81,13 +81,13 @@ public class KernelBedrockSearcher : BedrockSearcher
         kernelQBX = Queue.Select(z => z.bx).ToArray();
         kernelQY = Queue.Select(z => z.y).ToArray();
         kernelQBZ = Queue.Select(z => z.bz).ToArray();
-        kernelQBlock = Queue.Select(z => z.block).ToArray();
+        kernelQBlock = Queue.Select(z => (byte)(z.block ? 1 : 0)).ToArray();
     }
     private List<(byte bx, byte y, byte bz, bool block)> Queue;
     private byte[] kernelQBX;
     private byte[] kernelQY;
     private byte[] kernelQBZ;
-    private bool[] kernelQBlock;
+    private byte[] kernelQBlock;
     private List<(byte y, bool block)> GetQueue()
     {
         List<(byte y, bool block)> queue = new List<(byte y, bool block)>();
