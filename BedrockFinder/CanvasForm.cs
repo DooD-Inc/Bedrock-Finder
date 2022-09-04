@@ -61,13 +61,16 @@ public partial class CanvasForm : Form
     private void DrawVectors()
     {
         FastBitmap bitmap = new FastBitmap((Bitmap)BackgroundImage);
-        for (int i = 0; i < 544; i++)
+        for (int i = 5; i < 544; i++)
         {
-            bitmap.SetPixel(25, i + 5, Color.FromArgb(30, 30, 30));
             bitmap.SetPixel(i + 25, 573, Color.FromArgb(30, 30, 30));
-            bitmap.SetPixel(573 + 5, 548, Color.FromArgb(30, 30, 30));
             bitmap.SetPixel(i + 25, 548, Color.FromArgb(30, 30, 30));
-        }        
+        }
+        for (int i = 5; i < 544; i++)
+        {
+            bitmap.SetPixel(25, i, Color.FromArgb(30, 30, 30));
+            bitmap.SetPixel(i + 25, 548, Color.FromArgb(30, 30, 30));
+        }
         BackgroundImage = bitmap.GetResult();
     }
     public void DrawPointers()

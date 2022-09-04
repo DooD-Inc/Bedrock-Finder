@@ -25,8 +25,6 @@ public class KernelBedrockSearcher : BedrockSearcher
             for (int x = Parent.Progress.X; x < Parent.Range.CEnd.X; x++)
             {
                 founds = Enumerable.Repeat((byte)0, (int)Parent.Range.ZCSize).ToArray();
-                //for(int i = 0; i < Parent.Range.ZCSize; i++)
-                    //CalculateChunk(i, founds, x, (int)Parent.Range.CStart.Z, kernelQBlock.Length, kernelQBX, kernelQY, kernelQBZ, kernelQBlock, ChunkСache.OW_12_A, ChunkСache.OW_12_B);
                 compiler.Execute("CalculateChunk", founds, x, (int)Parent.Range.CStart.Z, kernelQBlock.Length, kernelQBX, kernelQY, kernelQBZ, kernelQBlock, ChunkСache.OW_12_A, ChunkСache.OW_12_B);
                 Parent.Progress.X++;
                 Parent.InvokeUpdateProgress(Parent.Progress.GetPercent());
@@ -46,34 +44,6 @@ public class KernelBedrockSearcher : BedrockSearcher
             }
             CanStart = true;
         }).Start();
-    }
-    public void CalculateChunk(int thread, byte[] founds, int x, int minZ, int patternSize, byte[] patternX, byte[] patternY, byte[] patternZ, bool[] patternBedrock, long[] a, long[] b)
-    {
-        int z = minZ + thread;
-        int bX = x << 4, bZ = z << 4;
-        for (int incX = 0; incX < 16; incX++)
-            for (int incZ = 0; incZ < 16; incZ++)
-            {
-                int exX = bX + incX, exZ = bZ + incZ;
-                if(exX == 256 && exZ == 256)
-                {
-
-                }
-                founds[thread] = 0;
-                for (int i = 0; i < patternSize; i++)
-                {
-                    int sx = exX + patternX[i], sz = exZ + patternZ[i];
-                    int cpos = (((sz & 0xF) << 0x4) + (sx & 0xF) << 0x2) + patternY[i];
-                    bool block = ((((sx >> 4) * 0x4F9939F508 + (sz >> 4) * 0x1EF1565BD5 ^ 0x5DEECE66D) * a[cpos] + b[cpos] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= patternY[i];
-                    if (!(block && patternBedrock[i] || !block && !patternBedrock[i]))
-                    {
-                        founds[thread] = 1;
-                        continue;
-                    }
-                }
-                if (founds[thread] == 1)
-                    return;
-            }
     }
     public void UpdateQueue()
     {

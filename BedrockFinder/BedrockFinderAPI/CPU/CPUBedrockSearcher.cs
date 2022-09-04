@@ -18,8 +18,6 @@ public class CPUBedrockSearcher : BedrockSearcher
             Working = true;
             CanStart = false;
             Queue = GetQueue().Select(z => Parent.TurnedPattern[z.y].blockList.Where(x => x.block == z.block).Select(x => (x.x, z.y, x.z, z.block))).Aggregate((a, b) => a.Concat(b)).ToList();
-            //if (Program.Gen.Context == WorldContext.Higher_Nether)
-                //Queue = Queue.Select(z => (bx: z.bx, by: (byte)(z.y + 123), bz: z.bz, block: z.block)).ToList();
             for (int x = Parent.Progress.X; x < Parent.Range.CEnd.X; x++)
             {
                 Parallel.For((int)Parent.Range.CStart.Z, (int)Parent.Range.CEnd.Z, MultiThreading.ParallelOptions, z => CalculateChunk(x, z));
@@ -41,12 +39,7 @@ public class CPUBedrockSearcher : BedrockSearcher
         for (int incX = 0; incX < 16; incX++)
             for (int incZ = 0; incZ < 16; incZ++)
             {
-                int exX = bX + incX,
-                    exZ = bZ + incZ;
-                if (exX == 256 && exZ == 256)
-                {
-
-                }
+                int exX = bX + incX, exZ = bZ + incZ;
                 foreach ((int bx, byte y, int bz, BlockType block) in Queue)
                 {
                     int sx = exX + bx, sz = exZ + bz;
@@ -60,7 +53,7 @@ public class CPUBedrockSearcher : BedrockSearcher
                     Parent.Result.Add(found);
                     Parent.InvokeFound(found);
                 }
-            NextBlock: { }
+                NextBlock: { }
             }
     }
     public MultiThreading MultiThreading = new MultiThreading(Environment.ProcessorCount);

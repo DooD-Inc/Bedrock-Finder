@@ -26,8 +26,7 @@ public static unsafe class Program
     {
         new v12.OW(),
         new v13.OW(), new v13.LN(), new v13.HN(),
-        new v14.OW(), new v14.LN(), new v14.HN(),
-        new v15.OW(), new v15.LN(), new v15.HN(),
+        new v14v15v16v17.OW(), new v14v15v16v17.LN(), new v14v15v16v17.HN(),
     };
     public static BedrockGen Gen = BedrockGens[0];
 }

@@ -26,6 +26,8 @@ public static class Enums
         { MinecraftVersion.v13, "1.13" },
         { MinecraftVersion.v14, "1.14" },
         { MinecraftVersion.v15, "1.15" },
+        { MinecraftVersion.v16, "1.16" },
+        { MinecraftVersion.v17, "1.17" },
     };
     public enum MinecraftVersion : byte
     {
@@ -33,6 +35,8 @@ public static class Enums
         v13,
         v14,
         v15,
+        v16,
+        v17
     }
     public static Dictionary<WorldContext, string> WorldContexts = new Dictionary<WorldContext, string>()
     {

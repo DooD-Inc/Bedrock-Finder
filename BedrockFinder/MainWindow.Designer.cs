@@ -107,7 +107,7 @@ public partial class MainWindow : CForm
             this.CloseB.FlatAppearance.BorderSize = 0;
             this.CloseB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseB.ForeColor = System.Drawing.Color.Silver;
-            this.CloseB.Location = new System.Drawing.Point(890, 0);
+            this.CloseB.Location = new System.Drawing.Point(886, 0);
             this.CloseB.Margin = new System.Windows.Forms.Padding(0);
             this.CloseB.Name = "CloseB";
             this.CloseB.Size = new System.Drawing.Size(24, 24);
@@ -130,7 +130,7 @@ public partial class MainWindow : CForm
             this.MakeAsSmallAppB.FlatAppearance.BorderSize = 0;
             this.MakeAsSmallAppB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MakeAsSmallAppB.ForeColor = System.Drawing.Color.Silver;
-            this.MakeAsSmallAppB.Location = new System.Drawing.Point(866, 9);
+            this.MakeAsSmallAppB.Location = new System.Drawing.Point(862, 9);
             this.MakeAsSmallAppB.Margin = new System.Windows.Forms.Padding(0);
             this.MakeAsSmallAppB.Name = "MakeAsSmallAppB";
             this.MakeAsSmallAppB.Size = new System.Drawing.Size(24, 15);
@@ -160,7 +160,7 @@ public partial class MainWindow : CForm
             this.MainDisplayP.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MainDisplayP.Location = new System.Drawing.Point(0, 24);
             this.MainDisplayP.Name = "MainDisplayP";
-            this.MainDisplayP.Size = new System.Drawing.Size(914, 452);
+            this.MainDisplayP.Size = new System.Drawing.Size(910, 452);
             this.MainDisplayP.TabIndex = 2;
             // 
             // RangeSizeL
@@ -185,7 +185,7 @@ public partial class MainWindow : CForm
             this.RangeP.Controls.Add(this.XAtTB);
             this.RangeP.Controls.Add(this.XToL);
             this.RangeP.Controls.Add(this.XAtToL);
-            this.RangeP.Location = new System.Drawing.Point(254, 361);
+            this.RangeP.Location = new System.Drawing.Point(258, 361);
             this.RangeP.Name = "RangeP";
             this.RangeP.Size = new System.Drawing.Size(253, 75);
             this.RangeP.TabIndex = 12;
@@ -364,9 +364,9 @@ public partial class MainWindow : CForm
             this.SearchManageP.Controls.Add(this.SearchImportProgress);
             this.SearchManageP.Controls.Add(this.SearchExportProgress);
             this.SearchManageP.Controls.Add(this.SearchB);
-            this.SearchManageP.Location = new System.Drawing.Point(254, 107);
+            this.SearchManageP.Location = new System.Drawing.Point(258, 107);
             this.SearchManageP.Name = "SearchManageP";
-            this.SearchManageP.Size = new System.Drawing.Size(257, 63);
+            this.SearchManageP.Size = new System.Drawing.Size(253, 63);
             this.SearchManageP.TabIndex = 23;
             // 
             // SearchResetProgress
@@ -452,9 +452,9 @@ public partial class MainWindow : CForm
             this.SearchInfoP.Controls.Add(this.SearchElapsedTimeL);
             this.SearchInfoP.Controls.Add(this.SearchStatusL);
             this.SearchInfoP.Controls.Add(this.SearchProgressL);
-            this.SearchInfoP.Location = new System.Drawing.Point(254, 10);
+            this.SearchInfoP.Location = new System.Drawing.Point(258, 10);
             this.SearchInfoP.Name = "SearchInfoP";
-            this.SearchInfoP.Size = new System.Drawing.Size(257, 91);
+            this.SearchInfoP.Size = new System.Drawing.Size(253, 91);
             this.SearchInfoP.TabIndex = 19;
             // 
             // SearchPredictedCountL
@@ -559,7 +559,7 @@ public partial class MainWindow : CForm
             this.MainSettingsP.Controls.Add(this.ContextSelectDHCB);
             this.MainSettingsP.Controls.Add(this.VersionSelectDHCB);
             this.MainSettingsP.Controls.Add(this.DeviceSelectDHCB);
-            this.MainSettingsP.Location = new System.Drawing.Point(254, 176);
+            this.MainSettingsP.Location = new System.Drawing.Point(258, 176);
             this.MainSettingsP.Name = "MainSettingsP";
             this.MainSettingsP.Size = new System.Drawing.Size(253, 180);
             this.MainSettingsP.TabIndex = 6;
@@ -753,7 +753,7 @@ public partial class MainWindow : CForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Lime;
-            this.ClientSize = new System.Drawing.Size(914, 476);
+            this.ClientSize = new System.Drawing.Size(910, 476);
             this.Controls.Add(this.MainDisplayP);
             this.Controls.Add(this.MakeAsSmallAppB);
             this.Controls.Add(this.CloseB);
