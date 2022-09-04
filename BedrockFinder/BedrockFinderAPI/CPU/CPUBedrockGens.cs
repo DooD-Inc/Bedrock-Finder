@@ -77,7 +77,7 @@ public unsafe class CPUBedrockGens
             public override bool GetBlock(in int x, in byte y, in int z, in long cs)
             {
                 bool found = false;
-                foreach ((long a, long b) abobus in HN_13[(((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y])
+                foreach ((long a, long b) abobus in HN_13[(((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + Math.Abs(4 - y) + 1])
                     found = found || ((cs * abobus.a + abobus.b & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y;
                 return found;
             }

@@ -18,6 +18,8 @@ public class CPUBedrockSearcher : BedrockSearcher
             Working = true;
             CanStart = false;
             Queue = GetQueue().Select(z => Parent.TurnedPattern[z.y].blockList.Where(x => x.block == z.block).Select(x => (x.x, z.y, x.z, z.block))).Aggregate((a, b) => a.Concat(b)).ToList();
+            //if (Program.Gen.Context == WorldContext.Higher_Nether)
+                //Queue = Queue.Select(z => (bx: z.bx, by: (byte)(z.y + 123), bz: z.bz, block: z.block)).ToList();
             for (int x = Parent.Progress.X; x < Parent.Range.CEnd.X; x++)
             {
                 Parallel.For((int)Parent.Range.CStart.Z, (int)Parent.Range.CEnd.Z, MultiThreading.ParallelOptions, z => CalculateChunk(x, z));

@@ -434,9 +434,10 @@ public partial class MainWindow : CForm
         bool newContextIsNormal = Program.ContextIndex != (int)WorldContext.Higher_Nether;
         bool nowContextIsNormal = YLevelL.Text.Length == 3;
         if(newContextIsNormal != nowContextIsNormal)
-        {
             YLevelL.Text = $"({(newContextIsNormal ? (canvas.YLevel) : (canvas.YLevel + 122))})";
-        }
+        Program.Gen = Program.BedrockGens.Find(z => 
+        z.Context == WorldContexts.Keys.Select(z => z).ToList()[Program.ContextIndex] &&
+        z.Version == MinecraftVersions.Keys.Select(z => z).ToList()[Program.VersionIndex]);
     }
     private void VersionChanged(int index)
     {
