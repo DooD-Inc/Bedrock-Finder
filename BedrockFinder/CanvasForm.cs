@@ -120,9 +120,7 @@ public partial class CanvasForm : Form
         }
         else
         {
-            Bitmap bitmap = (Bitmap)BackgroundImage;
-            StoneFamilyBlock.DrawVectorBlock(ref bitmap, new Point(30 + xc * 17 + 1, yc * 17 + 1), block, Vector);
-            BackgroundImage = bitmap;
+            BackgroundImage = BlockRenderer.DrawBlock((Bitmap)BackgroundImage, new Point(30 + xc * 17 + 1, yc * 17 + 1), block, Vector);
         }
 
         Invalidate();

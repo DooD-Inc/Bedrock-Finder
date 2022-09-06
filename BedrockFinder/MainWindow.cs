@@ -94,9 +94,9 @@ public partial class MainWindow : CForm
         ToolTips = new CToolTips(new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point));
         ControlsInit();
         ShowInit();
-        
-        PenP.BackgroundImage = StoneFamilyBlock.DrawVectorPen(BlockType.Bedrock, canvas.Vector);
+        DrawPen();
     }
+    private void DrawPen() => PenP.Image = BlockRenderer.DrawBlock(new Point(0, 0), canvas.PenType, canvas.Vector, 2);
     private void CloseB_Click(object sender, EventArgs e) => Environment.Exit(0);
     private void MakeAsSmallAppB_Click(object sender, EventArgs e)
     {
@@ -227,7 +227,7 @@ public partial class MainWindow : CForm
         canvas.DrawPointers();
         canvas.OverDraw();
         canvas.Invalidate();
-        PenP.Image = StoneFamilyBlock.DrawVectorPen(canvas.PenType, canvas.Vector);
+        DrawPen();
     }
     private void LeftTurnPB_Click(object sender, EventArgs e)
     {
@@ -235,11 +235,11 @@ public partial class MainWindow : CForm
         canvas.DrawPointers();
         canvas.OverDraw();
         canvas.Invalidate();
-        PenP.Image = StoneFamilyBlock.DrawVectorPen(canvas.PenType, canvas.Vector);
+        DrawPen();
     }
     private void YLevelSelectorTrB_Scroll(object sender, EventArgs e)
     {
-        YLevelL.Text = $"({(ContextSelectDHCB.ItemIndex != (int)WorldContext.Higher_Nether ? YLevelSelectorTrB.Value : (YLevelSelectorTrB.Value + 122))})";
+        YLevelL.Text = $"({(ContextSelectDHCB.ItemIndex != (int)WorldContext.Higher_Nether ? YLevelSelectorTrB.Value : (127 - YLevelSelectorTrB.Value))})";
         canvas.UnDraw();
         canvas.YLevel = (byte)YLevelSelectorTrB.Value;
         canvas.OverDraw();
@@ -249,13 +249,13 @@ public partial class MainWindow : CForm
     {
         if (canvas.PenType == BlockType.Bedrock)
         {
-            PenP.Image = StoneFamilyBlock.DrawVectorPen(BlockType.Stone, canvas.Vector);
             canvas.PenType = BlockType.Stone;
+            DrawPen();
         }
         else
         {
-            PenP.Image = StoneFamilyBlock.DrawVectorPen(BlockType.Bedrock, canvas.Vector);
             canvas.PenType = BlockType.Bedrock;
+            DrawPen();
         }
     }
     #endregion
@@ -434,10 +434,12 @@ public partial class MainWindow : CForm
         bool newContextIsNormal = Program.ContextIndex != (int)WorldContext.Higher_Nether;
         bool nowContextIsNormal = YLevelL.Text.Length == 3;
         if(newContextIsNormal != nowContextIsNormal)
-            YLevelL.Text = $"({(newContextIsNormal ? (canvas.YLevel) : (canvas.YLevel + 122))})";
+            YLevelL.Text = $"({(newContextIsNormal ? (canvas.YLevel) : (127 - canvas.YLevel))})";
         Program.Gen = Program.BedrockGens.Find(z => 
         z.Context == WorldContexts.Keys.Select(z => z).ToList()[Program.ContextIndex] &&
         z.Versions.Contains(MinecraftVersions.Keys.Select(z => z).ToList()[Program.VersionIndex]));
+        canvas.OverDraw();
+        DrawPen();
     }
     private void VersionChanged(int index)
     {

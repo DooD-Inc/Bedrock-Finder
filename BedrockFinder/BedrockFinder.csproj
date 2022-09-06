@@ -36,9 +36,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-    <Content Include="Resources\AppIcon.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Resources\AppIcon.ico" />
     <Content Include="Resources\Copy.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
