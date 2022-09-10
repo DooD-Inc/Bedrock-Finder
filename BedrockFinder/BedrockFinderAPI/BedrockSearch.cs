@@ -13,14 +13,7 @@ public class BedrockSearch
         Progress = progress;
         Result = result;
         Vector = vector;
-        if (type == SearchDeviceType.CPU)
-        {
-            Searcher = new CPUBedrockSearcher(this);
-        }
-        else
-        {
-            Searcher = new KernelBedrockSearcher(this);
-        }
+        Searcher = type == SearchDeviceType.CPU ? new CPUBedrockSearcher(this) : new GPUBedrockSearcher(this);
         TurnPattern();
         InitTimer();
     }

@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BedrockFinder.BedrockFinderAPI.GPU;
-public class KernelBedrockSearcher : BedrockSearcher
+public class GPUBedrockSearcher : BedrockSearcher
 {
-    public KernelBedrockSearcher(BedrockSearch parent) : base(parent) { }
+    public GPUBedrockSearcher(BedrockSearch parent) : base(parent) { }
     private OpenCLCompiler compiler = new OpenCLCompiler();
     private byte[] founds;
     public override void Start()
@@ -20,12 +20,15 @@ public class KernelBedrockSearcher : BedrockSearcher
             Working = true;
             CanStart = false;
             compiler.UseDevice(Program.DeviceIndex - 1);
-            compiler.CompileKernel(typeof(Kernels.v12.OW));
+            compiler.CompileKernel(Program.GPUCalc.Kernel);
             UpdateQueue();
             for (int x = Parent.Progress.X; x < Parent.Range.CEnd.X; x++)
             {
                 founds = Enumerable.Repeat((byte)0, (int)Parent.Range.ZCSize).ToArray();
-                compiler.Execute("CalculateChunk", founds, x, (int)Parent.Range.CStart.Z, kernelQBlock.Length, kernelQBX, kernelQY, kernelQBZ, kernelQBlock, ChunkСache.OW_12_A, ChunkСache.OW_12_B);
+                if(Program.GPUCalc.Versions.Contains(MinecraftVersion.v13))
+                    compiler.Execute("CalculateChunk", founds, x, (int)Parent.Range.CStart.Z, kernelQBlock.Length, kernelQBX, kernelQY, kernelQBZ, kernelQBlock, Program.GPUCalc.A);
+                else
+                    compiler.Execute("CalculateChunk", founds, x, (int)Parent.Range.CStart.Z, kernelQBlock.Length, kernelQBX, kernelQY, kernelQBZ, kernelQBlock, Program.GPUCalc.A, Program.GPUCalc.B);
                 Parent.Progress.X++;
                 Parent.InvokeUpdateProgress(Parent.Progress.GetPercent());
                 founds.Select((z, i) => (z, i)).Where(z => z.z == 1).ToList().ForEach(z =>

@@ -1,8 +1,6 @@
-﻿using BedrockFinder.BedrockFinderAPI;
-using BedrockFinder.BedrockFinderAPI.Structs;
+﻿using BedrockFinder.BedrockFinderAPI.Structs;
 using BedrockFinder.Libraries;
 using BedrockFinder.Libraries.Custom_Controls;
-using static BedrockSearch;
 
 namespace BedrockFinder;
 
@@ -427,7 +425,7 @@ public partial class MainWindow : CForm
         };
         DeviceSelectDHCB.Collection.AddRange(Program.Devices.Select(z => "K -> " + z.Name));
         VersionSelectDHCB.Collection = MinecraftVersions.ToList().Select(z => z.Value).ToList();
-        ContextSelectDHCB.Collection = Program.BedrockGens.Where(z => z.Versions.Contains(MinecraftVersions.Keys.ToList()[Program.VersionIndex])).Select(z => WorldContexts[z.Context]).Distinct().ToList();
+        ContextSelectDHCB.Collection = Program.CPUBedrockGens.Where(z => z.Versions.Contains(MinecraftVersions.Keys.ToList()[Program.VersionIndex])).Select(z => WorldContexts[z.Context]).Distinct().ToList();
     }
     public void ChangedContext()
     {
@@ -435,9 +433,18 @@ public partial class MainWindow : CForm
         bool nowContextIsNormal = YLevelL.Text.Length == 3;
         if(newContextIsNormal != nowContextIsNormal)
             YLevelL.Text = $"({(newContextIsNormal ? (canvas.YLevel) : (127 - canvas.YLevel))})";
-        Program.Gen = Program.BedrockGens.Find(z => 
-        z.Context == WorldContexts.Keys.Select(z => z).ToList()[Program.ContextIndex] &&
-        z.Versions.Contains(MinecraftVersions.Keys.Select(z => z).ToList()[Program.VersionIndex]));
+        if(Program.DeviceIndex == 0)
+        {
+            Program.CPUGen = Program.CPUBedrockGens.Find(z =>
+            z.Context == WorldContexts.Keys.Select(z => z).ToList()[Program.ContextIndex] &&
+            z.Versions.Contains(MinecraftVersions.Keys.Select(z => z).ToList()[Program.VersionIndex]));
+        }
+        else
+        {
+            Program.GPUCalc = Program.GPUChunkCalcs.Find(z => 
+            z.Context == WorldContexts.Keys.Select(z => z).ToList()[Program.ContextIndex] &&
+            z.Versions.Contains(MinecraftVersions.Keys.Select(z => z).ToList()[Program.VersionIndex]));
+        }
         canvas.OverDraw();
         DrawPen();
     }
@@ -446,7 +453,7 @@ public partial class MainWindow : CForm
         if (Program.VersionIndex == index)
             return;
         Program.VersionIndex = index;
-        ContextSelectDHCB.Collection = Program.BedrockGens.Where(z => z.Versions.Contains(MinecraftVersions.Keys.ToList()[index])).Select(z => WorldContexts[z.Context]).Distinct().ToList();
+        ContextSelectDHCB.Collection = Program.CPUBedrockGens.Where(z => z.Versions.Contains(MinecraftVersions.Keys.ToList()[index])).Select(z => WorldContexts[z.Context]).Distinct().ToList();
         Program.ContextIndex = ContextSelectDHCB.ItemIndex = 0;
         ChangedContext();
     }

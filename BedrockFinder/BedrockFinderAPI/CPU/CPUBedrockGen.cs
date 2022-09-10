@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BedrockFinder.BedrockFinderAPI.CPU;
-public abstract class BedrockGen
+public abstract class CPUBedrockGen
 {
-    public BedrockGen(WorldContext context, params MinecraftVersion[] versions)
+    public CPUBedrockGen(WorldContext context, params MinecraftVersion[] versions)
     {
         Versions = versions;
         Context = context;

@@ -43,7 +43,7 @@ public class CPUBedrockSearcher : BedrockSearcher
                 foreach ((int bx, byte y, int bz, BlockType block) in Queue)
                 {
                     int sx = exX + bx, sz = exZ + bz;
-                    bool bedrock = Program.Gen.GetBlock(sx, y, sz, Program.Gen.GetChunk(sx >> 4, sz >> 4));
+                    bool bedrock = Program.CPUGen.GetBlock(sx, y, sz, Program.CPUGen.GetChunk(sx >> 4, sz >> 4));
                     if (!Equals(block, bedrock))
                         goto NextBlock;
                 }
@@ -53,7 +53,7 @@ public class CPUBedrockSearcher : BedrockSearcher
                     Parent.Result.Add(found);
                     Parent.InvokeFound(found);
                 }
-                NextBlock: { }
+            NextBlock: { }
             }
     }
     public MultiThreading MultiThreading = new MultiThreading(Environment.ProcessorCount);

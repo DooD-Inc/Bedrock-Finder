@@ -1,0 +1,24 @@
+﻿using static ChunkСache;
+using static BedrockFinder.BedrockFinderAPI.Structs.Enums.WorldContext;
+using System.Runtime.InteropServices;
+
+namespace BedrockFinder.BedrockFinderAPI.GPU;
+public static unsafe class GPUChunkCalcs
+{
+    public static class v12
+    {
+        public class OW : GPUChunkCalc { public OW() : base(typeof(Kernels.v12.OW), Overworld, MinecraftVersion.v12) { A = OW_12_A; B = OW_12_B; } }
+    }
+    public static class v13
+    {
+        public class OW : GPUChunkCalc { public OW() : base(typeof(Kernels.v13.OW), Overworld, MinecraftVersion.v13) { A = K_OW_13; } }
+        public class LN : GPUChunkCalc { public LN() : base(typeof(Kernels.v13.LN), Overworld, MinecraftVersion.v13) { A = null; } }
+        public class HN : GPUChunkCalc { public HN() : base(typeof(Kernels.v13.HN), Overworld, MinecraftVersion.v13) { A = null; } }
+    }
+    public static class v14v15v16v17
+    {
+        public class OW : GPUChunkCalc { public OW() : base(typeof(Kernels.v14v15v16v17.OW), Overworld, MinecraftVersion.v14, MinecraftVersion.v15, MinecraftVersion.v16, MinecraftVersion.v17) { A = OW_14_A; B = OW_14_B; } }
+        public class LN : GPUChunkCalc { public LN() : base(typeof(Kernels.v14v15v16v17.LN), Overworld, MinecraftVersion.v14, MinecraftVersion.v15, MinecraftVersion.v16, MinecraftVersion.v17) { A = LN_14_A; B = LN_14_B; } }
+        public class HN : GPUChunkCalc { public HN() : base(typeof(Kernels.v14v15v16v17.HN), Overworld, MinecraftVersion.v14, MinecraftVersion.v15, MinecraftVersion.v16, MinecraftVersion.v17) { A = HN_14_A; B = HN_14_B; } }
+    }
+}
