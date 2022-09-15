@@ -9,11 +9,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	<PublishSingleFile>true</PublishSingleFile>
-	<Platforms>AnyCPU;x64</Platforms>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <Optimize>True</Optimize>
+	<Platforms>x64</Platforms>
+	<Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +21,8 @@
     <None Remove="Resources\Import.png" />
     <None Remove="Resources\ImportWorld.png" />
     <None Remove="Resources\LeftTurn.png" />
+    <None Remove="Resources\MagnifyingIn.png" />
+    <None Remove="Resources\MagnifyingOut.png" />
     <None Remove="Resources\RightTurn.png" />
     <None Remove="Resources\Trash.png" />
     <None Remove="Resources\ZoomOut.png" />
@@ -53,6 +52,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\LeftTurn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MagnifyingIn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MagnifyingOut.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\RightTurn.png">

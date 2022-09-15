@@ -10,13 +10,14 @@ namespace BedrockFinder;
 
 public static unsafe class Program
 {
+    public const string ProgramVersion = "1.0.0v";
     [STAThread]
     static void Main()
     {
         ApplicationConfiguration.Initialize();
-        _ = ChunkСache.OW_13;
         Application.Run(MainWindow = new MainWindow());
     }
+    public static Random Random = new Random();
     public static MainWindow MainWindow;
     public static IntPtr FormHandle = IntPtr.Zero;
     public static int DeviceIndex, ContextIndex, VersionIndex;

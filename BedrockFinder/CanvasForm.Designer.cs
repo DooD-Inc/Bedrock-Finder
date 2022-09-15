@@ -38,7 +38,6 @@ partial class CanvasForm
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CanvasForm";
             this.Text = "CanvasForm";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.CanvasForm_Paint);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CanvasForm_MouseClick);
             this.ResumeLayout(false);
 

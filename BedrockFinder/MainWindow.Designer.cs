@@ -68,9 +68,10 @@ public partial class MainWindow : CForm
             this.ContextSelectDHCB = new BedrockFinder.Libraries.CComboBox();
             this.VersionSelectDHCB = new BedrockFinder.Libraries.CComboBox();
             this.DeviceSelectDHCB = new BedrockFinder.Libraries.CComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.AboutLNoRelocate = new System.Windows.Forms.Label();
             this.CanvasP = new System.Windows.Forms.Panel();
             this.CanvasSettingsP = new System.Windows.Forms.Panel();
+            this.ChangeZoomPB = new System.Windows.Forms.PictureBox();
             this.BackToStartPatternPB = new System.Windows.Forms.PictureBox();
             this.ExportWorldPatternPB = new System.Windows.Forms.PictureBox();
             this.ImportWorldPatternPB = new System.Windows.Forms.PictureBox();
@@ -90,6 +91,7 @@ public partial class MainWindow : CForm
             ((System.ComponentModel.ISupportInitialize)(this.YLevelSelectorTrB)).BeginInit();
             this.MainSettingsP.SuspendLayout();
             this.CanvasSettingsP.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ChangeZoomPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BackToStartPatternPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExportWorldPatternPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImportWorldPatternPB)).BeginInit();
@@ -105,6 +107,8 @@ public partial class MainWindow : CForm
             // 
             this.CloseB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.CloseB.FlatAppearance.BorderSize = 0;
+            this.CloseB.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.CloseB.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.CloseB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseB.ForeColor = System.Drawing.Color.Silver;
             this.CloseB.Location = new System.Drawing.Point(886, 0);
@@ -128,6 +132,8 @@ public partial class MainWindow : CForm
             // 
             this.MakeAsSmallAppB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.MakeAsSmallAppB.FlatAppearance.BorderSize = 0;
+            this.MakeAsSmallAppB.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.MakeAsSmallAppB.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.MakeAsSmallAppB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MakeAsSmallAppB.ForeColor = System.Drawing.Color.Silver;
             this.MakeAsSmallAppB.Location = new System.Drawing.Point(862, 9);
@@ -154,7 +160,7 @@ public partial class MainWindow : CForm
             this.MainDisplayP.Controls.Add(this.YLevelSelectorTrB);
             this.MainDisplayP.Controls.Add(this.PatternCoordL);
             this.MainDisplayP.Controls.Add(this.MainSettingsP);
-            this.MainDisplayP.Controls.Add(this.label1);
+            this.MainDisplayP.Controls.Add(this.AboutLNoRelocate);
             this.MainDisplayP.Controls.Add(this.CanvasP);
             this.MainDisplayP.Controls.Add(this.CanvasSettingsP);
             this.MainDisplayP.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -609,15 +615,18 @@ public partial class MainWindow : CForm
             this.DeviceSelectDHCB.Size = new System.Drawing.Size(245, 28);
             this.DeviceSelectDHCB.TabIndex = 9;
             // 
-            // label1
+            // AboutLNoRelocate
             // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
-            this.label1.Location = new System.Drawing.Point(3, 436);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 15);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Made by Yotic";
+            this.AboutLNoRelocate.AutoSize = true;
+            this.AboutLNoRelocate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.AboutLNoRelocate.ForeColor = System.Drawing.Color.DarkGray;
+            this.AboutLNoRelocate.Location = new System.Drawing.Point(3, 435);
+            this.AboutLNoRelocate.Name = "AboutLNoRelocate";
+            this.AboutLNoRelocate.Size = new System.Drawing.Size(42, 16);
+            this.AboutLNoRelocate.TabIndex = 8;
+            this.AboutLNoRelocate.Tag = "";
+            this.AboutLNoRelocate.Text = "About";
+            this.AboutLNoRelocate.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AboutL_MouseClick);
             // 
             // CanvasP
             // 
@@ -631,6 +640,7 @@ public partial class MainWindow : CForm
             // CanvasSettingsP
             // 
             this.CanvasSettingsP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.CanvasSettingsP.Controls.Add(this.ChangeZoomPB);
             this.CanvasSettingsP.Controls.Add(this.BackToStartPatternPB);
             this.CanvasSettingsP.Controls.Add(this.ExportWorldPatternPB);
             this.CanvasSettingsP.Controls.Add(this.ImportWorldPatternPB);
@@ -645,6 +655,17 @@ public partial class MainWindow : CForm
             this.CanvasSettingsP.Name = "CanvasSettingsP";
             this.CanvasSettingsP.Size = new System.Drawing.Size(384, 66);
             this.CanvasSettingsP.TabIndex = 7;
+            // 
+            // ChangeZoomPB
+            // 
+            this.ChangeZoomPB.Location = new System.Drawing.Point(120, 11);
+            this.ChangeZoomPB.Margin = new System.Windows.Forms.Padding(0);
+            this.ChangeZoomPB.Name = "ChangeZoomPB";
+            this.ChangeZoomPB.Size = new System.Drawing.Size(22, 22);
+            this.ChangeZoomPB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ChangeZoomPB.TabIndex = 17;
+            this.ChangeZoomPB.TabStop = false;
+            this.ChangeZoomPB.Click += new System.EventHandler(this.ChangeZoomPB_Click);
             // 
             // BackToStartPatternPB
             // 
@@ -774,6 +795,7 @@ public partial class MainWindow : CForm
             ((System.ComponentModel.ISupportInitialize)(this.YLevelSelectorTrB)).EndInit();
             this.MainSettingsP.ResumeLayout(false);
             this.CanvasSettingsP.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ChangeZoomPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BackToStartPatternPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExportWorldPatternPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImportWorldPatternPB)).EndInit();
@@ -796,7 +818,6 @@ public partial class MainWindow : CForm
     private Panel CanvasSettingsP;
     private Panel MainSettingsP;
     private Panel CanvasP;
-    private Label label1;
     private CComboBox DeviceSelectDHCB;
     private PictureBox ImportPatternPB;
     private PictureBox ExportPatternPB;
@@ -839,4 +860,6 @@ public partial class MainWindow : CForm
     private Label XAtToL;
     private Label label2;
     private Label RangeSizeL;
+    private Label AboutLNoRelocate;
+    private PictureBox ChangeZoomPB;
 }

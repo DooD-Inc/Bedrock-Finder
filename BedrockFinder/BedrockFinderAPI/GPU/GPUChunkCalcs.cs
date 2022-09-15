@@ -11,9 +11,9 @@ public static unsafe class GPUChunkCalcs
     }
     public static class v13
     {
-        public class OW : GPUChunkCalc { public OW() : base(typeof(Kernels.v13.OW), Overworld, MinecraftVersion.v13) { A = K_OW_13; } }
-        public class LN : GPUChunkCalc { public LN() : base(typeof(Kernels.v13.LN), Overworld, MinecraftVersion.v13) { A = null; } }
-        public class HN : GPUChunkCalc { public HN() : base(typeof(Kernels.v13.HN), Overworld, MinecraftVersion.v13) { A = null; } }
+        public class OW : GPUChunkCalc { public OW() : base(typeof(Kernels.v13.OW), Overworld, MinecraftVersion.v13) { A = OW_13; } }
+        public class LN : GPUChunkCalc { public LN() : base(typeof(Kernels.v13.LN), Overworld, MinecraftVersion.v13) { A = LN_13; } }
+        public class HN : GPUChunkCalc { public HN() : base(typeof(Kernels.v13.HN), Overworld, MinecraftVersion.v13) { A = HN_13; } }
     }
     public static class v14v15v16v17
     {

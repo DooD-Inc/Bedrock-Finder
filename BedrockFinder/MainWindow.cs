@@ -11,12 +11,15 @@ public partial class MainWindow : CForm
     {
         Program.FormHandle = Handle;
         Instance();
+        AboutLNoRelocate.MouseDown -= MouseDownRelocate;
     }
     private CToolTips ToolTips;
     private CComboBoxBundle ComboBoxBundle;
     private void ControlsInit()
     {
         Icon = SmallApp.Icon = Icon.ExtractAssociatedIcon(@".\Resources\AppIcon.ico");
+
+        ChangeZoomPB.Image = Image.FromFile(@".\Resources\MagnifyingIn.png");
 
         ImportPatternPB.Image = Image.FromFile(@".\Resources\Import.png");
         ToolTips.SetDHToolTip(ImportPatternPB, "Import Pattern");
@@ -109,6 +112,11 @@ public partial class MainWindow : CForm
         ShowInTaskbar = true;
         Activate();
         ShowInit();
+    }
+    private AboutForm aboutForm = new AboutForm();
+    private void AboutL_MouseClick(object sender, MouseEventArgs e)
+    {
+        aboutForm.ShowDialog();
     }
     #endregion
     #region Canvas
@@ -234,6 +242,16 @@ public partial class MainWindow : CForm
         canvas.OverDraw();
         canvas.Invalidate();
         DrawPen();
+    }
+    private void ChangeZoomPB_Click(object sender, EventArgs e)
+    {
+        canvas.ChangeZoom();
+        if (canvas.Zoom == 1)
+            ChangeZoomPB.Image = Image.FromFile(@".\Resources\MagnifyingIn.png");
+        else
+            ChangeZoomPB.Image = Image.FromFile(@".\Resources\MagnifyingOut.png");
+        if(Program.Random.Next(5) % 5 == 0)
+            GC.Collect();
     }
     private void YLevelSelectorTrB_Scroll(object sender, EventArgs e)
     {
@@ -469,6 +487,7 @@ public partial class MainWindow : CForm
         if (Program.DeviceIndex == index)
             return;
         Program.DeviceIndex = index;
+        ChangedContext();
     }
     #endregion
     #region Range

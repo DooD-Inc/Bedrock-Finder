@@ -1,5 +1,4 @@
-﻿using static ChunkСache;
-using static BedrockFinder.BedrockFinderAPI.Structs.Enums.WorldContext;
+﻿using static BedrockFinder.BedrockFinderAPI.Structs.Enums.WorldContext;
 using System.Runtime.InteropServices;
 
 namespace BedrockFinder.BedrockFinderAPI.CPU;
@@ -28,20 +27,25 @@ public static unsafe class BedrockGens
         public class OW : CPUBedrockGen
         {
             public OW() : base(Overworld, MinecraftVersion.v13) { }
+            public static long* cache;
             public override bool GetBlock(in int x, in byte y, in int z, in long cs)
             {
-                long[] chache = OW_13[(((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y];
-                for (int i = 0; i < chache.Length; i += 2)
-                    if (((cs * chache[i] + chache[i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
+                int cpos = ((((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y) << 3;
+                for (int i = 0; i < 8; i += 2)
+                    if (cache[cpos + i] == 0)
+                        break;
+                    else if (((cs * cache[cpos + i] + cache[cpos + i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
                         return true;
                 return false;
             }
             public override bool GetBlock(in int x, in byte y, in int z)
             {
                 long cs = (x >> 4) * 0x4F9939F508 + (z >> 4) * 0x1EF1565BD5 ^ 0x5DEECE66D;
-                long[] chache = OW_13[(((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y];
-                for (int i = 0; i < chache.Length; i += 2)
-                    if (((cs * chache[i] + chache[i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
+                int cpos = ((((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y) << 3;
+                for (int i = 0; i < 8; i += 2)
+                    if (cache[cpos + i] == 0)
+                        break;
+                    else if (((cs * cache[cpos + i] + cache[cpos + i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
                         return true;
                 return false;
             }
@@ -49,20 +53,25 @@ public static unsafe class BedrockGens
         public class LN : CPUBedrockGen
         {
             public LN() : base(Lower_Nether, MinecraftVersion.v13) { }
+            public static long* cache;
             public override bool GetBlock(in int x, in byte y, in int z, in long cs)
             {
-                long[] chache = LN_13[(((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y];
-                for (int i = 0; i < chache.Length; i += 2)
-                    if (((cs * chache[i] + chache[i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
-                        return true;
+                int cpos = ((((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y) << 3;
+                for (int i = 0; i < 8; i += 2)
+                    if (cache[cpos + i] == 0)
+                        break;
+                    else if (((cs * cache[cpos + i] + cache[cpos + i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
+                            return true;
                 return false;
             }
             public override bool GetBlock(in int x, in byte y, in int z)
             {
                 long cs = (x >> 4) * 0x4F9939F508 + (z >> 4) * 0x1EF1565BD5 ^ 0x5DEECE66D;
-                long[] chache = LN_13[(((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y];
-                for (int i = 0; i < chache.Length; i += 2)
-                    if (((cs * chache[i] + chache[i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
+                int cpos = ((((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y) << 3;
+                for (int i = 0; i < 8; i += 2)
+                    if (cache[cpos + i] == 0)
+                        break;
+                    else if (((cs * cache[cpos + i] + cache[cpos + i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
                         return true;
                 return false;
             }
@@ -70,20 +79,25 @@ public static unsafe class BedrockGens
         public class HN : CPUBedrockGen
         {
             public HN() : base(Higher_Nether, MinecraftVersion.v13) { }
+            public static long* cache;
             public override bool GetBlock(in int x, in byte y, in int z, in long cs)
             {
-                long[] chache = HN_13[(((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y];
-                for (int i = 0; i < chache.Length; i += 2)
-                    if (((cs * chache[i] + chache[i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
+                int cpos = ((((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y) << 3;
+                for (int i = 0; i < 8; i += 2)
+                    if (cache[cpos + i] == 0)
+                        break;
+                    else if (((cs * cache[cpos + i] + cache[cpos + i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
                         return true;
                 return false;
             }
             public override bool GetBlock(in int x, in byte y, in int z)
             {
                 long cs = (x >> 4) * 0x4F9939F508 + (z >> 4) * 0x1EF1565BD5 ^ 0x5DEECE66D;
-                long[] chache = HN_13[(((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y];
-                for (int i = 0; i < chache.Length; i += 2)
-                    if (((cs * chache[i] + chache[i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
+                int cpos = ((((z & 0xF) << 0x4) + (x & 0xF) << 0x2) + y) << 3;
+                for (int i = 0; i < 8; i += 2)
+                    if (cache[cpos + i] == 0)
+                        break;
+                    else if (((cs * cache[cpos + i] + cache[cpos + i + 1] & 0xFFFFFFFFFFFF) >> 0x11) % 0x5 >= y)
                         return true;
                 return false;
             }
