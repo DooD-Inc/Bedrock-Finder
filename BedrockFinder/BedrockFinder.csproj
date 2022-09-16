@@ -77,7 +77,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Bedrock-Counter-v2\Amplifier.Net\Amplifier.csproj" />
+    <ProjectReference Include="..\Amplifier.Net\Amplifier.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AssemblyName>Amplifier</AssemblyName>
+		<RootNamespace>Amplifier</RootNamespace>
+		<Version>1.0.8</Version>
+		<Authors>Deepak Battini</Authors>
+		<Company>Tech Quantum</Company>
+		<Description>Amplifier allows .NET developers to easily run complex applications with intensive mathematical computation on Intel CPU/GPU, NVIDIA, AMD without writing any additional C kernel code. Write your function in .NET and Amplifier will take care of running it on your favorite hardware.</Description>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageProjectUrl>https://tech-quantum.github.io/Amplifier.NET/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/tech-quantum/Amplifier.NET</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>OpenCL, Kernel, .NET GPU, CSharp GPU</PackageTags>
+		<PackageIconUrl>https://raw.githubusercontent.com/tech-quantum/Amplifier.NET/master/icon_32.png</PackageIconUrl>
+		<PackageId>Amplifier.NET</PackageId>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>
+			1.0.8-------------------
+			* XArray with InArray and OutArray which is advance and powerful than standard .NET Array with shaping and transposing.
+			* SGEMM mat multiplication example
+		</PackageReleaseNotes>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+		<Optimize>false</Optimize>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Humanizer.Core" Version="2.8.11" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.2" />
+		<PackageReference Include="System.Collections.Immutable" Version="1.7.1" />
+		<PackageReference Include="System.Reflection.Metadata" Version="1.8.1" />
+		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Amplifier.dll.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Decompiler\IL\Instructions.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>Instructions.cs</LastGenOutput>
+		</None>
+		<None Update="Decompiler\Metadata\ILOpCodes.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>ILOpCodes.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Decompiler\IL\Instructions.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Instructions.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Decompiler\Metadata\ILOpCodes.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ILOpCodes.tt</DependentUpon>
+		</Compile>
+	</ItemGroup>
+</Project>
