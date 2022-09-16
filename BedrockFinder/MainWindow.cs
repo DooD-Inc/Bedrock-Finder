@@ -19,8 +19,6 @@ public partial class MainWindow : CForm
     {
         Icon = SmallApp.Icon = Icon.ExtractAssociatedIcon(@".\Resources\AppIcon.ico");
 
-        ChangeZoomPB.Image = Image.FromFile(@".\Resources\MagnifyingIn.png");
-
         ImportPatternPB.Image = Image.FromFile(@".\Resources\Import.png");
         ToolTips.SetDHToolTip(ImportPatternPB, "Import Pattern");
 
@@ -242,16 +240,6 @@ public partial class MainWindow : CForm
         canvas.OverDraw();
         canvas.Invalidate();
         DrawPen();
-    }
-    private void ChangeZoomPB_Click(object sender, EventArgs e)
-    {
-        canvas.ChangeZoom();
-        if (canvas.Zoom == 1)
-            ChangeZoomPB.Image = Image.FromFile(@".\Resources\MagnifyingIn.png");
-        else
-            ChangeZoomPB.Image = Image.FromFile(@".\Resources\MagnifyingOut.png");
-        if(Program.Random.Next(5) % 5 == 0)
-            GC.Collect();
     }
     private void YLevelSelectorTrB_Scroll(object sender, EventArgs e)
     {

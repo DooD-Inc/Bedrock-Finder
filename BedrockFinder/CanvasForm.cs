@@ -32,67 +32,36 @@ public partial class CanvasForm : Form
 
     private void Draw()
     {
-        Size = Zoom == 1 ? new Size(575, 574) : new Size(1087, 1086);
         DrawGrid();
         DrawVectors();
         DrawPointers();
     }
     private void DrawGrid()
     {
-        if(Zoom == 1)
+        FastBitmap bitmap = new FastBitmap(new Bitmap(574, 574));
+        for (int c = 0; c < 32; c++)
         {
-            FastBitmap bitmap = new FastBitmap(new Bitmap(574, 574));
-            for (int c = 0; c < 32; c++)
-            {
-                for (int i = 0; i < 544; i++)
-                {
-                    bitmap.SetPixel(c * 17 + 30, i, Color.Black);
-                    bitmap.SetPixel(i + 30, c * 17, Color.Black);
-                }
-            }
             for (int i = 0; i < 544; i++)
             {
-                bitmap.SetPixel(574, i, Color.Black);
-                bitmap.SetPixel(0, i, Color.FromArgb(30, 30, 30));
-                bitmap.SetPixel(i + 30, 544, Color.Black);
-                bitmap.SetPixel(i + 30, 573, Color.FromArgb(30, 30, 30));
+                bitmap.SetPixel(c * 17 + 30, i, Color.Black);
+                bitmap.SetPixel(i + 30, c * 17, Color.Black);
             }
-            for (int i = 0; i < 30; i++)
-            {
-                bitmap.SetPixel(i, 0, Color.FromArgb(30, 30, 30));
-                bitmap.SetPixel(0, 573 - i, Color.FromArgb(30, 30, 30));
-                bitmap.SetPixel(i, 573, Color.FromArgb(30, 30, 30));
-            }
-
-            BackgroundImage = bitmap.GetResult();
         }
-        else
+        for (int i = 0; i < 544; i++)
         {
-            FastBitmap bitmap = new FastBitmap(new Bitmap(1086, 1086));
-            for (int c = 0; c < 32; c++)
-            {
-                for (int i = 0; i < 1056; i++)
-                {
-                    bitmap.SetPixel(c * 33 + 30, i, Color.Black);
-                    bitmap.SetPixel(i + 30, c * 33, Color.Black);
-                }
-            }
-            for (int i = 0; i < 1056; i++)
-            {
-                bitmap.SetPixel(1056, i, Color.Black);
-                bitmap.SetPixel(0, i, Color.FromArgb(30, 30, 30));
-                bitmap.SetPixel(i + 30, 1056, Color.Black);
-                bitmap.SetPixel(i + 30, 1085, Color.FromArgb(30, 30, 30));
-            }
-            for (int i = 0; i < 30; i++)
-            {
-                bitmap.SetPixel(i, 0, Color.FromArgb(30, 30, 30));
-                bitmap.SetPixel(0, 1085 - i, Color.FromArgb(30, 30, 30));
-                bitmap.SetPixel(i, 1085, Color.FromArgb(30, 30, 30));
-            }
-
-            BackgroundImage = bitmap.GetResult();
+            bitmap.SetPixel(574, i, Color.Black);
+            bitmap.SetPixel(0, i, Color.FromArgb(30, 30, 30));
+            bitmap.SetPixel(i + 30, 544, Color.Black);
+            bitmap.SetPixel(i + 30, 573, Color.FromArgb(30, 30, 30));
         }
+        for (int i = 0; i < 30; i++)
+        {
+            bitmap.SetPixel(i, 0, Color.FromArgb(30, 30, 30));
+            bitmap.SetPixel(0, 573 - i, Color.FromArgb(30, 30, 30));
+            bitmap.SetPixel(i, 573, Color.FromArgb(30, 30, 30));
+        }
+
+        BackgroundImage = bitmap.GetResult();
     }
     private void DrawVectors()
     {
@@ -145,23 +114,14 @@ public partial class CanvasForm : Form
         if(block == BlockType.None)
         {            
             FastBitmap bitmap = new FastBitmap((Bitmap)BackgroundImage);
-            if(Zoom == 1)
-            {
-                for (int x = 0; x < 16; x++)
-                    for (int y = 0; y < 16; y++)
-                        bitmap.SetPixel(30 + xc * 17 + x + 1, yc * 17 + y + 1, Color.FromArgb(43, 43, 43));
-            }
-            else
-            {
-                for (int x = 0; x < 32; x++)
-                    for (int y = 0; y < 32; y++)
-                        bitmap.SetPixel(30 + xc * 33 + x + 1, yc * 33 + y + 1, Color.FromArgb(43, 43, 43));
-            }
+            for (int x = 0; x < 16; x++)
+                for (int y = 0; y < 16; y++)
+                    bitmap.SetPixel(30 + xc * 17 + x + 1, yc * 17 + y + 1, Color.FromArgb(43, 43, 43));
             BackgroundImage = bitmap.GetResult();
         }
         else
         {
-            BackgroundImage = BlockRenderer.DrawBlock((Bitmap)BackgroundImage, Zoom == 1 ? new Point(30 + xc * 17 + 1, yc * 17 + 1) : new Point(30 + xc * 33 + 1, yc * 33 + 1), block, Vector, Zoom);
+            BackgroundImage = BlockRenderer.DrawBlock((Bitmap)BackgroundImage, new Point(30 + xc * 17 + 1, yc * 17 + 1), block, Vector);
         }
 
         Invalidate();
@@ -184,12 +144,6 @@ public partial class CanvasForm : Form
             DrawBlock(panelIndex.X, panelIndex.Y, BlockType.None);
         }
         Program.MainWindow.Invoke(() => Program.MainWindow.UpdatePatternScore());
-    }
-    public int Zoom = 1;
-    public void ChangeZoom()
-    {
-        Zoom = Zoom == 1 ? 2 : 1;
-        Draw();
     }
     public void UnDraw() => Program.Pattern[YLevel].blockList.ForEach(z => DrawBlock(z.x, 31 - z.z, BlockType.None));
     public void OverDraw() => Program.Pattern[YLevel].blockList.ForEach(z => DrawBlock(z.x, 31 - z.z, z.block));

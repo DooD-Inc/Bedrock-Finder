@@ -71,7 +71,6 @@ public partial class MainWindow : CForm
             this.AboutLNoRelocate = new System.Windows.Forms.Label();
             this.CanvasP = new System.Windows.Forms.Panel();
             this.CanvasSettingsP = new System.Windows.Forms.Panel();
-            this.ChangeZoomPB = new System.Windows.Forms.PictureBox();
             this.BackToStartPatternPB = new System.Windows.Forms.PictureBox();
             this.ExportWorldPatternPB = new System.Windows.Forms.PictureBox();
             this.ImportWorldPatternPB = new System.Windows.Forms.PictureBox();
@@ -91,7 +90,6 @@ public partial class MainWindow : CForm
             ((System.ComponentModel.ISupportInitialize)(this.YLevelSelectorTrB)).BeginInit();
             this.MainSettingsP.SuspendLayout();
             this.CanvasSettingsP.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ChangeZoomPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BackToStartPatternPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExportWorldPatternPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImportWorldPatternPB)).BeginInit();
@@ -640,7 +638,6 @@ public partial class MainWindow : CForm
             // CanvasSettingsP
             // 
             this.CanvasSettingsP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
-            this.CanvasSettingsP.Controls.Add(this.ChangeZoomPB);
             this.CanvasSettingsP.Controls.Add(this.BackToStartPatternPB);
             this.CanvasSettingsP.Controls.Add(this.ExportWorldPatternPB);
             this.CanvasSettingsP.Controls.Add(this.ImportWorldPatternPB);
@@ -655,17 +652,6 @@ public partial class MainWindow : CForm
             this.CanvasSettingsP.Name = "CanvasSettingsP";
             this.CanvasSettingsP.Size = new System.Drawing.Size(384, 66);
             this.CanvasSettingsP.TabIndex = 7;
-            // 
-            // ChangeZoomPB
-            // 
-            this.ChangeZoomPB.Location = new System.Drawing.Point(120, 11);
-            this.ChangeZoomPB.Margin = new System.Windows.Forms.Padding(0);
-            this.ChangeZoomPB.Name = "ChangeZoomPB";
-            this.ChangeZoomPB.Size = new System.Drawing.Size(22, 22);
-            this.ChangeZoomPB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.ChangeZoomPB.TabIndex = 17;
-            this.ChangeZoomPB.TabStop = false;
-            this.ChangeZoomPB.Click += new System.EventHandler(this.ChangeZoomPB_Click);
             // 
             // BackToStartPatternPB
             // 
@@ -795,7 +781,6 @@ public partial class MainWindow : CForm
             ((System.ComponentModel.ISupportInitialize)(this.YLevelSelectorTrB)).EndInit();
             this.MainSettingsP.ResumeLayout(false);
             this.CanvasSettingsP.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ChangeZoomPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BackToStartPatternPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExportWorldPatternPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImportWorldPatternPB)).EndInit();
@@ -861,5 +846,4 @@ public partial class MainWindow : CForm
     private Label label2;
     private Label RangeSizeL;
     private Label AboutLNoRelocate;
-    private PictureBox ChangeZoomPB;
 }

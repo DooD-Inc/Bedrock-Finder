@@ -17,8 +17,8 @@
         Start = start; 
         End = end;
         CStart = new Vec2l(start.X % 16 == 0 ? (start.X >> 4) : ((start.X >> 4) - 1),
-                           start.Z % 16 == 0 ? (start.Z >> 4) : ((start.Z >> 4) + 1));
-        CEnd = new Vec2l(end.X % 16 == 0 ? (end.X >> 4) : ((end.X >> 4) - 1),
+                           start.Z % 16 == 0 ? (start.Z >> 4) : ((start.Z >> 4) - 1));
+        CEnd = new Vec2l(end.X % 16 == 0 ? (end.X >> 4) : ((end.X >> 4) + 1),
                          end.Z % 16 == 0 ? (end.Z >> 4) : ((end.Z >> 4) + 1));
     }
     public SearchRange(long sx, long sz, long ex, long ez) : this(new Vec2l(sx, sz), new Vec2l(ex, ez)) { }
