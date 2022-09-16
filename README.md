@@ -2,7 +2,7 @@
 
 A program with which you can find bedrock pattern.\
 Can find bases just by screenshot of bedrock pattern.\
-Designed mainly for anarchy servers (as 2b2t)
+Made mainly for anarchy servers (as 2b2t)
 
 Only Windows (.Net 6.0; WinForms)
 
