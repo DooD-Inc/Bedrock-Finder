@@ -42,11 +42,15 @@ public partial class AboutForm : Form
         FactsL.Text = @"1. BedrockFinder on GPU work better when Z coord is large X.
 2. 1.13 Overworld 50% coords is fake, it bug made by coolmann24 ;(
 3. Idea of Bedrock Finder with GPU launched at the end of 2020, but
-when I don't have enough C# knowledge.
+then I don't have enough C# knowledge.
 4. On AMD GPU Bedrock Finder work better.
 5. The C++ version is very unoptimized, except for the fact that 
 coolmann24 was able to make the table cache for java a random func.
-6. This BedrockFinder work better that C++ version"; ;
+6. This BedrockFinder work better that C++ version
+7. Zoom function was deleted duel to WinForms can't make form 
+bigger than monitor
+(Author has 1280x1080, but need on 150pixel more)
+Cry about it.";
     }
     private void OpenLink(string url) => Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
     private void GithubLL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) => OpenLink("https://github.com/DooD-Inc/Bedrock-Finder");
