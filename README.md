@@ -6,7 +6,7 @@ Made mainly for anarchy servers (as 2b2t)
 
 Only Windows (.Net 6.0; WinForms)
 
-GPU Calculating round coords to 16.\
+GPU Calculating round coords to 16(start of chunk).\
 Example: If coords of pattern `116 1150`, GPU Bedrock Finder will show `112 1136`
 
 <h1>How to build(publish)</h1>
